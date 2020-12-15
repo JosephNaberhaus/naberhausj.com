@@ -7,19 +7,21 @@ To run the builder, first build the application using `go build` and run the bin
 ### HTML
 There are two types of html files:
 
-- **files**: Any HTML file not referenced by a `*.component.json` files. Normally, these are pages that can be navigated to.
+- **pages**: A HTML file that represents a full website page
 - **components**: An HTML template that can be imported and reused by other HTML files
+
+All pages are built and outputted with the same directory nesting as the source file had.
 
 A component is created by creating an HTML file and a file with the extension `.component.json`. The syntax of this file is:
 
-```
+```json
 {
     "name": "<name of component>",
     "templatePath": "<path to the HMTL file relative to this file>"
 }
 ```
 
-Once a component is defined it can be used in any other HTML file (whether it is a component or not). This is done by using the component include directive:
+Once a component is defined it can be used in any other HTML file. This is done by using the component include directive:
 
 ```html
 <!--@<name of component>{<parameters>}-->
@@ -32,8 +34,9 @@ A component can use parameters by prepending a '`#`' character before the parame
 For example, `<!--@message{"content": "#message"}-->` is allowed, but `<!--@message{"#message": "hello!"-->` will not result in any parameter substitution (though it is still valid syntax).
 
 ### CSS
-For simplicity and caching efficiency, **all** `*.css` files in the project are concatenated into the `out/styles.css` file. This means that you will need to avoid using conflicting selectors between pages and components.
+For simplicity and caching efficiency, **all** `*.css` files in the `src` directory are concatenated into the `out/styles.css` file. This means that you will need to avoid using conflicting selectors between pages and components.
 
 ### TODO
-- Copy Javascript code over
+- Handle JavaScript
 - Minify CSS and JavaScript in the output
+- Automatically link the stylesheet on pages
