@@ -31,12 +31,12 @@ func main() {
 	}
 	log.Printf("%d html file(s) found", len(htmlFiles))
 
-	log.Println("Building dependency graph")
+	log.Println("Building document collection")
 	nameToPathMap, err := definitions.CreateNameToPathMap()
 	if err != nil {
 		log.Fatal(err)
 	}
-	graph, err := html.BuildDependencyGraph(htmlFiles, nameToPathMap)
+	documents, err := html.BuildDocumentCollection(htmlFiles, nameToPathMap)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -46,14 +46,6 @@ func main() {
 	for _, file := range htmlFiles {
 		if !definitions.ContainsPath(file.Path()) {
 			nonComponentHtmlFiles = append(nonComponentHtmlFiles, file)
-		}
-	}
-
-	log.Println("Substituting non-component html files")
-	for _, file := range nonComponentHtmlFiles {
-		err = graph.SubstitutePath(file.Path())
-		if err != nil {
-			log.Fatal(err)
 		}
 	}
 
@@ -71,10 +63,17 @@ func main() {
 		}
 	}
 
-	log.Println("Outputting result")
-	err = html.Output(sourceDirectory, outputDirectory, nonComponentHtmlFiles)
-	if err != nil {
-		log.Fatal(err)
+	log.Println("Substituting and writing non-component html files")
+	for _, file := range nonComponentHtmlFiles {
+		result, err := documents.Substitute(file.Path())
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		err = html.Output(sourceDirectory, outputDirectory, file.Path(), result)
+		if err != nil {
+			log.Fatal(err)
+		}
 	}
 
 	log.Println("Combining all CSS files")

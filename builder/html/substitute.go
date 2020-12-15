@@ -1,109 +1,64 @@
 package html
 
 import (
-	"errors"
 	"fmt"
 	"strings"
 )
 
-type substitutionState int8
-
-const (
-	stateUnsubstituted = iota
-	stateWaitingOnChildren
-	stateSubstituted
-)
-
-type dependencyEdge struct {
-	componentName string
-	to            *dependencyNode
+type DocumentCollection struct {
+	documents     map[string]document
+	nameToPathMap map[string]string
 }
 
-type dependencyNode struct {
-	htmlFile         *File
-	dependents       []*dependencyNode
-	dependencies     []dependencyEdge
-	substitutedState substitutionState
+func (d *DocumentCollection) Substitute(toSubstitutePath string) (result string, err error) {
+	return d.substituteParameters(toSubstitutePath, map[string]string{})
 }
 
-type DependencyGraph map[string]*dependencyNode
-
-func (g DependencyGraph) Substitute(toSubstitute *dependencyNode) error {
-	if toSubstitute.substitutedState == stateSubstituted {
-		return nil
-	}
-
-	if toSubstitute.substitutedState == stateWaitingOnChildren {
-		return errors.New("include loop between components")
-	}
-
-	toSubstitute.substitutedState = stateWaitingOnChildren
-
-	if len(toSubstitute.dependencies) == 0 {
-		return nil
-	}
-
-	for _, dependency := range toSubstitute.dependencies {
-		err := g.Substitute(dependency.to)
-		if err != nil {
-			return err
-		}
-
-		toSubstitute.htmlFile.content = strings.ReplaceAll(
-			toSubstitute.htmlFile.content,
-			createIncludeDirective(dependency.componentName),
-			dependency.to.htmlFile.content,
-		)
-	}
-
-	toSubstitute.substitutedState = stateSubstituted
-
-	return nil
-}
-
-func (g DependencyGraph) SubstitutePath(path string) error {
-	node, exists := g[path]
+func (d *DocumentCollection) substituteParameters(toSubstitutePath string, parameters map[string]string) (result string, err error) {
+	toSubstitute, exists := d.documents[toSubstitutePath]
 	if !exists {
-		return fmt.Errorf("invalid path: %s", path)
+		return "", fmt.Errorf("couldn't find document at path: %s", toSubstitutePath)
 	}
 
-	return g.Substitute(node)
-}
+	resultBuilder := strings.Builder{}
 
-func BuildDependencyGraph(files []*File, nameToPathMap map[string]string) (graph DependencyGraph, err error) {
-	graph = make(DependencyGraph)
+	for _, node := range toSubstitute {
+		substitutedNode := node.substituteParameters(parameters)
 
-	for _, file := range files {
-		node := new(dependencyNode)
-		node.htmlFile = file
-		node.dependencies = make([]dependencyEdge, 0)
-		node.dependents = make([]*dependencyNode, 0)
-		node.substitutedState = stateUnsubstituted
-
-		graph[file.path] = node
-	}
-
-	for _, file := range files {
-		fileNode := graph[file.path]
-
-		for _, include := range FindIncludes(file.content) {
-			includePath, exists := nameToPathMap[include]
+		switch v := substitutedNode.(type) {
+		case *textNode:
+			resultBuilder.WriteString(v.content)
+		case *includeNode:
+			path, exists := d.nameToPathMap[v.componentName]
 			if !exists {
-				return nil, fmt.Errorf("could not find component named: %s", include)
+				return "", fmt.Errorf("couldn't find component with name: %s", v.componentName)
 			}
 
-			includeNode, exists := graph[includePath]
-			if !exists {
-				return nil, fmt.Errorf("could not find template file at: %s", includePath)
+			substitutionResult, err := d.substituteParameters(path, v.parameters)
+			if err != nil {
+				return "", err
 			}
 
-			includeNode.dependents = append(includeNode.dependents, fileNode)
-			fileNode.dependencies = append(fileNode.dependencies, dependencyEdge{
-				componentName: include,
-				to:            includeNode,
-			})
+			resultBuilder.WriteString(substitutionResult)
 		}
 	}
 
-	return graph, nil
+	return resultBuilder.String(), nil
+}
+
+func BuildDocumentCollection(htmlFiles []*File, nameToPathMap map[string]string) (d *DocumentCollection, err error) {
+	d = new(DocumentCollection)
+	d.documents = make(map[string]document)
+	d.nameToPathMap = nameToPathMap
+
+	for _, file := range htmlFiles {
+		document, err := SplitIncludes(file.content)
+		if err != nil {
+			return nil, err
+		}
+
+		d.documents[file.path] = document
+	}
+
+	return d, nil
 }
