@@ -14,7 +14,6 @@ type Collection []*Definition
 type Definition struct {
 	Name         string `json:"name"`
 	TemplatePath string `json:"templatePath"`
-	StylePath    string `json:"stylePath"`
 }
 
 func (c Collection) CreateNameToPathMap() (nameToPathMap map[string]string, err error) {
@@ -41,16 +40,6 @@ func (c Collection) ContainsPath(path string) bool {
 	return false
 }
 
-func (c Collection) StylePaths() []string {
-	stylePaths := make([]string, 0)
-
-	for _, definition := range c {
-		stylePaths = append(stylePaths, definition.StylePath)
-	}
-
-	return stylePaths
-}
-
 // Walks the entire file system from the working directory down looking for component definitions files
 func FindDefinitions(root string) (definitions Collection, err error) {
 	definitionPaths, err := file.FindFilesWithSuffix(root, ".component.json")
@@ -70,7 +59,6 @@ func FindDefinitions(root string) (definitions Collection, err error) {
 
 		rootPath := filepath.Dir(path)
 		definition.TemplatePath = filepath.Join(rootPath, definition.TemplatePath)
-		definition.StylePath = filepath.Join(rootPath, definition.StylePath)
 
 		definitions = append(definitions, definition)
 	}
