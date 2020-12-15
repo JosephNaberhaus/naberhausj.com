@@ -1,0 +1,33 @@
+package file
+
+import (
+	"fmt"
+	"os"
+	"path/filepath"
+	"strings"
+)
+
+func FindFilesWithSuffix(root, suffix string) (paths []string, err error) {
+	paths = make([]string, 0)
+
+	err = filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			return fmt.Errorf("error walking project files")
+		}
+
+		if info.IsDir() {
+			return nil
+		}
+
+		if strings.HasSuffix(path, suffix) {
+			paths = append(paths, path)
+		}
+
+		return nil
+	})
+	if err != nil {
+		return nil, err
+	}
+
+	return paths, nil
+}

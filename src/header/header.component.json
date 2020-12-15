@@ -1,0 +1,5 @@
+{
+  "name": "header",
+  "templatePath": "header.html",
+  "stylePath": "header.css"
+}
