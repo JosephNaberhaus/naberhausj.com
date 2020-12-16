@@ -1,0 +1,64 @@
+.social_link {
+    position: relative;
+    width: 40px;
+    height: 40px;
+
+    margin: 10px;
+
+    border: white 2px solid;
+    border-radius: 1px;
+
+    cursor: pointer;
+
+    transition: 0.1s;
+}
+
+.social_link:hover {
+    width: 85px;
+
+    transition: 0.1s;
+}
+
+.social_link_icon {
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+
+    transition: 0.1s;
+}
+
+.social_link:hover .social_link_icon {
+    opacity: 0;
+    transition: 0.1s;
+}
+
+.social_link_name_container {
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.social_link_name {
+    text-align: center ;
+
+    opacity: 0;
+    transition: 0.1s;
+}
+
+.social_link:hover .social_link_name {
+    opacity: 1.0;
+
+    transition: 0.1s;
+}

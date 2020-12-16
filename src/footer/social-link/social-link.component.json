@@ -1,0 +1,11 @@
+{
+  "name": "SocialLink",
+  "templatePath": "social-link.html",
+  "resources": [
+    "email.svg",
+    "github.svg",
+    "key.svg",
+    "linkedin.svg",
+    "joseph-naberhaus-public.gpg"
+  ]
+}

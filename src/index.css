@@ -1,3 +1,38 @@
-test {
-    color: green;
+:root {
+    --text: rgb(17, 17, 17);
+    --highlight: rgb(95, 168, 211);
+    --highlight-dark: rgb(19, 51, 70);
+    --background: rgb(255, 255, 254);
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    min-height: 100%;
+
+    font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+    color: var(--text);
+
+    background: var(--background);
+
+    margin-top: 0;
+    margin-bottom: 0;
+
+    display: flex;
+    flex-direction: column;
+}
+
+a {
+    color: var(--text);
+    text-decoration: none;
+
+    border-bottom: var(--text) 1px solid;
+}
+
+a:hover {
+    color: var(--highlight);
+
+    border-color: var(--highlight);
 }
