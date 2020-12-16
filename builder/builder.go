@@ -5,6 +5,7 @@ import (
 	"github.com/JosephNaberhaus/naberhausj.com/builder/component"
 	"github.com/JosephNaberhaus/naberhausj.com/builder/css"
 	"github.com/JosephNaberhaus/naberhausj.com/builder/html"
+	"github.com/JosephNaberhaus/naberhausj.com/builder/resources"
 	"log"
 	"os"
 	"path/filepath"
@@ -84,6 +85,12 @@ func main() {
 
 	log.Println("Producing main CSS file")
 	err = css.Output(outputDirectory, cssContent)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	log.Println("Linking resources")
+	err = resources.Output(sourceDirectory, outputDirectory, definitions.GetAllResourcePaths())
 	if err != nil {
 		log.Fatal(err)
 	}

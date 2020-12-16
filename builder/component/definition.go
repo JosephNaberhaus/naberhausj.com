@@ -12,8 +12,9 @@ import (
 type Collection []*Definition
 
 type Definition struct {
-	Name         string `json:"name"`
-	TemplatePath string `json:"templatePath"`
+	Name         string   `json:"name"`
+	TemplatePath string   `json:"templatePath"`
+	Resources    []string `json:"resources"`
 }
 
 func (c Collection) CreateNameToPathMap() (nameToPathMap map[string]string, err error) {
@@ -40,6 +41,18 @@ func (c Collection) ContainsPath(path string) bool {
 	return false
 }
 
+func (c Collection) GetAllResourcePaths() []string {
+	resourcePaths := make([]string, 0)
+
+	for _, definition := range c {
+		if definition.Resources != nil {
+			resourcePaths = append(resourcePaths, definition.Resources...)
+		}
+	}
+
+	return resourcePaths
+}
+
 // Walks the entire file system from the working directory down looking for component definitions files
 func FindDefinitions(root string) (definitions Collection, err error) {
 	definitionPaths, err := file.FindFilesWithSuffix(root, ".component.json")
@@ -59,6 +72,12 @@ func FindDefinitions(root string) (definitions Collection, err error) {
 
 		rootPath := filepath.Dir(path)
 		definition.TemplatePath = filepath.Join(rootPath, definition.TemplatePath)
+
+		if definition.Resources != nil {
+			for i, path := range definition.Resources {
+				definition.Resources[i] = filepath.Join(rootPath, path)
+			}
+		}
 
 		definitions = append(definitions, definition)
 	}

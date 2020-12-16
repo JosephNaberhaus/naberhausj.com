@@ -17,7 +17,7 @@ A component is created by creating an HTML file and a file with the extension `.
 ```json
 {
     "name": "<name of component>",
-    "templatePath": "<path to the HMTL file relative to this file>"
+    "templatePath": "<path to the HMTL file relative to this file>",
 }
 ```
 
@@ -36,7 +36,22 @@ For example, `<!--@message{"content": "#message"}-->` is allowed, but `<!--@mess
 ### CSS
 For simplicity and caching efficiency, **all** `*.css` files in the `src` directory are concatenated into the `out/styles.css` file. This means that you will need to avoid using conflicting selectors between pages and components.
 
+### Other Files
+For other file types such as JavaScript and images you can include the resource in the ouput by referencing within a `resources` array in the `*.component.json` file:
+
+```json
+{
+    "name": "Example",
+    "templatePath": "example.html",
+    "resources": [
+        "<path to the file relative to this file>"
+    ]
+}
+```
+
+The resource will be copied to a matching directory within the output.
+
 ### TODO
-- Handle JavaScript
 - Minify CSS and JavaScript in the output
 - Automatically link the stylesheet on pages
+- Allow including resources in pages
