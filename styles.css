@@ -1,0 +1,132 @@
+.footer {
+    margin-top: auto;
+    margin-left: -8px;
+    margin-right: -8px;
+
+    width: auto;
+    height: 100px;
+
+    background: black;
+}
+
+.social-links {
+    display: flex;
+    justify-content: center;
+}
+
+.copyright {
+    text-align: center;
+    color: var(--background);
+    font-size: 12px;
+}
+.social_link {
+    position: relative;
+    width: 40px;
+    height: 40px;
+
+    margin: 10px;
+
+    border: white 2px solid;
+    border-radius: 1px;
+
+    cursor: pointer;
+
+    transition: 0.1s;
+}
+
+.social_link:hover {
+    width: 85px;
+
+    transition: 0.1s;
+}
+
+.social_link_icon {
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+
+    transition: 0.1s;
+}
+
+.social_link:hover .social_link_icon {
+    opacity: 0;
+    transition: 0.1s;
+}
+
+.social_link_name_container {
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.social_link_name {
+    text-align: center ;
+
+    opacity: 0;
+    transition: 0.1s;
+}
+
+.social_link:hover .social_link_name {
+    opacity: 1.0;
+
+    transition: 0.1s;
+}
+
+.header {
+    display: flex;
+}
+
+.website_title {
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+:root {
+    --text: rgb(17, 17, 17);
+    --highlight: rgb(95, 168, 211);
+    --highlight-dark: rgb(19, 51, 70);
+    --background: rgb(255, 255, 254);
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    min-height: 100%;
+
+    font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+    color: var(--text);
+
+    background: var(--background);
+
+    margin-top: 0;
+    margin-bottom: 0;
+
+    display: flex;
+    flex-direction: column;
+}
+
+a {
+    color: var(--text);
+    text-decoration: none;
+
+    border-bottom: var(--text) 1px solid;
+}
+
+a:hover {
+    color: var(--highlight);
+
+    border-color: var(--highlight);
+}
