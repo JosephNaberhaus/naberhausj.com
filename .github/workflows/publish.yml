@@ -1,0 +1,57 @@
+name: Publish Website
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  Build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@v2
+
+      - name: Enter builder directory
+        run: cd builder
+
+      - name: Find Go version
+        run: awk '$1=="go"{print $2}' go.mod | xargs -I {} echo "::set-output name=version::{}"
+        id: go_mod
+
+      - name: Set up Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: ${{ steps.go_mod.outputs.version }}
+
+      - name: Build builder
+        run: go build
+
+      - name: Exit builder directory
+        run: cd ..
+
+      - name: Build website
+        run: ./builder/builder
+
+      - name: Upload built artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: website
+          path: out
+
+  Publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Github pages branch
+        uses: actions/checkout@v2
+        with:
+          ref: gh-pages
+
+      - name: Download built artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: website
+
+      - name: Commit and push changes
+          uses: actions-x/commit@v2
