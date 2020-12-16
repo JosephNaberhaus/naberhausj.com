@@ -54,4 +54,4 @@ jobs:
           name: website
 
       - name: Commit and push changes
-          uses: actions-x/commit@v2
+        uses: actions-x/commit@v2
