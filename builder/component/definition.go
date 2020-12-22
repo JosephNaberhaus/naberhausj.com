@@ -1,20 +1,19 @@
 package component
 
 import (
-	"encoding/json"
 	"fmt"
 	"github.com/JosephNaberhaus/naberhausj.com/builder/file"
 	"io/ioutil"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 type Collection []*Definition
 
 type Definition struct {
-	Name         string   `json:"name"`
-	TemplatePath string   `json:"templatePath"`
-	Resources    []string `json:"resources"`
+	Name         string `json:"name"`
+	TemplatePath string `json:"templatePath"`
 }
 
 func (c Collection) CreateNameToPathMap() (nameToPathMap map[string]string, err error) {
@@ -41,43 +40,16 @@ func (c Collection) ContainsPath(path string) bool {
 	return false
 }
 
-func (c Collection) GetAllResourcePaths() []string {
-	resourcePaths := make([]string, 0)
-
-	for _, definition := range c {
-		if definition.Resources != nil {
-			resourcePaths = append(resourcePaths, definition.Resources...)
-		}
-	}
-
-	return resourcePaths
-}
-
 // Walks the entire file system from the working directory down looking for component definitions files
 func FindDefinitions(root string) (definitions Collection, err error) {
-	definitionPaths, err := file.FindFilesWithSuffix(root, ".component.json")
+	definitionPaths, err := file.FindFilesWithSuffix(root, ".component.html")
 	definitions = make(Collection, 0, len(definitionPaths))
 
 	for _, path := range definitionPaths {
-		definitionBytes, err := readFile(path)
-		if err != nil {
-			return nil, fmt.Errorf("error loading component definition: %w", err)
-		}
-
 		definition := new(Definition)
-		err = json.Unmarshal(definitionBytes, definition)
-		if err != nil {
-			return nil, fmt.Errorf("error reading definition json: %w", err)
-		}
 
-		rootPath := filepath.Dir(path)
-		definition.TemplatePath = filepath.Join(rootPath, definition.TemplatePath)
-
-		if definition.Resources != nil {
-			for i, path := range definition.Resources {
-				definition.Resources[i] = filepath.Join(rootPath, path)
-			}
-		}
+		definition.Name = strings.TrimSuffix(filepath.Base(path), ".component.html")
+		definition.TemplatePath = path
 
 		definitions = append(definitions, definition)
 	}

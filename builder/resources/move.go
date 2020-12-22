@@ -7,7 +7,12 @@ import (
 	"strings"
 )
 
-func Output(sourceDirectory, outputDirectory string, resourcePaths []string) error {
+func MoveResources(sourceDirectory, outputDirectory string) error {
+	resourcePaths, err := findResources(sourceDirectory)
+	if err != nil {
+		return err
+	}
+
 	for _, resourcePath := range resourcePaths {
 		if !strings.HasPrefix(resourcePath, sourceDirectory) {
 			return fmt.Errorf("file %s not located in source directory", resourcePaths)

@@ -91,7 +91,7 @@ func main() {
 	}
 
 	log.Println("Linking resources")
-	err = resources.Output(sourceDirectory, outputDirectory, definitions.GetAllResourcePaths())
+	err = resources.MoveResources(sourceDirectory, outputDirectory)
 	if err != nil {
 		log.Fatal(err)
 	}

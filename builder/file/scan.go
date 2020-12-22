@@ -10,6 +10,23 @@ import (
 func FindFilesWithSuffix(root, suffix string) (paths []string, err error) {
 	paths = make([]string, 0)
 
+	allPaths, err := FindFiles(root)
+	if err != nil {
+		return nil, err
+	}
+
+	for _, path := range allPaths {
+		if strings.HasSuffix(path, suffix) {
+			paths = append(paths, path)
+		}
+	}
+
+	return paths, nil
+}
+
+func FindFiles(root string) (paths []string, err error) {
+	paths = make([]string, 0)
+
 	err = filepath.Walk(root, func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			return fmt.Errorf("error walking project files")
@@ -19,9 +36,7 @@ func FindFilesWithSuffix(root, suffix string) (paths []string, err error) {
 			return nil
 		}
 
-		if strings.HasSuffix(path, suffix) {
-			paths = append(paths, path)
-		}
+		paths = append(paths, path)
 
 		return nil
 	})

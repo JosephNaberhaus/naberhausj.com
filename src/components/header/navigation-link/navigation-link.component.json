@@ -1,9 +1,0 @@
-{
-    "name": "NavigationLink",
-    "templatePath": "navigation-link.html",
-    "resources": [
-        "programming.svg",
-        "woodworking.svg",
-        "domino-supplies.svg"
-    ]
-}
