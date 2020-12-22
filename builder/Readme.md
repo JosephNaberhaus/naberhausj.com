@@ -7,19 +7,12 @@ To run the builder, first build the application using `go build` and run the bin
 ### HTML
 There are two types of html files:
 
-- **pages**: A HTML file that represents a full website page
-- **components**: An HTML template that can be imported and reused by other HTML files
+- **pages**: A normal `.html` file that represents a full website page
+- **components**: A building block that used within other pages or components
 
 All pages are built and outputted with the same directory nesting as the source file had.
 
-A component is created by creating an HTML file and a file with the extension `.component.json`. The syntax of this file is:
-
-```json
-{
-    "name": "<name of component>",
-    "templatePath": "<path to the HMTL file relative to this file>",
-}
-```
+A component is defined by creating a HTML file that is named matching the pattern `<component name>.component.html`. A component named `test.component.html` is named `test`. No other component in a project can have the same name.
 
 Once a component is defined it can be used in any other HTML file. This is done by using the component include directive:
 
@@ -37,21 +30,8 @@ For example, `<!--@message{"content": "#message"}-->` is allowed, but `<!--@mess
 For simplicity and caching efficiency, **all** `*.css` files in the `src` directory are concatenated into the `out/styles.css` file. This means that you will need to avoid using conflicting selectors between pages and components.
 
 ### Other Files
-For other file types such as JavaScript and images you can include the resource in the ouput by referencing within a `resources` array in the `*.component.json` file:
-
-```json
-{
-    "name": "Example",
-    "templatePath": "example.html",
-    "resources": [
-        "<path to the file relative to this file>"
-    ]
-}
-```
-
-The resource will be copied to a matching directory within the output.
+All other file types except `.html` and `.css` files will be linked into the output directory with the same directory nesting as the source directory.
 
 ### TODO
 - Minify CSS and JavaScript in the output
 - Automatically link the stylesheet on pages
-- Allow including resources in pages
