@@ -1,3 +1,9 @@
+.card {
+    min-width: 400px;
+
+    border: gray 1px solid;
+    border-radius: 4px;
+}
 .footer {
     margin-top: auto;
     margin-left: -8px;
@@ -31,13 +37,13 @@
 
     cursor: pointer;
 
-    transition: 0.1s;
+    transition: 0.1s ease-in-out;
 }
 
 .social_link:hover {
     width: 85px;
 
-    transition: 0.1s;
+    transition: 0.1s ease-in-out;
 }
 
 .social_link_icon {
@@ -49,12 +55,12 @@
     bottom: 0;
     margin: auto;
 
-    transition: 0.1s;
+    transition: 0.1s ease-in-out;
 }
 
 .social_link:hover .social_link_icon {
     opacity: 0;
-    transition: 0.1s;
+    transition: 0.1s ease-in-out;
 }
 
 .social_link_name_container {
@@ -75,13 +81,13 @@
     text-align: center ;
 
     opacity: 0;
-    transition: 0.1s;
+    transition: 0.1s ease-in-out;
 }
 
 .social_link:hover .social_link_name {
     opacity: 1.0;
 
-    transition: 0.1s;
+    transition: 0.1s ease-in-out;
 }
 
 .header {
@@ -91,6 +97,62 @@
 .website_title {
     margin-left: 1rem;
     margin-right: 1rem;
+}
+
+.navigation {
+    margin-left: auto;
+    margin-right: 2rem;
+    margin-top: 2rem;
+
+    display: flex;
+    flex-direction: row;
+}
+.navigation_link {
+    display: flex;
+    flex-direction: column;
+
+    border-bottom: none;
+
+    width: 140px;
+
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.navigation_link_text {
+    display: flex;
+    justify-content: center;
+
+    margin-left: auto;
+    margin-right: auto;
+
+    font-size: large;
+
+    visibility: hidden;
+    opacity: 0;
+}
+
+.navigation_link:hover .navigation_link_text {
+    visibility: visible;
+    opacity: 1;
+
+    color: var(--text);
+    border-bottom: var(--text) 1px solid;
+}
+
+.navigation_link_icon {
+    width: 50px;
+    height: 50px;
+
+    margin-left: auto;
+    margin-right: auto;
+
+    transition: width 0.1s ease-in-out, height 0.1s ease-in-out;
+}
+
+.navigation_link:hover .navigation_link_icon {
+    width: 30px;
+    height: 30px;
 }
 :root {
     --text: rgb(17, 17, 17);
