@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<svg version="1.1" id="woodworking" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+     fill="none" width="50px" height="50px" viewBox="0 0 50 50" xml:space="preserve">
+<g stroke="#111111"
+   stroke-linejoin="round">
+    <rect stroke-width="4"
+          x="2"
+          y="2"
+          width="46"
+          height="46"/>
+    <path stroke-linecap="round"
+          stroke-width="3"
+          d="M 10 10 18 15 10 20 M 22 20 H 28">
+    </path>
+</g>
+</svg>

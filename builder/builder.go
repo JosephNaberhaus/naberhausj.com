@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/JosephNaberhaus/naberhausj.com/builder/component"
 	"github.com/JosephNaberhaus/naberhausj.com/builder/css"
+	"github.com/JosephNaberhaus/naberhausj.com/builder/file"
 	"github.com/JosephNaberhaus/naberhausj.com/builder/html"
 	"github.com/JosephNaberhaus/naberhausj.com/builder/resources"
 	"log"
@@ -58,7 +59,7 @@ func main() {
 
 	if outDirectoryExists {
 		log.Println("Clearing output directory")
-		err = os.RemoveAll(outputDirectory)
+		err = file.RemoveContents(outputDirectory)
 		if err != nil {
 			log.Fatal(err)
 		}

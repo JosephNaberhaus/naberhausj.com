@@ -10,13 +10,13 @@
 
     cursor: pointer;
 
-    transition: 0.1s;
+    transition: 0.1s ease-in-out;
 }
 
 .social_link:hover {
     width: 85px;
 
-    transition: 0.1s;
+    transition: 0.1s ease-in-out;
 }
 
 .social_link_icon {
@@ -28,12 +28,12 @@
     bottom: 0;
     margin: auto;
 
-    transition: 0.1s;
+    transition: 0.1s ease-in-out;
 }
 
 .social_link:hover .social_link_icon {
     opacity: 0;
-    transition: 0.1s;
+    transition: 0.1s ease-in-out;
 }
 
 .social_link_name_container {
@@ -54,11 +54,11 @@
     text-align: center ;
 
     opacity: 0;
-    transition: 0.1s;
+    transition: 0.1s ease-in-out;
 }
 
 .social_link:hover .social_link_name {
     opacity: 1.0;
 
-    transition: 0.1s;
+    transition: 0.1s ease-in-out;
 }

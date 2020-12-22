@@ -1,0 +1,17 @@
+.header {
+    display: flex;
+}
+
+.website_title {
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
+.navigation {
+    margin-left: auto;
+    margin-right: 2rem;
+    margin-top: 2rem;
+
+    display: flex;
+    flex-direction: row;
+}
