@@ -36,3 +36,8 @@ a:hover {
 
     border-color: var(--highlight);
 }
+
+.cards {
+    display: flex;
+    flex-wrap: wrap;
+}
