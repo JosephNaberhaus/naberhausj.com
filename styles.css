@@ -200,6 +200,34 @@
     width: 30px;
     height: 30px;
 }
+.youtube_video {
+    display: flex;
+    flex-direction: row;
+
+    border-bottom: none;
+}
+
+.youtube_icon {
+    width: 60px;
+
+    transition: transform 0.1s ease-in-out;
+}
+
+.youtube_video:hover .youtube_icon {
+    transform: scale(1.02);
+}
+
+.youtube_video_text {
+    margin-left: 1rem;
+    margin-top: auto;
+    margin-bottom: auto;
+
+    border-bottom: 1px var(--text) solid;
+}
+
+.youtube_video:hover .youtube_video_text {
+    border-color: var(--highlight);
+}
 :root {
     --text: rgb(17, 17, 17);
     --highlight: rgb(95, 168, 211);
