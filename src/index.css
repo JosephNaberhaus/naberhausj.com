@@ -49,3 +49,11 @@ a:hover {
 
     max-width: 800px;
 }
+
+.image_left {
+    float: left;
+}
+
+.image_right {
+    float: right;
+}
