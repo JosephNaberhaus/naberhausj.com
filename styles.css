@@ -15,13 +15,15 @@
     width: 240px;
     height: 240px;
 
-    padding: 5px;
+    margin: 5px;
 
-    transition: transform .1s ease-in-out;
+    box-shadow: 1px 1px 4px var(--text);
+
+    transition: transform 0.1s ease-in-out;
 }
 
 .card:hover img {
-    transform: scale(1.04);
+    transform: scale(1.02);
 }
 
 .card_title {
@@ -36,6 +38,7 @@
     width: fit-content;
 
     margin-top: auto;
+    padding-top: 1rem;
 
     border-bottom: transparent 1px solid;
 
@@ -239,4 +242,12 @@ a:hover {
 .cards {
     display: flex;
     flex-wrap: wrap;
+}
+
+.article {
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 1rem;
+
+    max-width: 800px;
 }
