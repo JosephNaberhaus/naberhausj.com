@@ -226,6 +226,19 @@
 .youtube_video:hover .youtube_video_text {
     border-color: var(--highlight);
 }
+.domino_supplies_images {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+
+    margin-bottom: 1rem;
+}
+
+.domino_supplies_images img {
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
 :root {
     --text: rgb(17, 17, 17);
     --highlight: rgb(95, 168, 211);
