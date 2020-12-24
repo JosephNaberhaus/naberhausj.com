@@ -1,21 +1,24 @@
-.youtube_video {
+.external_link {
     display: flex;
     flex-direction: row;
+
+    margin-block-start: 1em;
+    margin-block-end: 1em;
 
     border-bottom: none;
 }
 
-.youtube_icon {
+.external_link_icon {
     width: 60px;
 
     transition: transform 0.1s ease-in-out;
 }
 
-.youtube_video:hover .youtube_icon {
+.external_link:hover .external_link_icon {
     transform: scale(1.02);
 }
 
-.youtube_video_text {
+.external_link_text {
     margin-left: 1rem;
     margin-top: auto;
     margin-bottom: auto;
@@ -23,6 +26,6 @@
     border-bottom: 1px var(--text) solid;
 }
 
-.youtube_video:hover .youtube_video_text {
+.external_link:hover .external_link_text {
     border-color: var(--highlight);
 }

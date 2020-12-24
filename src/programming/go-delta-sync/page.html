@@ -10,6 +10,7 @@
 <div class="article">
     <h2>Go Delta Sync (WIP)</h2>
     <em>Due to other obligations I have put this project temporarily on hold.</em>
+    <!--@github-repository{"link":"https://github.com/JosephNaberhaus/go-delta-sync"}-->
     <p>While working on another project I needed to keep a tree of nested objects in sync between a client and server. This tree  could be modified multiple times a second, therefore, rather than send the entire tree I wanted to only send the delta of what had changed. Further complicating things, this tree would be constantly revised as I worked on the project. My solution would need to be easy to add more objects to.</p>
     <p>This was a perfect use case for code generation. I began working on a tool that I originally called the operations generator. This would give me a mechanism for modifying the contents of a model. The modification would produce a delta object. The delta would then be sent to the clients which would update their local state to match the server. Below is a diagram showing how deltas are applied to a model.</p>
     <img width="600px" src="delta.svg" alt=""/>
