@@ -7,7 +7,7 @@
 </head>
 <body>
 <!--@header{}-->
-<div class="article">
+<article>
     <h2>Go Delta Sync (WIP)</h2>
     <em>Due to other obligations I have put this project temporarily on hold.</em>
     <!--@github-repository{"link":"https://github.com/JosephNaberhaus/go-delta-sync"}-->
@@ -17,7 +17,7 @@
     <p>The mechanism for creating the deltas is called an operation. An operation is another model that is written by the code generator. There is a conversational style API to configure the operation with what should be changed. Then the operation is applied to a model which modifies the original model and produces a delta. Below is a diagram showing the full process.</p>
     <img width="800px" src="operations.svg" alt=""/>
     <p>While working on this tool I realized the need for another tool to generate the client-side code to apply the deltas. For this, I'm working on a simple code generation library that can target any arbitrary language. Information about this project can be found <a href="https://github.com/JosephNaberhaus/go-delta-sync/tree/master/agnostic">here</a></p>
-</div>
+</article>
 <!--@footer{}-->
 </body>
 </html>

@@ -42,7 +42,7 @@ a:hover {
     flex-wrap: wrap;
 }
 
-.article {
+article {
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 1rem;
@@ -52,8 +52,12 @@ a:hover {
 
 .image_left {
     float: left;
+    margin-block-end: 1rem;
+    margin-inline-end: 1rem;
 }
 
 .image_right {
     float: right;
+    margin-block-end: 1rem;
+    margin-inline-start: 1rem;
 }

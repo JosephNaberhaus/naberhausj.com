@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>B.R.T.D</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<!--@header{}-->
+<article>
+    <h1>B.R.T.D (Battle Royal Top Down Shooter)</h1>
+    <!--@github-repository{"link": "https://github.com/JosephNaberhaus/COMS-319-Group-Project"}-->
+    <p>This was a project three other developers and I made for SE 319 at Iowa State University. It is a top down shooter with <a href="https://en.wikipedia.org/wiki/Battle_royale_game">battle royale</a> mechanics. Our project was selected among the top six of the class by the professor, and voted 2nd place overall by our classmates.</p>
+    <img class="image_left" width="400" height="225" src="path.jpg" alt="Two players standing on a procedurally generated path">
+    <img class="image_left" width="400" height="225" src="girders.jpg" alt="A player next to a procedurally generated steel wall">
+    <img class="image_left" width="400" height="225" src="aliens.jpg" alt="A player surrounded by hostile alien monsters">
+    <p>I primarily worked on procedural map generation. For the background I created two <a href="https://en.wikipedia.org/wiki/Perlin_noise">perlin noise maps</a> for temperature and humidity. Then I would select a tileset that matched the climate most closely.</p>
+    <p>For the scenery such as paths and walls I made a brute force structure generation tool. Components could be defined with connection points that other components could connect to. To generate a structure, random components would be tried together like a jigsaw puzzle. This would continue until all of the connection points were filled. If the algorithm encountered a dead end it was able to revert moves until it could escape it. Often, no solution would be found and the algorithm would scrap the attempt and try again. As expected, this was inefficient (taking between 2-5s to generate a game world), but functional.</p>
+    <p>Another mechanic I worked on was the border. As the number of alive players dwindled a circular border would close around the map. If a player was outside of the border enemy aliens would spawn around and attack them. This gives the players an incentive to stay within the circle.</p>
+    <p>Given the 6 week time constrain we never fully finished the game. It was playable but not yet fun. Since this game involved a lot of firsts for me, I would want to rewrite a lot of it before even touching the project again. Instead, I have moved on to other projects.</p>
+</article>
+<!--@footer{}-->
+</body>
+</html>
