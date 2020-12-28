@@ -9,8 +9,6 @@
 }
 
 .external_link_icon {
-    width: 60px;
-
     transition: transform 0.1s ease-in-out;
 }
 

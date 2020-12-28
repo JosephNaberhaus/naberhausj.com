@@ -1,5 +1,7 @@
 .header {
     display: flex;
+
+    font-family: "Verdana", sans-serif;
 }
 
 .website_title {
