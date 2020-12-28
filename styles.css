@@ -1,3 +1,6 @@
+.error {
+    text-align: center;
+}
 .card {
     display: flex;
     flex-direction: column;
@@ -57,8 +60,6 @@
 }
 
 .external_link_icon {
-    width: 60px;
-
     transition: transform 0.1s ease-in-out;
 }
 
@@ -79,13 +80,15 @@
 }
 .footer {
     margin-top: auto;
-    margin-left: -8px;
-    margin-right: -8px;
+    margin-left: -1rem;
+    margin-right: -1rem;
 
     width: auto;
     height: 100px;
 
-    background: black;
+    font-family: "Verdana", sans-serif;
+
+    background: var(--text);
 }
 
 .social-links {
@@ -99,6 +102,8 @@
     font-size: 12px;
 }
 .social_link {
+    display: flex;
+
     position: relative;
     width: 40px;
     height: 40px;
@@ -108,15 +113,11 @@
     border: white 2px solid;
     border-radius: 1px;
 
-    cursor: pointer;
-
-    transition: 0.1s ease-in-out;
+    transition: width 0.1s ease-in-out;
 }
 
 .social_link:hover {
-    width: 85px;
-
-    transition: 0.1s ease-in-out;
+    width: 90px;
 }
 
 .social_link_icon {
@@ -128,43 +129,31 @@
     bottom: 0;
     margin: auto;
 
-    transition: 0.1s ease-in-out;
+    transition: opacity 0.1s ease-in-out;
 }
 
 .social_link:hover .social_link_icon {
     opacity: 0;
-    transition: 0.1s ease-in-out;
-}
-
-.social_link_name_container {
-    position: absolute;
-
-    left: 0;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    margin: auto;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
 }
 
 .social_link_name {
-    text-align: center ;
+    margin: auto;
+
+    font-size: medium;
 
     opacity: 0;
-    transition: 0.1s ease-in-out;
+
+    transition: opacity 0.1s ease-in-out;
 }
 
 .social_link:hover .social_link_name {
     opacity: 1.0;
-
-    transition: 0.1s ease-in-out;
 }
 
 .header {
     display: flex;
+
+    font-family: "Verdana", sans-serif;
 }
 
 .website_title {
@@ -201,7 +190,7 @@
     margin-left: auto;
     margin-right: auto;
 
-    font-size: large;
+    font-size: medium;
 
     visibility: hidden;
     opacity: 0;
@@ -251,6 +240,12 @@
     --background: rgb(255, 255, 254);
 }
 
+.recent_articles {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
 html {
     height: 100%;
 }
@@ -263,8 +258,7 @@ body {
 
     background: var(--background);
 
-    margin-top: 0;
-    margin-bottom: 0;
+    margin: 0 1rem;
 
     display: flex;
     flex-direction: column;
@@ -277,10 +271,21 @@ a {
     border-bottom: var(--text) 1px solid;
 }
 
+h2 {
+    margin-bottom: 10px;
+}
+
 a:hover {
     color: var(--highlight);
 
     border-color: var(--highlight);
+}
+
+.catalog {
+    margin-left: auto;
+    margin-right: auto;
+
+    max-width: 1000px;
 }
 
 .cards {
@@ -293,7 +298,12 @@ article {
     margin-right: auto;
     margin-bottom: 1rem;
 
+    width: 100%;
     max-width: 800px;
+}
+
+section {
+    clear: both;
 }
 
 .image_left {

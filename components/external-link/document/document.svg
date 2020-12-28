@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<svg version="1.1" id="woodworking" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+     width="35px" height="50px" viewBox="0 0 35 50" xml:space="preserve">
+<g stroke="#171717"
+   stroke-width="4"
+   stroke-linecap="round"
+   stroke-linejoin="round">
+    <path fill="none" d="M 2 2 H 24 L 33 11 V 48 H 2z"/>
+    <path fill="#171717" d="M 24 2 33 11 H 24 Z"/>
+    <line x1="8" y1="10" x2="18" y2="10"/>
+    <line x1="8" y1="18" x2="27" y2="18"/>
+    <line x1="8" y1="26" x2="27" y2="26"/>
+    <line x1="8" y1="34" x2="27" y2="34"/>
+</g>
+</svg>

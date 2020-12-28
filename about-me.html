@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>About Me</title>
     <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
@@ -30,18 +30,13 @@
     </div>
 </div>
 <article>
-    <h2>Go Delta Sync (WIP)</h2>
-    <em>Due to other obligations I have put this project temporarily on hold.</em>
-    <a class="external_link" href="https://github.com/JosephNaberhaus/go-delta-sync">
-    <img width="60" height="60" class="external_link_icon" src="/components/external-link/github-repository/github.svg" alt="">
-    <div class="external_link_text">View project on Github</div>
+    <h2>About Me</h2>
+    <img class="image_right" width="100" height="133" src="me.jpg" alt="A picture of me">
+    <p>I am a student in Software Engineering at Iowa State University. I have a passion for making things which has pushed me towards programming, woodworking, and writing.</p>
+    <a class="external_link" href="https://drive.google.com/file/d/0B3eYCllrrFkVMFRtaFdEOUVob0k/view?usp=sharing">
+    <img width="42" height="60" class="external_link_icon" src="/components/external-link/document/document.svg" alt="">
+    <div class="external_link_text">View my Resume</div>
 </a>
-    <p>While working on another project I needed to keep a tree of nested objects in sync between a client and server. This tree  could be modified multiple times a second, therefore, rather than send the entire tree I wanted to only send the delta of what had changed. Further complicating things, this tree would be constantly revised as I worked on the project. My solution would need to be easy to add more objects to.</p>
-    <p>This was a perfect use case for code generation. I began working on a tool that I originally called the operations generator. This would give me a mechanism for modifying the contents of a model. The modification would produce a delta object. The delta would then be sent to the clients which would update their local state to match the server. Below is a diagram showing how deltas are applied to a model.</p>
-    <img width="600px" src="delta.svg" alt=""/>
-    <p>The mechanism for creating the deltas is called an operation. An operation is another model that is written by the code generator. There is a conversational style API to configure the operation with what should be changed. Then the operation is applied to a model which modifies the original model and produces a delta. Below is a diagram showing the full process.</p>
-    <img width="800px" src="operations.svg" alt=""/>
-    <p>While working on this tool I realized the need for another tool to generate the client-side code to apply the deltas. For this, I'm working on a simple code generation library that can target any arbitrary language. Information about this project can be found <a href="https://github.com/JosephNaberhaus/go-delta-sync/tree/master/agnostic">here</a></p>
 </article>
 <div class="footer">
     <div class="social-links">

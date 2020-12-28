@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <svg version="1.1" id="woodworking" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
      fill="none" width="50px" height="50px" viewBox="0 0 50 50" xml:space="preserve">
-<g>
-    <path stroke="#111111"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          stroke-width="4"
-          d="M 10 40 20 10 M 12 10 H 38 M 30 10 40 40 M 3 25 H 47 z"/>
+<g stroke="#111111"
+   stroke-linecap="round"
+   stroke-width="4">
+    <circle cx="25" cy="14" r="12"/>
+    <path d="M 2 48 A 23 22 0, 1 1, 48 48 z"/>
 </g>
 </svg>
