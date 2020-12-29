@@ -26,11 +26,6 @@ func Output(sourceDirectory, outputDirectory string, originalPath string, conten
 		return fmt.Errorf("error creating nested directories for %s: %w", newPath, err)
 	}
 
-	content, err = embedSVGs(content, originalPath, sourceDirectory)
-	if err != nil {
-		return fmt.Errorf("couldn't embed SVG files: %w", err)
-	}
-
 	minifiedContent, err := minifier.Minifier.String("text/html", content)
 	if err != nil {
 		return fmt.Errorf("failed to minify HTML file: %w", err)
