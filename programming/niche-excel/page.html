@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <title>Niche Excel</title>
     <link rel="stylesheet" href="/styles.css"/>
+
+    <meta name="description" content="A Java CRM-like tool made for Homeschool Iowa.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
 <div class="header">
@@ -29,6 +32,7 @@
 </a>
     </div>
 </div>
+<hr>
 <article>
     <h2>Niche Excel</h2>
     <p>Being a home-schooled student, my family is very connected with the Homeschool Iowa organization (also known as NICHE). Around 2016 I learned about a custom application that was written to manage a large excel file that contained information about members. This application serviced a few needs:</p>
@@ -44,7 +48,6 @@
     <p>One of the most challenging parts was designing everything to be robust against different permutations of a member's information. For example, a married couple might enter the order of their names differently year-to-year. The idea of equivalence had to be customizable per column. Since the organization uses the database as a mailing list, it was important to make sure that duplicates didn't accrue.</p>
     <img width="800" height="195" src="full-database.jpg" alt="One of the database views">
     <p>Having built this application before gaining any formal knowledge of Software Engineering there is a lot wrong with the design of this application. I used singletons where dependency injection would have been better suited and I didn't use the MVC nature of Swing correctly. It could also be argued that a proper database engine would be better, but I'm pretty sure an Excel file is best for the size of the organization. Still, since this application first started being used in 2016 and the only bug that has appeared was more of a problem with Swing that I had to circumvent.</p>
-    <p></p>
 </article>
 <div class="footer">
     <div class="social-links">

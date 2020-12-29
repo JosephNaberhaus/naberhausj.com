@@ -15,9 +15,6 @@
 }
 
 .card img {
-    width: 240px;
-    height: 240px;
-
     margin: 5px;
 
     transition: transform 0.1s ease-in-out;
@@ -152,24 +149,27 @@
 
 .header {
     display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    margin-top: 1rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
 
     font-family: "Verdana", sans-serif;
 }
 
 .website_title {
-    margin-left: 1rem;
-    margin-right: 1rem;
+    margin-right: auto;
 
     border-bottom: none;
 }
 
 .navigation {
-    margin-left: auto;
-    margin-right: 2rem;
-    margin-top: 2rem;
-
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
 }
 .navigation_link {
     display: flex;
@@ -177,46 +177,70 @@
 
     border-bottom: none;
 
-    width: 140px;
+    width: 65px;
 
-    margin-left: 5px;
-    margin-right: 5px;
+    margin: 1rem;
 }
 
 .navigation_link_text {
     display: flex;
     justify-content: center;
 
-    margin-left: auto;
-    margin-right: auto;
-
+    white-space: nowrap;
     font-size: medium;
-
-    visibility: hidden;
-    opacity: 0;
-}
-
-.navigation_link:hover .navigation_link_text {
-    visibility: visible;
-    opacity: 1;
-
-    color: var(--text);
-    border-bottom: var(--text) 1px solid;
 }
 
 .navigation_link_icon {
-    width: 50px;
-    height: 50px;
-
     margin-left: auto;
     margin-right: auto;
 
     transition: width 0.1s ease-in-out, height 0.1s ease-in-out;
 }
 
-.navigation_link:hover .navigation_link_icon {
-    width: 30px;
-    height: 30px;
+@media (hover: none) {
+    .navigation_link {
+        width: auto;
+    }
+
+    .navigation_link_text {
+        visibility: visible;
+        opacity: 1;
+
+        color: var(--text);
+
+        text-decoration: var(--text) underline;
+    }
+
+    .navigation_link_icon {
+        width: 30px;
+        height: 30px;
+    }
+}
+
+@media (hover: hover) {
+    .navigation_link_text {
+        visibility: hidden;
+        opacity: 0;
+    }
+
+    .navigation_link_icon {
+        width: 50px;
+        height: 50px;
+    }
+
+    .navigation_link:hover .navigation_link_text {
+        visibility: visible;
+        opacity: 1;
+
+        color: var(--text);
+
+        text-decoration: var(--text) underline;
+    }
+
+    .navigation_link:hover .navigation_link_icon {
+        width: 30px;
+        height: 30px;
+    }
 }
 .domino_supplies_images {
     display: flex;
@@ -238,12 +262,6 @@
     --highlight: rgb(95, 168, 211);
     --highlight-dark: rgb(19, 51, 70);
     --background: rgb(255, 255, 254);
-}
-
-.recent_articles {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
 }
 
 html {
@@ -292,6 +310,7 @@ a:hover {
 .cards {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
 }
 
 article {
@@ -305,6 +324,15 @@ article {
 
 section {
     clear: both;
+}
+
+hr {
+    width: 100%;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
 }
 
 .image_left {
