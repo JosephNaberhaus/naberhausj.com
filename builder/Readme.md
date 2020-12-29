@@ -38,7 +38,3 @@ For simplicity and caching efficiency, **all** `*.css` files in the `src` direct
 
 ### Other Files
 All other file types except `.html` and `.css` files will be linked into the output directory with the same directory nesting as the source directory.
-
-### TODO
-- Minify CSS and JavaScript in the output
-- Automatically link the stylesheet on pages
