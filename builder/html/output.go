@@ -2,6 +2,7 @@ package html
 
 import (
 	"fmt"
+	"github.com/JosephNaberhaus/naberhausj.com/builder/minifier"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -25,7 +26,17 @@ func Output(sourceDirectory, outputDirectory string, originalPath string, conten
 		return fmt.Errorf("error creating nested directories for %s: %w", newPath, err)
 	}
 
-	err = ioutil.WriteFile(newPath, []byte(content), info.Mode())
+	content, err = embedSVGs(content, originalPath, sourceDirectory)
+	if err != nil {
+		return fmt.Errorf("couldn't embed SVG files: %w", err)
+	}
+
+	minifiedContent, err := minifier.Minifier.String("text/html", content)
+	if err != nil {
+		return fmt.Errorf("failed to minify HTML file: %w", err)
+	}
+
+	err = ioutil.WriteFile(newPath, []byte(minifiedContent), info.Mode())
 	if err != nil {
 		return fmt.Errorf("failed to write html file: %w", err)
 	}

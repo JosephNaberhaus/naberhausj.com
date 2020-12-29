@@ -2,7 +2,14 @@ Builder
 =======
 A simple HTML templating engine written in Go. Works in similar manner to C macros. 
 
-To run the builder, first build the application using `go build` and run the binary in the root directory of the website. All pages and components of the website must be located in a directory called `src`. The output will be in a directory (that will be created if necessary) called `out` (**WARNING:** each execution of the builder will clear the contents of the `out` directory).
+To run the builder:
+
+- Navigate to the root directory of the builder
+- Run `go get` to fetch dependencies
+- Run `go build`
+- Run the binary while in the root directory of the website.
+
+All pages and components of the website must be located in a directory called `src`. The output will be in a directory (that will be created if necessary) called `out` (**WARNING:** each execution of the builder will clear the contents of the `out` directory).
 
 ### HTML
 There are two types of html files:
