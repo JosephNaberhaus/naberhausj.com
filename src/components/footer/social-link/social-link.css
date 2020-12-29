@@ -13,10 +13,6 @@
     transition: width 0.1s ease-in-out;
 }
 
-.social_link:hover {
-    width: 90px;
-}
-
 .social_link_icon {
     position: absolute;
 
@@ -29,10 +25,6 @@
     transition: opacity 0.1s ease-in-out;
 }
 
-.social_link:hover .social_link_icon {
-    opacity: 0;
-}
-
 .social_link_name {
     margin: auto;
 
@@ -43,6 +35,22 @@
     transition: opacity 0.1s ease-in-out;
 }
 
-.social_link:hover .social_link_name {
-    opacity: 1.0;
+@media (hover: hover) {
+    .social_link:hover {
+        width: 90px;
+    }
+
+    .social_link:hover .social_link_name {
+        opacity: 1.0;
+    }
+
+    .social_link:hover .social_link_icon {
+        opacity: 0;
+    }
+}
+
+@media (hover: none) {
+    .social_link:hover {
+        border-color: var(--background);
+    }
 }
