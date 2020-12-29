@@ -5,12 +5,6 @@
     --background: rgb(255, 255, 254);
 }
 
-.recent_articles {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-}
-
 html {
     height: 100%;
 }
@@ -57,6 +51,7 @@ a:hover {
 .cards {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
 }
 
 article {
@@ -70,6 +65,15 @@ article {
 
 section {
     clear: both;
+}
+
+hr {
+    width: 100%;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
 }
 
 .image_left {

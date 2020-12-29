@@ -1,21 +1,24 @@
 .header {
     display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    margin-top: 1rem;
+    margin-left: 1rem;
+    margin-right: 1rem;
 
     font-family: "Verdana", sans-serif;
 }
 
 .website_title {
-    margin-left: 1rem;
-    margin-right: 1rem;
+    margin-right: auto;
 
     border-bottom: none;
 }
 
 .navigation {
-    margin-left: auto;
-    margin-right: 2rem;
-    margin-top: 2rem;
-
     display: flex;
     flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
 }
