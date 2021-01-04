@@ -35,6 +35,10 @@ h2 {
     margin-bottom: 10px;
 }
 
+code {
+    white-space: pre-wrap;
+}
+
 a:hover {
     color: var(--highlight);
 
