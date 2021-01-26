@@ -91,3 +91,13 @@ img {
     margin-block-end: 1rem;
     margin-inline-start: 1rem;
 }
+
+.image_flex_center {
+    margin: 0.5rem;
+}
+
+.flex_center {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
