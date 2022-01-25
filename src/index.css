@@ -23,6 +23,10 @@ body {
     flex-direction: column;
 }
 
+p {
+    line-height: 1.5;
+}
+
 a {
     color: var(--text);
     text-decoration: none;
