@@ -3,8 +3,6 @@ package component
 import (
 	"fmt"
 	"github.com/JosephNaberhaus/naberhausj.com/builder/file"
-	"io/ioutil"
-	"os"
 	"path/filepath"
 	"strings"
 )
@@ -12,8 +10,8 @@ import (
 type Collection []*Definition
 
 type Definition struct {
-	Name         string `json:"name"`
-	TemplatePath string `json:"templatePath"`
+	Name         string
+	TemplatePath string
 }
 
 func (c Collection) CreateNameToPathMap() (nameToPathMap map[string]string, err error) {
@@ -40,7 +38,6 @@ func (c Collection) ContainsPath(path string) bool {
 	return false
 }
 
-// Walks the entire file system from the working directory down looking for component definitions files
 func FindDefinitions(root string) (definitions Collection, err error) {
 	definitionPaths, err := file.FindFilesWithSuffix(root, ".component.html")
 	definitions = make(Collection, 0, len(definitionPaths))
@@ -55,18 +52,4 @@ func FindDefinitions(root string) (definitions Collection, err error) {
 	}
 
 	return definitions, nil
-}
-
-func readFile(path string) (result []byte, err error) {
-	toRead, err := os.Open(path)
-	if err != nil {
-		return nil, err
-	}
-
-	bytes, err := ioutil.ReadAll(toRead)
-	if err != nil {
-		return nil, err
-	}
-
-	return bytes, nil
 }
