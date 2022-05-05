@@ -72,6 +72,11 @@ func main() {
 			log.Fatal(err)
 		}
 
+		result, err = html.SubstituteDate(file.Path(), result)
+		if err != nil {
+			log.Fatal(err)
+		}
+
 		err = html.Output(sourceDirectory, outputDirectory, file.Path(), result)
 		if err != nil {
 			log.Fatal(err)

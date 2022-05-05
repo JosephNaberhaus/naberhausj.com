@@ -11,8 +11,10 @@ type documentNode interface {
 	substituteParameters(map[string]string) documentNode
 }
 
-type textNode struct {
-	content string
+type textNode string
+
+func (t textNode) substituteParameters(parameters map[string]string) documentNode {
+	return textNode(substituteParameters(string(t), parameters))
 }
 
 type includeNode struct {
@@ -20,19 +22,11 @@ type includeNode struct {
 	parameters    map[string]string
 }
 
-type document []documentNode
-
-func (t *textNode) substituteParameters(parameters map[string]string) documentNode {
-	result := new(textNode)
-	result.content = substituteParameters(t.content, parameters)
-
-	return result
-}
-
-func (t *includeNode) substituteParameters(parameters map[string]string) documentNode {
-	result := new(includeNode)
-	result.componentName = t.componentName
-	result.parameters = make(map[string]string)
+func (t includeNode) substituteParameters(parameters map[string]string) documentNode {
+	result := includeNode{
+		componentName: t.componentName,
+		parameters:    map[string]string{},
+	}
 
 	for oldKey, oldValue := range t.parameters {
 		result.parameters[oldKey] = substituteParameters(oldValue, parameters)
@@ -40,6 +34,8 @@ func (t *includeNode) substituteParameters(parameters map[string]string) documen
 
 	return result
 }
+
+type document []documentNode
 
 func (d document) getIncludeNodes() []*includeNode {
 	includeNodes := make([]*includeNode, 0)
@@ -70,8 +66,7 @@ func SplitIncludes(fileContent string) (document document, err error) {
 
 	lastIndex := 0
 	for _, indices := range directiveMatcher.FindAllStringSubmatchIndex(fileContent, -1) {
-		textNode := new(textNode)
-		textNode.content = fileContent[lastIndex:indices[0]]
+		textNode := textNode(fileContent[lastIndex:indices[0]])
 		nodes = append(nodes, textNode)
 
 		includeNode := new(includeNode)
@@ -88,8 +83,7 @@ func SplitIncludes(fileContent string) (document document, err error) {
 		lastIndex = indices[1]
 	}
 
-	lastTextNode := new(textNode)
-	lastTextNode.content = fileContent[lastIndex:len(fileContent)]
+	lastTextNode := textNode(fileContent[lastIndex:])
 	nodes = append(nodes, lastTextNode)
 
 	return nodes, nil

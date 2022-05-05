@@ -1,8 +1,12 @@
 package html
 
 import (
+	"bytes"
 	"fmt"
+	"os/exec"
+	"regexp"
 	"strings"
+	"time"
 )
 
 type DocumentCollection struct {
@@ -26,9 +30,9 @@ func (d *DocumentCollection) substituteParameters(toSubstitutePath string, param
 		substitutedNode := node.substituteParameters(parameters)
 
 		switch v := substitutedNode.(type) {
-		case *textNode:
-			resultBuilder.WriteString(v.content)
-		case *includeNode:
+		case textNode:
+			resultBuilder.WriteString(string(v))
+		case includeNode:
 			path, exists := d.nameToPathMap[v.componentName]
 			if !exists {
 				return "", fmt.Errorf("couldn't find component with name: %s", v.componentName)
@@ -40,10 +44,37 @@ func (d *DocumentCollection) substituteParameters(toSubstitutePath string, param
 			}
 
 			resultBuilder.WriteString(substitutionResult)
+		default:
+			panic(fmt.Errorf("unkown type: %t", v))
 		}
 	}
 
 	return resultBuilder.String(), nil
+}
+
+func SubstituteDate(toSubstitutePath string, content string) (string, error) {
+	regex := regexp.MustCompile("<!--#last-modified-->")
+	if !regex.MatchString(content) {
+		return content, nil
+	}
+
+	cmd := exec.Command("git", "log", "-1", "--format=%ad", "--date=iso-strict", toSubstitutePath)
+	output := new(bytes.Buffer)
+	cmd.Stdout = output
+	err := cmd.Run()
+	if err != nil {
+		return "", err
+	}
+
+	lastModified, err := time.Parse(time.RFC3339, strings.TrimSpace(output.String()))
+	if err != nil {
+		return "", err
+	}
+
+	lastModifiedStr := lastModified.Format("January 2006")
+	result := regex.ReplaceAllString(content, lastModifiedStr)
+
+	return result, nil
 }
 
 func BuildDocumentCollection(htmlFiles []*File, nameToPathMap map[string]string) (d *DocumentCollection, err error) {
