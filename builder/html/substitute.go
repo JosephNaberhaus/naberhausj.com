@@ -53,7 +53,7 @@ func (d *DocumentCollection) substituteParameters(toSubstitutePath string, param
 }
 
 func SubstituteDate(toSubstitutePath string, content string) (string, error) {
-	regex := regexp.MustCompile("<!--#created-at-->")
+	regex := regexp.MustCompile("<!--#created-on-->")
 	if !regex.MatchString(content) {
 		return content, nil
 	}
