@@ -53,12 +53,12 @@ func (d *DocumentCollection) substituteParameters(toSubstitutePath string, param
 }
 
 func SubstituteDate(toSubstitutePath string, content string) (string, error) {
-	regex := regexp.MustCompile("<!--#last-modified-->")
+	regex := regexp.MustCompile("<!--#created-at-->")
 	if !regex.MatchString(content) {
 		return content, nil
 	}
 
-	cmd := exec.Command("git", "log", "-1", "--format=%ad", "--date=iso-strict", toSubstitutePath)
+	cmd := exec.Command("git", "log", "-1", "--diff-filter=A", "--format=%ad", "--date=iso-strict", toSubstitutePath)
 	output := new(bytes.Buffer)
 	cmd.Stdout = output
 	err := cmd.Run()
@@ -66,13 +66,13 @@ func SubstituteDate(toSubstitutePath string, content string) (string, error) {
 		return "", err
 	}
 
-	lastModified, err := time.Parse(time.RFC3339, strings.TrimSpace(output.String()))
+	createdAt, err := time.Parse(time.RFC3339, strings.TrimSpace(output.String()))
 	if err != nil {
 		return "", err
 	}
 
-	lastModifiedStr := lastModified.Format("January 2006")
-	result := regex.ReplaceAllString(content, lastModifiedStr)
+	createdAtStr := createdAt.Format("January 2006")
+	result := regex.ReplaceAllString(content, createdAtStr)
 
 	return result, nil
 }
