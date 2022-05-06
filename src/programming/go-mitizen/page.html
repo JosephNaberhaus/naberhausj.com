@@ -8,7 +8,7 @@
     <!--@github-repository{"link": "https://github.com/JosephNaberhaus/go-mitizen"}-->
     <section>
         <h3>Background</h3>
-        <img class="image_right" width="500" height="240" src="usage.gif" alt="screen recording showing usage of my utility">
+        <img class="image_right" width="500" height="240" src="usage.gif" alt="Screen recording showing usage of my utility">
         <p>I've been a user of the Commitizen CLI utility for a couple of years now. Conventional commits are easier to read and look more professional. The tool also standardizes capitalization (by removing it), which is important for me as a meticulous but error-prone personality. And of course, they can be used to automate semantic versioning if the need ever arises.</p>
         <p>Since I started, I've had two problems with it. First, it's slow. Trying a few times with a stopwatch, I got 2 seconds until interactivity on average. That might not be a long time for an NPM utility, but when I use a git command, I expect it to be as instantaneous as the others. It's rendering is also slow, resulting in a lot of flashing when typing in text. The other problem I've had is that it's not really meant for projects written outside of the NPM ecosystem. In such a project, you can configure which commitizen adapter you want to use, but you can't configure that adapter without a <i>package.json</i> file.</p>
         <p>I looked around but couldn't find a native equivalent that had parity with the original. So I started writing my own. After three days of sporadic work, I was able to make my first commit using the tool.</p>

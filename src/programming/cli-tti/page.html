@@ -12,7 +12,7 @@
     </section>
     <section>
         <h3>Design</h3>
-        <img class="image_right" width="373" height="184" src="time.gif" alt="screen recording showing usage of my utility">
+        <img class="image_right" width="373" height="184" src="time.gif" alt="Screen recording showing usage of my utility">
         <p>Measuring TTI occurs in two distinct steps. First, I run the program once and wait a long duration of time. After waiting, my program assumes that whatever output the program has produced in the terminal is interactive. In the second step, I run the program several times, measuring the time until the program's output matches the expected output we captured before. Finally, the user is shown the durations and their average.</p>
         <p>This method works well for many CLI and TUI applications, but there is a class of programs that it fails for. If a program doesn't produce the same output every time it is run, then we can't just compare outputs to determine when a program is interactive. One example of a program like this is <em>top</em>, whose output changes based on the current processes running on the computer. Fixing this would require a far more advanced (and probably cumbersome) way of identifying when a program is interactive, so this solution was perfect for my case.</p>
     </section>
