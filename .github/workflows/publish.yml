@@ -45,10 +45,16 @@ jobs:
         with:
           ref: gh-pages
 
+      - name: Delete all files
+        run: rm -rf ./*
+
       - name: Download built artifacts
         uses: actions/download-artifact@v2
         with:
           name: website
+
+      - name: Disable Jekyl
+        run: touch .nojekyll
 
       - name: Commit and push changes
         uses: EndBug/add-and-commit@v5
