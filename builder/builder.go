@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"github.com/JosephNaberhaus/naberhausj.com/builder/component"
 	"github.com/JosephNaberhaus/naberhausj.com/builder/css"
@@ -12,7 +13,11 @@ import (
 	"path/filepath"
 )
 
+var fast = flag.Bool("fast", false, "perform a fast developer build")
+
 func main() {
+	flag.Parse()
+
 	wd, err := os.Getwd()
 	if err != nil {
 		log.Fatal(fmt.Errorf("failed to get working directory: %w", err))
@@ -72,9 +77,11 @@ func main() {
 			log.Fatal(err)
 		}
 
-		result, err = html.SubstituteDate(file.Path(), result)
-		if err != nil {
-			log.Fatal(err)
+		if !*fast {
+			result, err = html.SubstituteDate(file.Path(), result)
+			if err != nil {
+				log.Fatal(err)
+			}
 		}
 
 		err = html.Output(sourceDirectory, outputDirectory, file.Path(), result)

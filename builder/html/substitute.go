@@ -66,7 +66,13 @@ func SubstituteDate(toSubstitutePath string, content string) (string, error) {
 		return "", err
 	}
 
-	createdAt, err := time.Parse(time.RFC3339, strings.TrimSpace(output.String()))
+	outputStr := strings.TrimSpace(output.String())
+	if outputStr == "" {
+		// The file hasn't been committed yet. Ignore it.
+		return content, nil
+	}
+
+	createdAt, err := time.Parse(time.RFC3339, outputStr)
 	if err != nil {
 		return "", err
 	}
