@@ -36,7 +36,12 @@ func FindFiles(root string) (paths []string, err error) {
 			return nil
 		}
 
-		paths = append(paths, path)
+		relativePath, err := filepath.Rel(root, path)
+		if err != nil {
+			return fmt.Errorf("error finding relative path for file: %w", err)
+		}
+
+		paths = append(paths, relativePath)
 
 		return nil
 	})

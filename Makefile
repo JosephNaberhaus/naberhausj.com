@@ -4,4 +4,8 @@ serve:
 
 .PHONY: build
 build:
-	cd builder; go run builder.go
+	cd builder; go run builder.go -root ..
+
+.PHONY: build-fast
+build-fast:
+	cd builder; go run builder.go -fast -root ..

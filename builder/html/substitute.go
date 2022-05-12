@@ -3,6 +3,7 @@ package html
 import (
 	"bytes"
 	"fmt"
+	"github.com/JosephNaberhaus/naberhausj.com/builder/image"
 	"os/exec"
 	"regexp"
 	"strings"
@@ -79,6 +80,31 @@ func SubstituteDate(toSubstitutePath string, content string) (string, error) {
 
 	createdAtStr := createdAt.Format("January 2006")
 	result := regex.ReplaceAllString(content, createdAtStr)
+
+	return result, nil
+}
+
+func SubstituteImages(content, sourceDir, wd, outputDir string, fast bool) (string, error) {
+	result := content
+
+	regex := regexp.MustCompile("<!--#img({.*})-->")
+	for _, match := range regex.FindAllStringSubmatch(content, -1) {
+		if len(match) != 2 {
+			return "", fmt.Errorf("invalid image directive: \"%s\"", match)
+		}
+
+		img, err := image.ParseHtmlImage(match[1])
+		if err != nil {
+			return "", err
+		}
+
+		pictureElement, err := img.ImageElement(sourceDir, wd, outputDir, fast)
+		if err != nil {
+			return "", err
+		}
+
+		result = strings.Replace(result, match[0], pictureElement, 1)
+	}
 
 	return result, nil
 }
