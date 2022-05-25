@@ -30,7 +30,7 @@ p {
 /* Move down any text that would occupy less than 30% width after wrapping around an image */
 p:before {
     content: "";
-    width: 30%;
+    width: 20%;
     display: block;
     overflow: hidden;
 }

@@ -11,7 +11,7 @@ import (
 	"regexp"
 )
 
-var Minifier = createMinifier()
+var Global = createMinifier()
 
 func createMinifier() *minify.M {
 	minifier := minify.New()
