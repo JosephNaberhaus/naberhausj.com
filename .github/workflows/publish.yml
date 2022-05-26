@@ -23,11 +23,8 @@ jobs:
         with:
           go-version: ${{ steps.go_mod.outputs.version }}
 
-      - name: Build builder
-        run: cd builder && go build
-
       - name: Build website
-        run: sudo ./builder/builder && sudo chmod -R 0777 out
+        run: make build
 
       - name: Upload built artifacts
         uses: actions/upload-artifact@v2
