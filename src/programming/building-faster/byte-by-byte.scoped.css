@@ -1,0 +1,26 @@
+.byte-by-byte-display {
+    margin-top: 0.25rem;
+
+    font-family: monospace;
+}
+
+.byte-by-byte-display-line {
+    font-size: 1.5rem;
+
+    margin-bottom: 0.5rem;
+}
+
+.byte-by-byte-display-character {
+    display: inline-block;
+
+    padding-right: 10px;
+}
+
+.byte-by-byte-display-character.match {
+    color: green;
+}
+
+.byte-by-byte-display-character.not-match {
+    color: red;
+    text-decoration: line-through;
+}

@@ -1,0 +1,16 @@
+.hash-display {
+    margin-top: 0.25rem;
+    margin-bottom: 0.5rem;
+
+    font-family: monospace;
+    font-size: 1.5rem;
+}
+
+.hash-display .match {
+    color: green;
+}
+
+.hash-display .not-match {
+    color: red;
+    text-decoration: line-through;
+}

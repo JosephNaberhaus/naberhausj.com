@@ -4,7 +4,7 @@ import (
 	"github.com/JosephNaberhaus/naberhausj.com/builder/file"
 )
 
-func (b *Builder) ShouldRebuild(node *file.Node, ) bool {
+func (b *Builder) ShouldRebuild(node *file.Node) bool {
 	cacheNode, ok := b.cache.PathToNode[node.File]
 	if !ok {
 		return true
@@ -20,9 +20,10 @@ func (b *Builder) ShouldRebuild(node *file.Node, ) bool {
 			return true
 		}
 
-		return b.ShouldRebuild(dependencyNode)
+		if b.ShouldRebuild(dependencyNode) {
+			return true
+		}
 	}
 
 	return false
 }
-

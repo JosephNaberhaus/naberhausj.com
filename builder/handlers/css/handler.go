@@ -8,19 +8,22 @@ import (
 	"github.com/JosephNaberhaus/naberhausj.com/builder/minifier"
 	"io/ioutil"
 	"path/filepath"
+	"strings"
 )
 
 const cssExtension = ".css"
+const scopedCssExtension = ".scoped.css"
 const outputFile = "styles.css"
 
 type handler struct {
 	orchestrator builder.Orchestrator
-	cssBuilder   bytes.Buffer
+	cssBuilders  map[string]*bytes.Buffer
 }
 
 func CreateHandler(orchestrator builder.Orchestrator) builder.Handler {
 	return &handler{
 		orchestrator: orchestrator,
+		cssBuilders:  map[string]*bytes.Buffer{},
 	}
 }
 
@@ -38,20 +41,33 @@ func (h *handler) Build(node *file.Node) (interface{}, error) {
 		return nil, fmt.Errorf("error loading css file: %w", err)
 	}
 
-	h.cssBuilder.Write(data)
-	h.cssBuilder.WriteRune('\n')
+	cssBuilderKey := ""
+	if strings.HasSuffix(node.File, scopedCssExtension) {
+		cssBuilderKey = filepath.Dir(node.File)
+	}
+
+	cssBuilder := h.cssBuilders[cssBuilderKey]
+	if cssBuilder == nil {
+		cssBuilder = new(bytes.Buffer)
+		h.cssBuilders[cssBuilderKey] = cssBuilder
+	}
+
+	cssBuilder.Write(data)
+	cssBuilder.WriteRune('\n')
 	return nil, err
 }
 
 func (h *handler) Finalize() error {
-	minifiedCSS, err := minifier.Global.Bytes("text/css", h.cssBuilder.Bytes())
-	if err != nil {
-		return fmt.Errorf("error minifying css: %w", err)
-	}
+	for dir, cssBuilder := range h.cssBuilders {
+		minifiedCSS, err := minifier.Global.Bytes("text/css", cssBuilder.Bytes())
+		if err != nil {
+			return fmt.Errorf("error minifying css: %w", err)
+		}
 
-	err = h.orchestrator.Write(nil, outputFile, minifiedCSS)
-	if err != nil {
-		return fmt.Errorf("error writing css: %w", err)
+		err = h.orchestrator.Write(nil, filepath.Join(dir, outputFile), minifiedCSS)
+		if err != nil {
+			return fmt.Errorf("error writing css: %w", err)
+		}
 	}
 
 	return nil
