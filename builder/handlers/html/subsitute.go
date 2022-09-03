@@ -104,8 +104,6 @@ func substituteContent(
 				substitutedParameters[key] = contentToString(substitutedContent)
 			}
 
-			fmt.Printf("%s %v\n", directiveName, substitutedParameters)
-
 			substitutedDirective, err := newDirective(directiveName, substitutedParameters)
 			if err != nil {
 				return nil, fmt.Errorf("error creating a new directive: %w", err)
