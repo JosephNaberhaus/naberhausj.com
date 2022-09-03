@@ -9,7 +9,3 @@ build:
 .PHONY: dev-build
 dev-build:
 	cd builder; go run builder.go --src ../src --out ../out
-
-.PHONY: build-fast
-build-fast:
-	cd builder; go run builder.go -fast -root ..
