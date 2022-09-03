@@ -36,6 +36,15 @@ func or(regexes ...*regexp.Regexp) *regexp.Regexp {
 
 type ContentNode string
 
+func newDirective(name string, parameters map[string]string) (ContentNode, error) {
+	jsonParameters, err := json.Marshal(parameters)
+	if err != nil {
+		return "", err
+	}
+
+	return ContentNode(fmt.Sprintf("<!--#%s%s-->", name, string(jsonParameters))), nil
+}
+
 func toContent(value string) []ContentNode {
 	var content []ContentNode
 

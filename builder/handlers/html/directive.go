@@ -60,8 +60,7 @@ func handleImageDirective(
 		return nil, fmt.Errorf("no src provided for image directive at: %s", node.File)
 	}
 
-	imageNodePath := filepath.Join(filepath.Dir(node.File), src)
-	artifact, err := orchestrator.LoadDependency(node, imageNodePath)
+	artifact, err := orchestrator.LoadDependency(node, src)
 	if err != nil {
 		return nil, fmt.Errorf("error loading image dependency: %w", err)
 	}

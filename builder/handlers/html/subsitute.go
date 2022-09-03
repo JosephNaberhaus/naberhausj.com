@@ -71,14 +71,47 @@ func substituteImport(
 		return nil, fmt.Errorf("error getting parameters for import: %w", err)
 	}
 
+	return substituteContent(artifact.Content, parameters)
+}
+
+func substituteContent(
+	content []ContentNode,
+	parameters map[string]string,
+) ([]ContentNode, error) {
 	var newContent []ContentNode
-	for _, artifactContent := range artifact.Content {
+	for _, artifactContent := range content {
 		if artifactContent.isVariable() {
 			result, err := substituteVariable(artifactContent, parameters)
 			if err != nil {
 				return nil, fmt.Errorf("error subsituting variable: %w", err)
 			}
 			newContent = append(newContent, result)
+		} else if artifactContent.isDirective() {
+			directiveName := artifactContent.directiveName()
+			directiveParameters, err := artifactContent.directiveParameters()
+			if err != nil {
+				return nil, err
+			}
+
+			substitutedParameters := map[string]string{}
+			for key, value := range directiveParameters {
+				valueContent := toContent(value)
+				substitutedContent, err := substituteContent(valueContent, parameters)
+				if err != nil {
+					return nil, fmt.Errorf("error substituting value content in directive: %w", err)
+				}
+
+				substitutedParameters[key] = contentToString(substitutedContent)
+			}
+
+			fmt.Printf("%s %v\n", directiveName, substitutedParameters)
+
+			substitutedDirective, err := newDirective(directiveName, substitutedParameters)
+			if err != nil {
+				return nil, fmt.Errorf("error creating a new directive: %w", err)
+			}
+
+			newContent = append(newContent, substitutedDirective)
 		} else {
 			newContent = append(newContent, artifactContent)
 		}
