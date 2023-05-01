@@ -19,7 +19,7 @@ jobs:
         id: go_mod
 
       - name: Set up Go
-        uses: actions/setup-go@v2
+        uses: actions/setup-go@v4
         with:
           go-version: ${{ steps.go_mod.outputs.version }}
 
@@ -27,7 +27,7 @@ jobs:
         run: make build
 
       - name: Upload built artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: website
           path: out
@@ -38,7 +38,7 @@ jobs:
 
     steps:
       - name: Checkout Github pages branch
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           ref: gh-pages
 
@@ -46,12 +46,12 @@ jobs:
         run: rm -rf ./*
 
       - name: Download built artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: website
 
       - name: Commit and push changes
-        uses: EndBug/add-and-commit@v5
+        uses: EndBug/add-and-commit@v9
         with:
           branch: gh-pages
           message: Update website
