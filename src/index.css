@@ -108,7 +108,7 @@ img {
 }
 
 @media screen and (max-width: 600px) {
-    article img {
+    article :not(a) img {
         width: calc(100vw - 2rem);
     }
 }
