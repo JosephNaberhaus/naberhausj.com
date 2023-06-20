@@ -1,5 +1,4 @@
 name: Publish Website
-name: Publish Website
 
 on:
   push:
