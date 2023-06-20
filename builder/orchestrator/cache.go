@@ -22,6 +22,17 @@ func readCache(root string) (cache.NodeSet, error) {
 		return cache.NodeSet{}, fmt.Errorf("error loading cache: %w", err)
 	}
 
+	// Remove any nodes from the cache if one of their files has been deleted.
+	for i, node := range c.Nodes {
+		for _, writtenFile := range node.WrittenFiles {
+			if !file.Exists(filepath.Join(root, writtenFile)) {
+				c.Nodes = append(c.Nodes[:i], c.Nodes[i+1:]...)
+				delete(c.PathToNode, node.File)
+				break
+			}
+		}
+	}
+
 	return c, nil
 }
 
