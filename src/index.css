@@ -107,6 +107,12 @@ img {
     border-radius: 2px;
 }
 
+@media screen and (max-width: 600px) {
+    article img {
+        width: calc(100vw - 2rem);
+    }
+}
+
 .image_left {
     float: left;
     margin-block-end: 1rem;
