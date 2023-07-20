@@ -202,9 +202,8 @@
 <pre>
 shouldRecompile(file):
     // The file is brand new.
-    if file.oldHash == null {
+    if file.oldHash == null:
         return true
-    }
 
     // The file has changed.
     if file.oldHash != file.newHash:
