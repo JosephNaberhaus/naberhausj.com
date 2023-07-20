@@ -1,1 +1,79 @@
-.example{display:flex;flex-direction:column;padding:1rem;border:1px solid #000;border-radius:5px}.example-title{margin-left:auto;margin-right:auto;margin-bottom:.75rem}.example-input-label{display:inline-block;margin-bottom:.25rem;width:7rem}.byte-by-byte-display{margin-top:.25rem;font-family:monospace}.byte-by-byte-display-line{font-size:1.5rem;margin-bottom:.5rem}.byte-by-byte-display-character{display:inline-block;padding-right:10px}.byte-by-byte-display-character.match{color:green}.byte-by-byte-display-character.not-match{color:red;text-decoration:line-through}.dependencies-results{font-family:monospace;font-size:1.25rem;min-height:12rem;margin-left:1rem}.hash-display{margin-top:.25rem;margin-bottom:.5rem;font-family:monospace;font-size:1.5rem}.hash-display .match{color:green}.hash-display .not-match{color:red;text-decoration:line-through}.image-artifact-image-label{margin-top:.5rem}
+.example {
+    display: flex;
+    flex-direction: column;
+
+    padding: 1rem;
+
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+.example-title {
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 0.75rem;
+}
+
+.example-input-label {
+    display: inline-block;
+
+    margin-bottom: 0.25rem;
+
+    width: 7rem;
+}
+
+.byte-by-byte-display {
+    margin-top: 0.25rem;
+
+    font-family: monospace;
+}
+
+.byte-by-byte-display-line {
+    font-size: 1.5rem;
+
+    margin-bottom: 0.5rem;
+}
+
+.byte-by-byte-display-character {
+    display: inline-block;
+
+    padding-right: 10px;
+}
+
+.byte-by-byte-display-character.match {
+    color: green;
+}
+
+.byte-by-byte-display-character.not-match {
+    color: red;
+    text-decoration: line-through;
+}
+
+.dependencies-results {
+    font-family: monospace;
+    font-size: 1.25rem;
+
+    min-height: 12rem;
+
+    margin-left: 1rem;
+}
+.hash-display {
+    margin-top: 0.25rem;
+    margin-bottom: 0.5rem;
+
+    font-family: monospace;
+    font-size: 1.5rem;
+}
+
+.hash-display .match {
+    color: green;
+}
+
+.hash-display .not-match {
+    color: red;
+    text-decoration: line-through;
+}
+.image-artifact-image-label {
+    margin-top: 0.5rem;
+}
+

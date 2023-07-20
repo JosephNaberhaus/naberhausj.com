@@ -1,1 +1,145 @@
-<!doctype html><html lang=en><head><meta charset=utf-8><title>Programming</title><link rel=stylesheet href=/styles.css><link rel=icon href=/favicon.ico><link rel=icon href=/icon.svg type=image/svg+xml><link rel=apple-touch-icon href=/apple-touch-icon.png><link rel=manifest href=/manifest.webmanifest><meta name=description content="Articles about my adventures in programming."><meta name=viewport content="width=device-width,initial-scale=1"><div class=header><a class=website_title href=/><h1>Joseph Naberhaus</h1></a><div class=navigation><a class=navigation_link href=/programming/articles.html><img class=navigation_link_icon src=/components/header/navigation-link/programming.svg alt=Programming><div class=navigation_link_text>Programming</div></a><a class=navigation_link href=/woodworking/articles.html><img class=navigation_link_icon src=/components/header/navigation-link/woodworking.svg alt=Woodworking><div class=navigation_link_text>Woodworking</div></a><a class=navigation_link href=/miscellaneous/articles.html><img class=navigation_link_icon src=/components/header/navigation-link/miscellaneous.svg alt=Miscellaneous><div class=navigation_link_text>Miscellaneous</div></a></div></div><hr></head><body><div class=catalog><h2>Programming</h2><div class=cards><a href=/programming/building-faster/page.html class=card><img width=240 height=240 src=programming/building-faster/thumbnail.jpg srcset="building-faster/thumbnail-100.webp 100w,building-faster/thumbnail-250.webp 250w,building-faster/thumbnail-400.webp 400w" sizes=240px alt><h3 class=card_title>Building Faster by Building Less</h3><div class=card_description>How I sped up the build time of this website with caching.</div><div class=card_read_more>Read more...</div></a><a href=/programming/cli-tti/page.html class=card><img width=240 height=240 src=programming/cli-tti/thumbnail.jpg srcset="cli-tti/thumbnail-100.webp 100w,cli-tti/thumbnail-250.webp 250w,cli-tti/thumbnail-480.webp 480w" sizes=240px alt><h3 class=card_title>CLI TTI</h3><div class=card_description>Command-line utility for measuring the startup time of both CLI and TUI tools.</div><div class=card_read_more>Read more...</div></a><a href=/programming/go-mitizen/page.html class=card><img width=240 height=240 src=programming/go-mitizen/thumbnail.jpg srcset="go-mitizen/thumbnail-100.webp 100w,go-mitizen/thumbnail-240.webp 240w" sizes=240px alt><h3 class=card_title>Go-Mitizen</h3><div class=card_description>A git commit standardization tool based on Commitiizen.</div><div class=card_read_more>Read more...</div></a><a href=/programming/this-website/page.html class=card><img width=240 height=240 src=programming/this-website/thumbnail.jpg srcset="this-website/thumbnail-100.webp 100w,this-website/thumbnail-250.webp 250w,this-website/thumbnail-480.webp 480w" sizes=240px alt><h3 class=card_title>This Website</h3><div class=card_description>An overview of how I build and host this website.</div><div class=card_read_more>Read more...</div></a><a href=/programming/go-delta-sync/page.html class=card><img width=240 height=240 src=programming/go-delta-sync/thumbnail.jpg srcset="go-delta-sync/thumbnail-100.webp 100w,go-delta-sync/thumbnail-250.webp 250w,go-delta-sync/thumbnail-480.webp 480w" sizes=240px alt><h3 class=card_title>Go Delta Sync (WIP)</h3><div class=card_description>Code generation tool for minimally syncing changes between a server and client.</div><div class=card_read_more>Read more...</div></a><a href=/programming/brtd/page.html class=card><img width=240 height=240 src=programming/brtd/thumbnail.jpg srcset="brtd/thumbnail-100.webp 100w,brtd/thumbnail-250.webp 250w,brtd/thumbnail-480.webp 480w" sizes=240px alt><h3 class=card_title>B.R.T.D.</h3><div class=card_description>A top-down battle royale shooter with procedurally generated terrain..</div><div class=card_read_more>Read more...</div></a><a href=/programming/niche-excel/page.html class=card><img width=240 height=240 src=programming/niche-excel/thumbnail.jpg srcset="niche-excel/thumbnail-100.webp 100w,niche-excel/thumbnail-250.webp 250w,niche-excel/thumbnail-480.webp 480w" sizes=240px alt><h3 class=card_title>Niche Excel</h3><div class=card_description>A Java CRM-like tool made for Homeschool Iowa.</div><div class=card_read_more>Read more...</div></a></div></div><div class=footer><div class=social-links><a class=social_link href=mailto:contact@naberhausj.com><img class=social_link_icon src=/components/footer/social-link/email.svg alt=E-mail><div class=social_link_name>E-mail</div></a><a class=social_link href=http://github.com/josephNaberhaus><img class=social_link_icon src=/components/footer/social-link/github.svg alt=Github><div class=social_link_name>Github</div></a><a class=social_link href=https://www.youtube.com/c/JosephNaberhaus><img class=social_link_icon src=/components/footer/social-link/youtube.svg alt=YouTube><div class=social_link_name>YouTube</div></a><a class=social_link href=https://www.linkedin.com/in/naberhausj><img class=social_link_icon src=/components/footer/social-link/linkedin.svg alt=LinkedIn><div class=social_link_name>LinkedIn</div></a></div><div class=copyright>&copy; Joseph Naberhaus 2020-23</div></div></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Programming</title>
+    <link rel="stylesheet" href="/styles.css">
+
+    <link rel="icon" href="/favicon.ico">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/manifest.webmanifest">
+
+    <meta name="description" content="Articles about my adventures in programming.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <div class="header">
+        <a class="website_title" href="/">
+            <h1>Joseph Naberhaus</h1>
+        </a>
+        <div class="navigation">
+            <a class="navigation_link" href="/programming/articles.html">
+    <img class="navigation_link_icon" src="/components/header/navigation-link/programming.svg" alt="Programming">
+    <div class="navigation_link_text">Programming</div>
+</a>
+            <a class="navigation_link" href="/woodworking/articles.html">
+    <img class="navigation_link_icon" src="/components/header/navigation-link/woodworking.svg" alt="Woodworking">
+    <div class="navigation_link_text">Woodworking</div>
+</a>
+            <a class="navigation_link" href="/miscellaneous/articles.html">
+    <img class="navigation_link_icon" src="/components/header/navigation-link/miscellaneous.svg" alt="Miscellaneous">
+    <div class="navigation_link_text">Miscellaneous</div>
+</a>
+        </div>
+    </div>
+    <hr>
+</head>
+<body>
+<div class="catalog">
+    <h2>Programming</h2>
+    <div class="cards">
+        <a href="/programming/building-faster/page.html" class="card">
+    <img class="" width="240" height="240" src="programming/building-faster/thumbnail.jpg" srcset="building-faster/thumbnail-100.webp 100w,building-faster/thumbnail-250.webp 250w,building-faster/thumbnail-400.webp 400w" sizes="240px" alt="">
+    <h3 class="card_title">Building Faster by Building Less</h3>
+    <div class="card_description">
+        How I sped up the build time of this website with caching.
+    </div>
+    <div class="card_read_more">
+        Read more...
+    </div>
+</a>
+        <a href="/programming/cli-tti/page.html" class="card">
+    <img class="" width="240" height="240" src="programming/cli-tti/thumbnail.jpg" srcset="cli-tti/thumbnail-100.webp 100w,cli-tti/thumbnail-250.webp 250w,cli-tti/thumbnail-480.webp 480w" sizes="240px" alt="">
+    <h3 class="card_title">CLI TTI</h3>
+    <div class="card_description">
+        Command-line utility for measuring the startup time of both CLI and TUI tools.
+    </div>
+    <div class="card_read_more">
+        Read more...
+    </div>
+</a>
+        <a href="/programming/go-mitizen/page.html" class="card">
+    <img class="" width="240" height="240" src="programming/go-mitizen/thumbnail.jpg" srcset="go-mitizen/thumbnail-100.webp 100w,go-mitizen/thumbnail-240.webp 240w" sizes="240px" alt="">
+    <h3 class="card_title">Go-Mitizen</h3>
+    <div class="card_description">
+        A git commit standardization tool based on Commitiizen.
+    </div>
+    <div class="card_read_more">
+        Read more...
+    </div>
+</a>
+        <a href="/programming/this-website/page.html" class="card">
+    <img class="" width="240" height="240" src="programming/this-website/thumbnail.jpg" srcset="this-website/thumbnail-100.webp 100w,this-website/thumbnail-250.webp 250w,this-website/thumbnail-480.webp 480w" sizes="240px" alt="">
+    <h3 class="card_title">This Website</h3>
+    <div class="card_description">
+        An overview of how I build and host this website.
+    </div>
+    <div class="card_read_more">
+        Read more...
+    </div>
+</a>
+        <a href="/programming/go-delta-sync/page.html" class="card">
+    <img class="" width="240" height="240" src="programming/go-delta-sync/thumbnail.jpg" srcset="go-delta-sync/thumbnail-100.webp 100w,go-delta-sync/thumbnail-250.webp 250w,go-delta-sync/thumbnail-480.webp 480w" sizes="240px" alt="">
+    <h3 class="card_title">Go Delta Sync (WIP)</h3>
+    <div class="card_description">
+        Code generation tool for minimally syncing changes between a server and client.
+    </div>
+    <div class="card_read_more">
+        Read more...
+    </div>
+</a>
+        <a href="/programming/brtd/page.html" class="card">
+    <img class="" width="240" height="240" src="programming/brtd/thumbnail.jpg" srcset="brtd/thumbnail-100.webp 100w,brtd/thumbnail-250.webp 250w,brtd/thumbnail-480.webp 480w" sizes="240px" alt="">
+    <h3 class="card_title">B.R.T.D.</h3>
+    <div class="card_description">
+        A top-down battle royale shooter with procedurally generated terrain..
+    </div>
+    <div class="card_read_more">
+        Read more...
+    </div>
+</a>
+        <a href="/programming/niche-excel/page.html" class="card">
+    <img class="" width="240" height="240" src="programming/niche-excel/thumbnail.jpg" srcset="niche-excel/thumbnail-100.webp 100w,niche-excel/thumbnail-250.webp 250w,niche-excel/thumbnail-480.webp 480w" sizes="240px" alt="">
+    <h3 class="card_title">Niche Excel</h3>
+    <div class="card_description">
+        A Java CRM-like tool made for Homeschool Iowa.
+    </div>
+    <div class="card_read_more">
+        Read more...
+    </div>
+</a>
+    </div>
+</div>
+<div class="footer">
+    <div class="social-links">
+        <a class="social_link" href="mailto:contact@naberhausj.com">
+    <img class='social_link_icon' src='/components/footer/social-link/email.svg' alt='E-mail'/>
+    <div class='social_link_name'>
+        E-mail
+    </div>
+</a>
+        <a class="social_link" href="http://github.com/josephNaberhaus">
+    <img class='social_link_icon' src='/components/footer/social-link/github.svg' alt='Github'/>
+    <div class='social_link_name'>
+        Github
+    </div>
+</a>
+        <a class="social_link" href="https://www.youtube.com/c/JosephNaberhaus">
+    <img class='social_link_icon' src='/components/footer/social-link/youtube.svg' alt='YouTube'/>
+    <div class='social_link_name'>
+        YouTube
+    </div>
+</a>
+        <a class="social_link" href="https://www.linkedin.com/in/naberhausj">
+    <img class='social_link_icon' src='/components/footer/social-link/linkedin.svg' alt='LinkedIn'/>
+    <div class='social_link_name'>
+        LinkedIn
+    </div>
+</a>
+    </div>
+    <div class="copyright">
+        &copy; Joseph Naberhaus 2020-23
+    </div>
+</div>
+</body>
+</html>

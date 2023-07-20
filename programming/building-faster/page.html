@@ -1,10 +1,205 @@
-<!doctype html><html lang=en><head><meta charset=utf-8><title>Building Faster by Building Less</title><link rel=stylesheet href=/styles.css><link rel=icon href=/favicon.ico><link rel=icon href=/icon.svg type=image/svg+xml><link rel=apple-touch-icon href=/apple-touch-icon.png><link rel=manifest href=/manifest.webmanifest><meta name=description content="How I sped up the build time of this website with caching."><meta name=viewport content="width=device-width,initial-scale=1"><div class=header><a class=website_title href=/><h1>Joseph Naberhaus</h1></a><div class=navigation><a class=navigation_link href=/programming/articles.html><img class=navigation_link_icon src=/components/header/navigation-link/programming.svg alt=Programming><div class=navigation_link_text>Programming</div></a><a class=navigation_link href=/woodworking/articles.html><img class=navigation_link_icon src=/components/header/navigation-link/woodworking.svg alt=Woodworking><div class=navigation_link_text>Woodworking</div></a><a class=navigation_link href=/miscellaneous/articles.html><img class=navigation_link_icon src=/components/header/navigation-link/miscellaneous.svg alt=Miscellaneous><div class=navigation_link_text>Miscellaneous</div></a></div></div><hr></head><body><link rel=stylesheet href=styles.css><article><section><h2>Building Faster by Building Less</h2><div class=created-on>Written in May 2022</div><p>For this website, I wrote my own static site generator (a program that compiles content into a website). At first, my generator was fast because it was simple. That changed recently after adding a couple of handy but slow features. Now it takes several minutes to create the entire website, and it's going to get worse as I add more content. This was an unacceptable delay to my iteration times and needed to be fixed.<p>It isn't possible for me to significantly improve the speed of the generator. Instead, I need to build less content each time I run it. I accomplished this by recycling as much of the previous build as possible and only compiling the parts that have changed. Most programming languages use this same trick and call it incremental compilation. The rest of this article describes how it works.</section><section><h3>Change Detection</h3><p>It all starts by determining if a file has changed. I could do this by keeping a copy of the old version of every file. Then, after I've made some edits and started the generator, I could compare each byte of the old and new versions of the file to determine if it has changed.<div class=example><div class=example-title>Byte by Byte Comparison</div><div><label class=example-input-label for=byte-by-byte-input-old>Old Value:</label>
-<input id=byte-by-byte-input-old class=byte-by-byte-input value=Test></div><div><label class=example-input-label for=byte-by-byte-input-new>New Value:</label>
-<input id=byte-by-byte-input-new class=byte-by-byte-input value=Test></div><div class=byte-by-byte-display><div id=byte-by-byte-display-old class=byte-by-byte-display-line></div><div id=byte-by-byte-display-new class=byte-by-byte-display-line></div></div><div><label class=example-input-label for=byte-by-byte-result>Result:</label>
-<input id=byte-by-byte-result readonly></div><script src=byte-by-byte.js></script></div><p>This method is effective, but it requires keeping a duplicate copy of every file. This is rather expensive for big files, such as images and videos. Instead, we use a hash function to condense each file into a fixed-length sequence of bytes. Then, we can compare those hashes instead of the whole files.<div class=example><div class=example-title>Hash Comparison</div><div><label class=example-input-label for=hash-input-old>Old Value:</label>
-<input id=hash-input-old class=hash-input value=Test></div><div><label class=example-input-label for=hash-input-new>New Value:</label>
-<input id=hash-input-new class=hash-input value=Test></div><div class=hash-display><div id=hash-display-old></div><div id=hash-display-new></div></div><div><label class=example-input-label for=hash-result>Result:</label>
-<input id=hash-result readonly></div><script src=hash.js></script></div><p>If the hash didn't change, then the file didn't change either. There are exceptions where two different files can produce the same hash. However, with a good hash function, they are so rare that they're nearly impossible.</section><section><h3>Dependencies</h3><p>Knowing if a file has changed isn't enough to determine if it needs to be recompiled. My website builder allows files to form dependencies on other files. If a dependency of a file changes, then we also need to rebuild that file. Click around below to see how dependencies affect other files.<div class=example><div class=example-title>Dependencies</div><svg viewBox="50 50 850 560" id="dependencies-graph"><style>.legend-text{font-family:monospace;font-size:1.25rem}.file-box{stroke:#000;pointer-events:all;cursor:pointer}.file-text{font-family:monospace;font-size:2rem;text-anchor:middle;pointer-events:none}.dependency{stroke:#000;stroke-width:2px}</style><g transform="translate(700, 100)"><rect x="0" y="0" width="30" height="20" stroke="#000" fill="#90ee90"/><text x="45" y="15" class="legend-text">= Same</text></g><g transform="translate(700, 130)"><rect x="0" y="0" width="30" height="20" stroke="#000" fill="#f08080"/><text x="45" y="15" class="legend-text">= Different</text></g><g transform="translate(700, 160)"><text x="0" y="15" class="legend-text">Click on a file</text><text x="0" y="40" class="legend-text">to change it.</text></g><g transform="translate(100, 100)"><rect x="0" y="0" width="150" height="60" id="file-a" class="file-box"/><text x="75" y="40" class="file-text">File A</text></g><g transform="translate(100, 300)"><rect x="0" y="0" width="150" height="60" id="file-b" class="file-box"/><text x="75" y="40" class="file-text">File B</text></g><g transform="translate(100, 500)"><rect x="0" y="0" width="150" height="60" id="file-c" class="file-box"/><text x="75" y="40" class="file-text">File C</text></g><polyline points="250,130 400,155" class="dependency"/><polyline points="250,130 400,405" class="dependency"/><polyline points="250,330 400,255" class="dependency"/><polyline points="250,330 700,330" class="dependency"/><polyline points="250,530 400,405" class="dependency"/><polyline points="250,530 400,505" class="dependency"/><g transform="translate(400, 125)"><rect x="0" y="0" width="150" height="60" id="image-a" class="file-box"/><text x="75" y="40" class="file-text">Image A</text></g><g transform="translate(400, 225)"><rect x="0" y="0" width="150" height="60" id="image-b" class="file-box"/><text x="75" y="40" class="file-text">Image B</text></g><g transform="translate(400, 375)"><rect x="0" y="0" width="220" height="60" id="component-a" class="file-box"/><text x="110" y="40" class="file-text">Component A</text></g><g transform="translate(400, 475)"><rect x="0" y="0" width="220" height="60" id="component-b" class="file-box"/><text x="110" y="40" class="file-text">Component B</text></g><polyline points="620,405 700,330" class="dependency"/><g transform="translate(700, 300)"><rect x="0" y="0" width="150" height="60" id="image-c" class="file-box"/><text x="75" y="40" class="file-text">Image C</text></g></svg><div>Files to Rebuild:</div><div id=dependencies-results class=dependencies-results></div><script src=dependencies.js></script></div><p>You can see that even one file change can have a large impact on the total number of files that need to be recompiled. Still, unless every file is different, we probably won't have to recompile them all. The algorithm for performing the change detection demonstrated above can be written in a few lines of pseudocode:<pre>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Building Faster by Building Less</title>
+    <link rel="stylesheet" href="/styles.css">
+
+    <link rel="icon" href="/favicon.ico">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/manifest.webmanifest">
+
+    <meta name="description" content="How I sped up the build time of this website with caching.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <div class="header">
+        <a class="website_title" href="/">
+            <h1>Joseph Naberhaus</h1>
+        </a>
+        <div class="navigation">
+            <a class="navigation_link" href="/programming/articles.html">
+    <img class="navigation_link_icon" src="/components/header/navigation-link/programming.svg" alt="Programming">
+    <div class="navigation_link_text">Programming</div>
+</a>
+            <a class="navigation_link" href="/woodworking/articles.html">
+    <img class="navigation_link_icon" src="/components/header/navigation-link/woodworking.svg" alt="Woodworking">
+    <div class="navigation_link_text">Woodworking</div>
+</a>
+            <a class="navigation_link" href="/miscellaneous/articles.html">
+    <img class="navigation_link_icon" src="/components/header/navigation-link/miscellaneous.svg" alt="Miscellaneous">
+    <div class="navigation_link_text">Miscellaneous</div>
+</a>
+        </div>
+    </div>
+    <hr>
+</head>
+<body>
+<link rel="stylesheet" href="styles.css">
+<article>
+    <section>
+        <h2>Building Faster by Building Less</h2>
+        <div class="created-on">
+  Written in May 2022
+</div>
+        <p>For this website, I wrote my own static site generator (a program that compiles content into a website). At first, my generator was fast because it was simple. That changed recently after adding a couple of handy but slow features. Now it takes several minutes to create the entire website, and it's going to get worse as I add more content. This was an unacceptable delay to my iteration times and needed to be fixed.</p>
+        <p>It isn't possible for me to significantly improve the speed of the generator. Instead, I need to build less content each time I run it. I accomplished this by recycling as much of the previous build as possible and only compiling the parts that have changed. Most programming languages use this same trick and call it incremental compilation. The rest of this article describes how it works.</p>
+    </section>
+    <section>
+        <h3>Change Detection</h3>
+        <p>It all starts by determining if a file has changed. I could do this by keeping a copy of the old version of every file. Then, after I've made some edits and started the generator, I could compare each byte of the old and new versions of the file to determine if it has changed.</p>
+        <div class="example">
+            <div class="example-title">Byte by Byte Comparison</div>
+            <div>
+                <label class="example-input-label" for="byte-by-byte-input-old">
+                    Old Value:
+                </label>
+                <input id="byte-by-byte-input-old" class="byte-by-byte-input" type="text" value="Test">
+            </div>
+            <div>
+                <label class="example-input-label" for="byte-by-byte-input-new">
+                    New Value:
+                </label>
+                <input id="byte-by-byte-input-new" class="byte-by-byte-input" type="text" value="Test">
+            </div>
+            <div class="byte-by-byte-display">
+                <div id="byte-by-byte-display-old" class="byte-by-byte-display-line"></div>
+                <div id="byte-by-byte-display-new" class="byte-by-byte-display-line"></div>
+            </div>
+            <div>
+                <label class="example-input-label" for="byte-by-byte-result">
+                    Result:
+                </label>
+                <input id="byte-by-byte-result" type="text" readonly>
+            </div>
+            <script type="text/javascript" src="byte-by-byte.js"></script>
+        </div>
+        <p>This method is effective, but it requires keeping a duplicate copy of every file. This is rather expensive for big files, such as images and videos. Instead, we use a hash function to condense each file into a fixed-length sequence of bytes. Then, we can compare those hashes instead of the whole files.</p>
+        <div class="example">
+            <div class="example-title">Hash Comparison</div>
+            <div>
+                <label class="example-input-label" for="hash-input-old">
+                    Old Value:
+                </label>
+                <input id="hash-input-old" class="hash-input" type="text" value="Test">
+            </div>
+            <div>
+                <label class="example-input-label" for="hash-input-new">
+                    New Value:
+                </label>
+                <input id="hash-input-new" class="hash-input" type="text" value="Test">
+            </div>
+            <div class="hash-display">
+                <div id="hash-display-old"></div>
+                <div id="hash-display-new"></div>
+            </div>
+            <div>
+                <label class="example-input-label" for="hash-result">
+                    Result:
+                </label>
+                <input id="hash-result" type="text" readonly>
+            </div>
+            <script type="text/javascript" src="hash.js"></script>
+        </div>
+        <p>If the hash didn't change, then the file didn't change either. There are exceptions where two different files can produce the same hash. However, with a good hash function, they are so rare that they're nearly impossible.</p>
+    </section>
+    <section>
+        <h3>Dependencies</h3>
+        <p>Knowing if a file has changed isn't enough to determine if it needs to be recompiled. My website builder allows files to form dependencies on other files. If a dependency of a file changes, then we also need to rebuild that file. Click around below to see how dependencies affect other files.</p>
+        <div class="example">
+            <div class="example-title">Dependencies</div>
+            <svg viewBox="50 50 850 560" id="dependencies-graph">
+                <style>
+                    .legend-text {
+                        font-family: monospace;
+                        font-size: 1.25rem;
+                    }
+
+                    .file-box {
+                        stroke: black;
+
+                        pointer-events: all;
+                        cursor: pointer;
+                    }
+
+                    .file-text {
+                        font-family: monospace;
+                        font-size: 2rem;
+
+                        text-anchor: middle;
+
+                        pointer-events: none;
+                    }
+
+                    .dependency {
+                        stroke: black;
+                        stroke-width: 2px;
+                    }
+                </style>
+
+                <g transform="translate(700, 100)">
+                    <rect x="0" y="0" width="30" height="20" stroke="black" fill="lightgreen"/>
+                    <text x="45" y="15" class="legend-text"> = Same</text>
+                </g>
+                <g transform="translate(700, 130)">
+                    <rect x="0" y="0" width="30" height="20" stroke="black" fill="lightcoral"/>
+                    <text x="45" y="15" class="legend-text"> = Different</text>
+                </g>
+                <g transform="translate(700, 160)">
+                    <text x="0" y="15" class="legend-text">Click on a file</text>
+                    <text x="0" y="40" class="legend-text">to change it.</text>
+                </g>
+
+                <g transform="translate(100, 100)">
+                    <rect x="0" y="0" width="150" height="60" id="file-a" class="file-box"/>
+                    <text x="75" y="40" class="file-text">File A</text>
+                </g>
+                <g transform="translate(100, 300)">
+                    <rect x="0" y="0" width="150" height="60" id="file-b" class="file-box"/>
+                    <text x="75" y="40" class="file-text">File B</text>
+                </g>
+                <g transform="translate(100, 500)">
+                    <rect x="0" y="0" width="150" height="60" id="file-c" class="file-box"/>
+                    <text x="75" y="40" class="file-text">File C</text>
+                </g>
+
+                <polyline points="250,130 400,155" class="dependency"/>
+                <polyline points="250,130 400,405" class="dependency"/>
+                <polyline points="250,330 400,255" class="dependency"/>
+                <polyline points="250,330 700,330" class="dependency"/>
+                <polyline points="250,530 400,405" class="dependency"/>
+                <polyline points="250,530 400,505" class="dependency"/>
+
+                <g transform="translate(400, 125)">
+                    <rect x="0" y="0" width="150" height="60" id="image-a" class="file-box"/>
+                    <text x="75" y="40" class="file-text">Image A</text>
+                </g>
+                <g transform="translate(400, 225)">
+                    <rect x="0" y="0" width="150" height="60" id="image-b" class="file-box"/>
+                    <text x="75" y="40" class="file-text">Image B</text>
+                </g>
+                <g transform="translate(400, 375)">
+                    <rect x="0" y="0" width="220" height="60" id="component-a" class="file-box"/>
+                    <text x="110" y="40" class="file-text">Component A</text>
+                </g>
+                <g transform="translate(400, 475)">
+                    <rect x="0" y="0" width="220" height="60" id="component-b" class="file-box"/>
+                    <text x="110" y="40" class="file-text">Component B</text>
+                </g>
+
+                <polyline points="620,405 700,330" class="dependency"/>
+
+                <g transform="translate(700, 300)">
+                    <rect x="0" y="0" width="150" height="60" id="image-c" class="file-box"/>
+                    <text x="75" y="40" class="file-text">Image C</text>
+                </g>
+            </svg>
+            <div>Files to Rebuild:</div>
+            <div id="dependencies-results" class="dependencies-results"></div>
+            <script type="text/javascript" src="dependencies.js"></script>
+        </div>
+        <p>You can see that even one file change can have a large impact on the total number of files that need to be recompiled. Still, unless every file is different, we probably won't have to recompile them all. The algorithm for performing the change detection demonstrated above can be written in a few lines of pseudocode:</p>
+<pre>
 shouldRecompile(file):
     // The file is brand new.
     if file.oldHash == null {
@@ -22,5 +217,77 @@ shouldRecompile(file):
 
     // Nothing relevant changed. Reuse the old compilation of the file.
     return false
-</pre><p>This code snippet takes in three pieces of information:<ul><li>The old hashes of the files<li>The new hashes of the files<li>The current dependencies of the files</ul><p>Keeping track of the new and old hashes is trivial, but how do we know the current dependencies without recompiling the file? The key is that we first check if the file's content has changed. If it did, then we have to rebuild the file anyway. If it didn't change, then the list of dependencies for that file also didn't change, and we can reuse the list of dependencies from the previous build.</section><section><h3>Artifacts</h3><p>There is one more problem to be solved with dependencies. When one file depends on another, it usually needs some information about it. For example, when an HTML page depends on an image, it needs to know what sizes of it are available in the output. We don't want to have to compile the file each time to determine this information, so instead, I save this information within a field called the <code>Artifact</code> of a file. Here's an example of what the artifact looks like for images:<div class=example><div class=example-title>Image Build Artifact</div><div><label class=example-input-label for=image-artifact-input>Image Width:</label>
-<input id=image-artifact-input class=hash-input type=number value=250></div><div><code class=image-artifact-image-label>image.png</code></div><div><img id=image-artifact-image width=100 height=100 src=grid.png style=image-rendering:pixelated alt="An image with the specified width."></div><div><label class=example-input-label>Artifact:</label><pre id=image-artifact-output></pre></div><script src=image-artifact.js></script></div><p>All <code>Artifact</code> objects are placed in a file called <code>build-cache.json</code> (which is incidentally also where I store the old hashes and dependency lists). When I recompile the website, I can reference either the old artifact for the file or, if necessary, rebuild the file and reference the new artifact.</section><section><h3>My Implementation</h3><p>I've been using incremental compilation while writing this post, and it has been working great! If you want to see the actual implementation I'm using; it can be found <a href=https://github.com/JosephNaberhaus/naberhausj.com/tree/master/builder>in my GitHub repository for this website</a>. Someday, I plan to pull the incremental compilation portion of that code out into a separate, reusable library so that other Golang projects can easily take advantage of it.</section></article><div class=footer><div class=social-links><a class=social_link href=mailto:contact@naberhausj.com><img class=social_link_icon src=/components/footer/social-link/email.svg alt=E-mail><div class=social_link_name>E-mail</div></a><a class=social_link href=http://github.com/josephNaberhaus><img class=social_link_icon src=/components/footer/social-link/github.svg alt=Github><div class=social_link_name>Github</div></a><a class=social_link href=https://www.youtube.com/c/JosephNaberhaus><img class=social_link_icon src=/components/footer/social-link/youtube.svg alt=YouTube><div class=social_link_name>YouTube</div></a><a class=social_link href=https://www.linkedin.com/in/naberhausj><img class=social_link_icon src=/components/footer/social-link/linkedin.svg alt=LinkedIn><div class=social_link_name>LinkedIn</div></a></div><div class=copyright>&copy; Joseph Naberhaus 2020-23</div></div></body></html>
+</pre>
+        <p>This code snippet takes in three pieces of information:</p>
+        <ul>
+            <li>The old hashes of the files</li>
+            <li>The new hashes of the files</li>
+            <li>The current dependencies of the files</li>
+        </ul>
+        <p>Keeping track of the new and old hashes is trivial, but how do we know the current dependencies without recompiling the file? The key is that we first check if the file's content has changed. If it did, then we have to rebuild the file anyway. If it didn't change, then the list of dependencies for that file also didn't change, and we can reuse the list of dependencies from the previous build.</p>
+    </section>
+    <section>
+        <h3>Artifacts</h3>
+        <p>There is one more problem to be solved with dependencies. When one file depends on another, it usually needs some information about it. For example, when an HTML page depends on an image, it needs to know what sizes of it are available in the output. We don't want to have to compile the file each time to determine this information, so instead, I save this information within a field called the <code>Artifact</code> of a file. Here's an example of what the artifact looks like for images:</p>
+        <div class="example">
+            <div class="example-title">Image Build Artifact</div>
+            <div>
+                <label class="example-input-label" for="image-artifact-input">
+                    Image Width:
+                </label>
+                <input id="image-artifact-input" class="hash-input" type="number" value="250">
+            </div>
+            <div>
+                <code class="image-artifact-image-label">image.png</code>
+            </div>
+            <div>
+                <img id="image-artifact-image" width="100" height="100" src="grid.png" style="image-rendering: pixelated" alt="An image with the specified width.">
+            </div>
+            <div>
+                <label class="example-input-label">
+                    Artifact:
+                </label>
+                <pre id="image-artifact-output"></pre>
+            </div>
+            <script type="text/javascript" src="image-artifact.js"></script>
+        </div>
+        <p>All <code>Artifact</code> objects are placed in a file called <code>build-cache.json</code> (which is incidentally also where I store the old hashes and dependency lists). When I recompile the website, I can reference either the old artifact for the file or, if necessary, rebuild the file and reference the new artifact.</p>
+    </section>
+    <section>
+        <h3>My Implementation</h3>
+        <p>I've been using incremental compilation while writing this post, and it has been working great! If you want to see the actual implementation I'm using; it can be found <a href="https://github.com/JosephNaberhaus/naberhausj.com/tree/master/builder">in my GitHub repository for this website</a>. Someday, I plan to pull the incremental compilation portion of that code out into a separate, reusable library so that other Golang projects can easily take advantage of it.</p>
+    </section>
+</article>
+<div class="footer">
+    <div class="social-links">
+        <a class="social_link" href="mailto:contact@naberhausj.com">
+    <img class='social_link_icon' src='/components/footer/social-link/email.svg' alt='E-mail'/>
+    <div class='social_link_name'>
+        E-mail
+    </div>
+</a>
+        <a class="social_link" href="http://github.com/josephNaberhaus">
+    <img class='social_link_icon' src='/components/footer/social-link/github.svg' alt='Github'/>
+    <div class='social_link_name'>
+        Github
+    </div>
+</a>
+        <a class="social_link" href="https://www.youtube.com/c/JosephNaberhaus">
+    <img class='social_link_icon' src='/components/footer/social-link/youtube.svg' alt='YouTube'/>
+    <div class='social_link_name'>
+        YouTube
+    </div>
+</a>
+        <a class="social_link" href="https://www.linkedin.com/in/naberhausj">
+    <img class='social_link_icon' src='/components/footer/social-link/linkedin.svg' alt='LinkedIn'/>
+    <div class='social_link_name'>
+        LinkedIn
+    </div>
+</a>
+    </div>
+    <div class="copyright">
+        &copy; Joseph Naberhaus 2020-23
+    </div>
+</div>
+</body>
+</html>

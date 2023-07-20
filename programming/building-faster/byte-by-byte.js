@@ -1,1 +1,51 @@
-function byteByByteMain(){const t=document.getElementById('byte-by-byte-input-old'),n=document.getElementById('byte-by-byte-input-new'),s=document.getElementById('byte-by-byte-display-old'),o=document.getElementById('byte-by-byte-display-new'),i=document.getElementById('byte-by-byte-result');function e(){s.innerHTML='',o.innerHTML='';const e=t.value,a=n.value;for(let t=0;t<e.length;t++){const n=document.createElement('span');n.innerText='0x'+e.charCodeAt(t).toString(16),n.className='byte-by-byte-display-character '+(t>=a.length?'not-match':''),s.appendChild(n)}let r=e.length===a.length;for(let t=0;t<a.length;t++){let n=!0;t>=e.length?n=!1:e.charAt(t)!==a.charAt(t)&&(n=!1),n||(r=!1);const s=document.createElement('span');s.innerText='0x'+a.charCodeAt(t).toString(16),s.className='byte-by-byte-display-character '+(n?'match':'not-match'),o.appendChild(s)}i.value=r?'Same':'Different'}t.oninput=e,n.oninput=e,e()}byteByByteMain()
+function byteByByteMain() {
+    const inputOld = document.getElementById('byte-by-byte-input-old');
+    const inputNew = document.getElementById('byte-by-byte-input-new');
+
+    const displayOld = document.getElementById('byte-by-byte-display-old')
+    const displayNew = document.getElementById('byte-by-byte-display-new')
+    const result = document.getElementById('byte-by-byte-result');
+
+    function onChange() {
+        displayOld.innerHTML = '';
+        displayNew.innerHTML = '';
+
+        const oldValue = inputOld.value;
+        const newValue = inputNew.value;
+
+        for (let i = 0; i < oldValue.length; i++) {
+            const letter = document.createElement('span');
+            letter.innerText = '0x' + oldValue.charCodeAt(i).toString(16);
+            letter.className = 'byte-by-byte-display-character ' + (i >= newValue.length ? 'not-match' : '');
+            displayOld.appendChild(letter);
+        }
+
+        let allMatch = oldValue.length === newValue.length;
+        for (let i = 0; i < newValue.length; i++) {
+            let isMatch = true;
+            if (i >= oldValue.length) {
+                isMatch = false
+            } else if (oldValue.charAt(i) !== newValue.charAt(i)) {
+                isMatch = false;
+            }
+
+            if (!isMatch) {
+                allMatch = false;
+            }
+
+            const letter = document.createElement('span');
+            letter.innerText = '0x' + newValue.charCodeAt(i).toString(16);
+            letter.className = 'byte-by-byte-display-character ' + (isMatch ? 'match' : 'not-match');
+            displayNew.appendChild(letter);
+        }
+
+        result.value = allMatch ? 'Same' : 'Different'
+    }
+
+    inputOld.oninput = onChange;
+    inputNew.oninput = onChange;
+
+    onChange();
+}
+
+byteByByteMain();

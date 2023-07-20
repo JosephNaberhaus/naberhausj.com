@@ -1,1 +1,98 @@
-<!doctype html><html lang=en><head><meta charset=utf-8><title>This Website</title><link rel=stylesheet href=/styles.css><link rel=icon href=/favicon.ico><link rel=icon href=/icon.svg type=image/svg+xml><link rel=apple-touch-icon href=/apple-touch-icon.png><link rel=manifest href=/manifest.webmanifest><meta name=description content="An overview of how I build and host this website."><meta name=viewport content="width=device-width,initial-scale=1"><div class=header><a class=website_title href=/><h1>Joseph Naberhaus</h1></a><div class=navigation><a class=navigation_link href=/programming/articles.html><img class=navigation_link_icon src=/components/header/navigation-link/programming.svg alt=Programming><div class=navigation_link_text>Programming</div></a><a class=navigation_link href=/woodworking/articles.html><img class=navigation_link_icon src=/components/header/navigation-link/woodworking.svg alt=Woodworking><div class=navigation_link_text>Woodworking</div></a><a class=navigation_link href=/miscellaneous/articles.html><img class=navigation_link_icon src=/components/header/navigation-link/miscellaneous.svg alt=Miscellaneous><div class=navigation_link_text>Miscellaneous</div></a></div></div><hr></head><body><article><h2>This Website</h2><div class=created-on>Written in December 2020</div><a class=external_link href=https://github.com/JosephNaberhaus/naberhausj.com><img width=60 height=60 class=external_link_icon src=/components/external-link/github-repository/github.svg alt><div class=external_link_text>View project on Github</div></a><h3>Background</h3><p>I've had a personal website hosted on Squarespace since 2017. At the time, I was making good use of their e-commerce service. Besides that, I found the drag-and-drop interface slow. Additionally, these services rarely give you any significant customization tools. You can write custom HTML and style it with inline CSS or via a global stylesheet. However, trying to change the base theme's CSS is next to impossible owing to the minified <code>class</code> and <code>id</code> attributes being non-deterministic.<p>So I started writing my own website from scratch. My criteria was short:<ul><li>Load quickly / Be small<li>Function without JavaScript<li>No dependencies loaded onto the browser</ul><p>These are all things I enjoy about my three favourite websites (<a href=https://news.ycombinator.com/>news.ycombinator.com</a>, <a href=https://woodgears.ca/>woodgears.ca</a> and <a href=http://paulgraham.com/>paulgraham.com</a>). Watching these pages instantly render is a magical thing to me. Constantly seeing loading bars and spinners makes you forget a computer is ludicrously fast.<h3>Reusing HTML</h3><p>For almost any multi-page website there are some sections of the page that are repeated. DRY dictates that rather than copying and pasting these onto each page we should abstract them out into a reusable component. Unfortunately, there is no <a href=https://stackoverflow.com/questions/36387676/is-it-possible-to-reuse-html-like-a-template-on-multiple-pages>performant way</a> to do this in plain HTML.<p>One solution to this problem is to use a templating tool. First, the reusable parts of the website are moved into seperate files. Then they can be imported into other HTML documents. Finally, a tool inserts the template HTML wherever it is needed and outputs the fully formed HTML pages. There are some very powerful tools available to do this, but since I want to avoid dependencies I made my own. The result was a rather simple Go application which you can find more information about <a href=https://github.com/JosephNaberhaus/naberhausj.com/tree/master/builder>here</a>.<p>To work on this website I use Intellij with the <a href=https://plugins.jetbrains.com/plugin/7177-file-watchers>File Watchers</a> plugin. Whenever I save a HTML, CSS, or JavaScript file it runs my website builder. The output directory is then served with <code>python -m http.server</code>. The only thing this lacks when compared to the development experience of React or Angular is that the page doesn't automatically reload when a change is made.<h3>Auto Deploying</h3><p>I host this website for free with Github Pages. Rather than manually push the built assets to the "gh-pages" branch I have created a Github Action that does this for me whenever I push to "master". One job builds the website with my Go application and the other pastes that over the current website and pushes a commit. The YAML for this action can be viewed <a href=https://github.com/JosephNaberhaus/naberhausj.com/blob/master/.github/workflows/publish.yml>here</a>.<h3>DNS and SSL</h3><p>The last two pieces of this website are from AWS. My domain was purchased via Route53. This service is both cheap and extremely flexible. Guides are available online for configuring DNS records to point to a Github Pages site.<p>For my SSL certificate I use the AWS Certificate Manager. This was surprisingly easy. With just a few clicks it automatically configured my Route53 domain with a valid certificate.</article><div class=footer><div class=social-links><a class=social_link href=mailto:contact@naberhausj.com><img class=social_link_icon src=/components/footer/social-link/email.svg alt=E-mail><div class=social_link_name>E-mail</div></a><a class=social_link href=http://github.com/josephNaberhaus><img class=social_link_icon src=/components/footer/social-link/github.svg alt=Github><div class=social_link_name>Github</div></a><a class=social_link href=https://www.youtube.com/c/JosephNaberhaus><img class=social_link_icon src=/components/footer/social-link/youtube.svg alt=YouTube><div class=social_link_name>YouTube</div></a><a class=social_link href=https://www.linkedin.com/in/naberhausj><img class=social_link_icon src=/components/footer/social-link/linkedin.svg alt=LinkedIn><div class=social_link_name>LinkedIn</div></a></div><div class=copyright>&copy; Joseph Naberhaus 2020-23</div></div></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>This Website</title>
+    <link rel="stylesheet" href="/styles.css">
+
+    <link rel="icon" href="/favicon.ico">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/manifest.webmanifest">
+
+    <meta name="description" content="An overview of how I build and host this website.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <div class="header">
+        <a class="website_title" href="/">
+            <h1>Joseph Naberhaus</h1>
+        </a>
+        <div class="navigation">
+            <a class="navigation_link" href="/programming/articles.html">
+    <img class="navigation_link_icon" src="/components/header/navigation-link/programming.svg" alt="Programming">
+    <div class="navigation_link_text">Programming</div>
+</a>
+            <a class="navigation_link" href="/woodworking/articles.html">
+    <img class="navigation_link_icon" src="/components/header/navigation-link/woodworking.svg" alt="Woodworking">
+    <div class="navigation_link_text">Woodworking</div>
+</a>
+            <a class="navigation_link" href="/miscellaneous/articles.html">
+    <img class="navigation_link_icon" src="/components/header/navigation-link/miscellaneous.svg" alt="Miscellaneous">
+    <div class="navigation_link_text">Miscellaneous</div>
+</a>
+        </div>
+    </div>
+    <hr>
+</head>
+<body>
+<article>
+    <h2>This Website</h2>
+    <div class="created-on">
+  Written in December 2020
+</div>
+    <a class="external_link" href="https://github.com/JosephNaberhaus/naberhausj.com">
+    <img width="60" height="60" class="external_link_icon" src="/components/external-link/github-repository/github.svg" alt="">
+    <div class="external_link_text">View project on Github</div>
+</a>
+    <h3>Background</h3>
+    <p>I've had a personal website hosted on Squarespace since 2017. At the time, I was making good use of their e-commerce service. Besides that, I found the drag-and-drop interface slow. Additionally, these services rarely give you any significant customization tools. You can write custom HTML and style it with inline CSS or via a global stylesheet. However, trying to change the base theme's CSS is next to impossible owing to the minified <code>class</code> and <code>id</code> attributes being non-deterministic.</p>
+    <p>So I started writing my own website from scratch. My criteria was short:</p>
+    <ul>
+        <li>Load quickly / Be small</li>
+        <li>Function without JavaScript</li>
+        <li>No dependencies loaded onto the browser</li>
+    </ul>
+    <p>These are all things I enjoy about my three favourite websites (<a href="https://news.ycombinator.com/">news.ycombinator.com</a>, <a href="https://woodgears.ca/">woodgears.ca</a> and <a href="http://paulgraham.com/">paulgraham.com</a>). Watching these pages instantly render is a magical thing to me. Constantly seeing loading bars and spinners makes you forget a computer is ludicrously fast.</p>
+    <h3>Reusing HTML</h3>
+    <p>For almost any multi-page website there are some sections of the page that are repeated. DRY dictates that rather than copying and pasting these onto each page we should abstract them out into a reusable component. Unfortunately, there is no <a href="https://stackoverflow.com/questions/36387676/is-it-possible-to-reuse-html-like-a-template-on-multiple-pages">performant way</a> to do this in plain HTML.</p>
+    <p>One solution to this problem is to use a templating tool. First, the reusable parts of the website are moved into seperate files. Then they can be imported into other HTML documents. Finally, a tool inserts the template HTML wherever it is needed and outputs the fully formed HTML pages. There are some very powerful tools available to do this, but since I want to avoid dependencies I made my own. The result was a rather simple Go application which you can find more information about <a href="https://github.com/JosephNaberhaus/naberhausj.com/tree/master/builder">here</a>.</p>
+    <p>To work on this website I use Intellij with the <a href="https://plugins.jetbrains.com/plugin/7177-file-watchers">File Watchers</a> plugin. Whenever I save a HTML, CSS, or JavaScript file it runs my website builder. The output directory is then served with <code>python -m http.server</code>. The only thing this lacks when compared to the development experience of  React or Angular is that the page doesn't automatically reload when a change is made.</p>
+    <h3>Auto Deploying</h3>
+    <p>I host this website for free with Github Pages. Rather than manually push the built assets to the "gh-pages" branch I have created a Github Action that does this for me whenever I push to "master". One job builds the website with my Go application and the other pastes that over the current website and pushes a commit. The YAML for this action can be viewed <a href="https://github.com/JosephNaberhaus/naberhausj.com/blob/master/.github/workflows/publish.yml">here</a>.</p>
+    <h3>DNS and SSL</h3>
+    <p>The last two pieces of this website are from AWS. My domain was purchased via Route53. This service is both cheap and extremely flexible. Guides are available online for configuring DNS records to point to a Github Pages site.</p>
+    <p>For my SSL certificate I use the AWS Certificate Manager. This was surprisingly easy. With just a few clicks it automatically configured my Route53 domain with a valid certificate.</p>
+</article>
+<div class="footer">
+    <div class="social-links">
+        <a class="social_link" href="mailto:contact@naberhausj.com">
+    <img class='social_link_icon' src='/components/footer/social-link/email.svg' alt='E-mail'/>
+    <div class='social_link_name'>
+        E-mail
+    </div>
+</a>
+        <a class="social_link" href="http://github.com/josephNaberhaus">
+    <img class='social_link_icon' src='/components/footer/social-link/github.svg' alt='Github'/>
+    <div class='social_link_name'>
+        Github
+    </div>
+</a>
+        <a class="social_link" href="https://www.youtube.com/c/JosephNaberhaus">
+    <img class='social_link_icon' src='/components/footer/social-link/youtube.svg' alt='YouTube'/>
+    <div class='social_link_name'>
+        YouTube
+    </div>
+</a>
+        <a class="social_link" href="https://www.linkedin.com/in/naberhausj">
+    <img class='social_link_icon' src='/components/footer/social-link/linkedin.svg' alt='LinkedIn'/>
+    <div class='social_link_name'>
+        LinkedIn
+    </div>
+</a>
+    </div>
+    <div class="copyright">
+        &copy; Joseph Naberhaus 2020-23
+    </div>
+</div>
+</body>
+</html>
