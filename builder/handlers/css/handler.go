@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/JosephNaberhaus/naberhausj.com/builder/builder"
 	"github.com/JosephNaberhaus/naberhausj.com/builder/file"
-	"github.com/JosephNaberhaus/naberhausj.com/builder/minifier"
 	"io/ioutil"
 	"path/filepath"
 	"strings"
@@ -59,12 +58,7 @@ func (h *handler) Build(node *file.Node) (interface{}, error) {
 
 func (h *handler) Finalize() error {
 	for dir, cssBuilder := range h.cssBuilders {
-		minifiedCSS, err := minifier.Global.Bytes("text/css", cssBuilder.Bytes())
-		if err != nil {
-			return fmt.Errorf("error minifying css: %w", err)
-		}
-
-		err = h.orchestrator.Write(nil, filepath.Join(dir, outputFile), minifiedCSS)
+		err := h.orchestrator.Write(nil, filepath.Join(dir, outputFile), cssBuilder.Bytes())
 		if err != nil {
 			return fmt.Errorf("error writing css: %w", err)
 		}

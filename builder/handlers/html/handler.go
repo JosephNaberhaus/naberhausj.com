@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"github.com/JosephNaberhaus/naberhausj.com/builder/builder"
 	"github.com/JosephNaberhaus/naberhausj.com/builder/file"
-	"github.com/JosephNaberhaus/naberhausj.com/builder/minifier"
 	"io/ioutil"
 	"strings"
 )
@@ -51,12 +50,7 @@ func (h *handler) Build(node *file.Node) (builder.Artifact, error) {
 			return nil, fmt.Errorf("error substituting directives: %w", err)
 		}
 
-		minifiedHtml, err := minifier.Global.String("text/html", contentToString(content))
-		if err != nil {
-			return nil, fmt.Errorf("error minifying html: %w", err)
-		}
-
-		err = h.orchestrator.Write(node, node.File, []byte(minifiedHtml))
+		err = h.orchestrator.Write(node, node.File, []byte(contentToString(content)))
 		if err != nil {
 			return nil, fmt.Errorf("error writing html file: %w", err)
 		}
