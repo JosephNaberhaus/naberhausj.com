@@ -284,7 +284,7 @@ body {
     flex-direction: column;
 }
 
-p, ul {
+p, ul, ol {
     line-height: 1.5;
 }
 
@@ -368,25 +368,27 @@ img {
 }
 
 @media screen and (max-width: 600px) {
-    article :not(a) img {
+    article :not(a) img, article :not(a) video {
         width: calc(100vw - 2rem);
     }
 }
 
 .image_left {
     float: left;
+    clear: both;
     margin-block-end: 1rem;
     margin-inline-end: 1rem;
 }
 
 .image_right {
     float: right;
+    clear: both;
     margin-block-end: 1rem;
     margin-inline-start: 1rem;
 }
 
 .image_flex_center {
-    margin: 0.5rem;
+    margin-bottom: 1rem;
 }
 
 .flex_center {
