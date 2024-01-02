@@ -51,6 +51,6 @@
 
 @media (hover: none) {
     .social_link:hover {
-        border-color: var(--background);
+        border-color: var(--light-text);
     }
 }
