@@ -103,7 +103,7 @@
 
 .copyright {
     text-align: center;
-    color: var(--background);
+    color: var(--light-text);
     font-size: 12px;
 }
 .social_link {
@@ -159,7 +159,7 @@
 
 @media (hover: none) {
     .social_link:hover {
-        border-color: var(--background);
+        border-color: var(--light-text);
     }
 }
 .header {
@@ -260,9 +260,9 @@
 }
 :root {
     --text: rgb(17, 17, 17);
+    --light-text: rgb(255, 255, 254);
     --highlight: rgb(95, 168, 211);
     --highlight-dark: rgb(19, 51, 70);
-    --background: rgb(255, 255, 254);
     --background-dark: rgb(240, 240, 239)
 }
 
@@ -276,7 +276,7 @@ body {
     font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
     color: var(--text);
 
-    background: var(--background);
+    background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAiIGhlaWdodD0iMTAwIj48ZmlsdGVyIGlkPSJuIj48ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iLjQiIHN0aXRjaFRpbGVzPSJzdGl0Y2giLz48L2ZpbHRlcj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsdGVyPSJ1cmwoI24pIiBvcGFjaXR5PSIwLjA4Ii8+PC9zdmc+");
 
     margin: 0 1rem;
 
