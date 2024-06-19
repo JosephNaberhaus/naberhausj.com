@@ -368,7 +368,7 @@ img {
 }
 
 @media screen and (max-width: 600px) {
-    article :not(a) img, article :not(a) video {
+    article :not(a) > img, article :not(a) > video {
         width: calc(100vw - 2rem);
     }
 }
