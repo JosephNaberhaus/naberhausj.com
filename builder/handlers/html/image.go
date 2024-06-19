@@ -30,11 +30,10 @@ func (h htmlImage) toHtml(dir string) (string, error) {
 	}
 
 	return fmt.Sprintf(
-		"<img class=\"%s\" width=\"%d\" height=\"%d\" src=\"%s\" srcset=\"%s\" sizes=\"%dpx\" alt=\"%s\">",
+		"<img class=\"%s\" width=\"%d\" height=\"%d\" srcset=\"%s\" sizes=\"%dpx\" alt=\"%s\">",
 		h.class,
 		h.width,
 		h.height,
-		h.src,
 		srcSetBuilder.String(),
 		h.width,
 		h.alt,
