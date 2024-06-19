@@ -58,6 +58,11 @@ func (h handler) Build(node *file.Node) (interface{}, error) {
 		return nil, fmt.Errorf("error loading image file: %w", err)
 	}
 
+	err = h.orchestrator.Write(node, node.File, image.data)
+	if err != nil {
+		return nil, fmt.Errorf("error writing the original file; %w", err)
+	}
+
 	originalWidth, originalHeight, err := image.Dimensions()
 	if err != nil {
 		return nil, fmt.Errorf("error getting image dimensions: %w", err)
