@@ -32,13 +32,15 @@ func substituteImports(
 func substituteVariable(
 	contentNode ContentNode,
 	parameters map[string]string,
-) (ContentNode, error) {
+) ContentNode {
 	variableName := contentNode.variableName()
 	value, ok := parameters[variableName]
 	if ok {
-		return ContentNode(value), nil
+		return ContentNode(value)
 	}
-	return "", fmt.Errorf("no value provided for parameter: %s", variableName)
+
+	// Just fall back to the original node. Otherwise, it's difficult to write CSS colors in HTML.
+	return contentNode
 }
 
 func substituteImport(
@@ -81,10 +83,7 @@ func substituteContent(
 	var newContent []ContentNode
 	for _, artifactContent := range content {
 		if artifactContent.isVariable() {
-			result, err := substituteVariable(artifactContent, parameters)
-			if err != nil {
-				return nil, fmt.Errorf("error subsituting variable: %w", err)
-			}
+			result := substituteVariable(artifactContent, parameters)
 			newContent = append(newContent, result)
 		} else if artifactContent.isDirective() {
 			directiveName := artifactContent.directiveName()

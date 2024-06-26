@@ -1,0 +1,250 @@
+<div class="example">
+    <div class="example-title">8-bit Computer Emulator</div>
+    <svg viewBox="50 50 850 430" id="computer">
+        <style>
+            .group-border {
+                stroke: black;
+                fill-opacity: 20%;
+            }
+            .group-title {
+                font-family: monospace;
+                font-size: 1.5rem;
+
+                text-anchor: middle;
+            }
+            .group-label {
+                font-family: monospace;
+                font-size: 1.25rem;
+            }
+
+            .text-display {
+                fill: dimgray;
+
+                font-family: monospace;
+                font-size: 1.25rem;
+            }
+
+            .red-leds {
+                fill: #320000;
+            }
+            .red-leds > .on {
+                fill: #ff0000;
+            }
+
+            .green-leds {
+                fill: #003200;
+            }
+            .green-leds > .on {
+                fill: #00ff00;
+            }
+        </style>
+
+        <g id="bus" transform="translate(320, 50)">
+            <rect class="group-border" x="0" y="0" width="280" height="275" fill="#fffa03"/>
+            <text class="group-title" x="140" y="30">Bus</text>
+
+            <g transform="translate(25, 70)">
+                <g id="bus-input-1" class="eight-bit-display" transform="translate(0, 0)">
+                    <text class="group-label">Input 1:</text>
+                    <g class="red-leds" transform="translate(10, 25)">
+                        <circle r="10" cx="0"/>
+                        <circle r="10" cx="25"/>
+                        <circle r="10" cx="50"/>
+                        <circle r="10" cx="75"/>
+                        <circle r="10" cx="100"/>
+                        <circle r="10" cx="125"/>
+                        <circle r="10" cx="150"/>
+                        <circle r="10" cx="175"/>
+                    </g>
+                </g>
+                <g id="bus-input-2" class="eight-bit-display" transform="translate(0, 75)">
+                    <text class="group-label">Input 2:</text>
+                    <g class="red-leds" transform="translate(10, 25)">
+                        <circle r="10" cx="0"/>
+                        <circle r="10" cx="25"/>
+                        <circle r="10" cx="50"/>
+                        <circle r="10" cx="75"/>
+                        <circle r="10" cx="100"/>
+                        <circle r="10" cx="125"/>
+                        <circle r="10" cx="150"/>
+                        <circle r="10" cx="175"/>
+                    </g>
+                </g>
+                <g id="bus-output" class="eight-bit-display" transform="translate(0, 150)">
+                    <text class="group-label">Output:</text>
+                    <g class="green-leds" transform="translate(10, 25)">
+                        <circle r="10" cx="0"/>
+                        <circle r="10" cx="25"/>
+                        <circle r="10" cx="50"/>
+                        <circle r="10" cx="75"/>
+                        <circle r="10" cx="100"/>
+                        <circle r="10" cx="125"/>
+                        <circle r="10" cx="150"/>
+                        <circle r="10" cx="175"/>
+                    </g>
+                </g>
+            </g>
+        </g>
+
+        <g id="program-counter" transform="translate(620, 50)">
+            <rect class="group-border" x="0" y="0" width="280" height="275" fill="#00fdff"/>
+            <text class="group-title" x="140" y="30">Program Counter</text>
+
+            <g transform="translate(25, 70)">
+                <g id="program-counter-buffer" class="eight-bit-display" transform="translate(0, 0)">
+                    <text class="group-label">Next:</text>
+                    <g class="red-leds" transform="translate(10, 25)">
+                        <circle r="10" cx="0"/>
+                        <circle r="10" cx="25"/>
+                        <circle r="10" cx="50"/>
+                        <circle r="10" cx="75"/>
+                        <circle r="10" cx="100"/>
+                        <circle r="10" cx="125"/>
+                        <circle r="10" cx="150"/>
+                        <circle r="10" cx="175"/>
+                    </g>
+                </g>
+                <g id="program-counter" class="eight-bit-display" transform="translate(0, 75)">
+                    <text class="group-label">Current:</text>
+                    <g class="red-leds" transform="translate(10, 25)">
+                        <circle r="10" cx="0"/>
+                        <circle r="10" cx="25"/>
+                        <circle r="10" cx="50"/>
+                        <circle r="10" cx="75"/>
+                        <circle r="10" cx="100"/>
+                        <circle r="10" cx="125"/>
+                        <circle r="10" cx="150"/>
+                        <circle r="10" cx="175"/>
+                    </g>
+                </g>
+                <g transform="translate(0, 150)">
+                    <text class="group-label">Current Instruction:</text>
+                    <g transform="translate(0, 30)">
+                        <text id="current-instruction" class="text-display"></text>
+                    </g>
+                </g>
+            </g>
+        </g>
+
+        <g id="clock" transform="translate(620, 345)">
+            <rect class="group-border" x="0" y="0" width="280" height="125" fill="#8931ff"/>
+            <text class="group-title" x="125" y="30">Clock</text>
+
+            <g transform="translate(25, 70)">
+                <text class="group-label">Stage:</text>
+                <g class="red-leds" transform="translate(10, 25)">
+                    <circle r="10" cx="0"/>
+                    <circle r="10" cx="25"/>
+                    <circle r="10" cx="50"/>
+                    <circle r="10" cx="75"/>
+                </g>
+            </g>
+        </g>
+
+        <g id="register-file" transform="translate(50, 50)">
+            <rect class="group-border" x="0" y="0" width="250" height="430" fill="#05f802"/>
+            <text class="group-title" x="125" y="30">Register File</text>
+
+            <g transform="translate(25, 70)">
+                <g id="register-buffer" class="eight-bit-display" transform="translate(0, 0)">
+                    <text class="group-label">Register Buffer:</text>
+                    <g class="red-leds" transform="translate(10, 25)">
+                        <circle r="10" cx="0"/>
+                        <circle r="10" cx="25"/>
+                        <circle r="10" cx="50"/>
+                        <circle r="10" cx="75"/>
+                        <circle r="10" cx="100"/>
+                        <circle r="10" cx="125"/>
+                        <circle r="10" cx="150"/>
+                        <circle r="10" cx="175"/>
+                    </g>
+                </g>
+                <g id="register-1-display" class="eight-bit-display" transform="translate(0, 75)">
+                    <text class="group-label">Register 1:</text>
+                    <g class="red-leds" transform="translate(10, 25)">
+                        <circle r="10" cx="0"/>
+                        <circle r="10" cx="25"/>
+                        <circle r="10" cx="50"/>
+                        <circle r="10" cx="75"/>
+                        <circle r="10" cx="100"/>
+                        <circle r="10" cx="125"/>
+                        <circle r="10" cx="150"/>
+                        <circle r="10" cx="175"/>
+                    </g>
+                </g>
+                <g id="register-2-display" class="eight-bit-display" transform="translate(0, 150)">
+                    <text class="group-label">Register 2:</text>
+                    <g class="red-leds" transform="translate(10, 25)">
+                        <circle r="10" cx="0"/>
+                        <circle r="10" cx="25"/>
+                        <circle r="10" cx="50"/>
+                        <circle r="10" cx="75"/>
+                        <circle r="10" cx="100"/>
+                        <circle r="10" cx="125"/>
+                        <circle r="10" cx="150"/>
+                        <circle r="10" cx="175"/>
+                    </g>
+                </g>
+                <g id="register-3-display" class="eight-bit-display" transform="translate(0, 225)">
+                    <text class="group-label">Register 3:</text>
+                    <g class="red-leds" transform="translate(10, 25)">
+                        <circle r="10" cx="0"/>
+                        <circle r="10" cx="25"/>
+                        <circle r="10" cx="50"/>
+                        <circle r="10" cx="75"/>
+                        <circle r="10" cx="100"/>
+                        <circle r="10" cx="125"/>
+                        <circle r="10" cx="150"/>
+                        <circle r="10" cx="175"/>
+                    </g>
+                </g>
+                <g id="register-4-display" class="eight-bit-display" transform="translate(0, 300)">
+                    <text class="group-label">Register 4:</text>
+                    <g class="red-leds" transform="translate(10, 25)">
+                        <circle r="10" cx="0"/>
+                        <circle r="10" cx="25"/>
+                        <circle r="10" cx="50"/>
+                        <circle r="10" cx="75"/>
+                        <circle r="10" cx="100"/>
+                        <circle r="10" cx="125"/>
+                        <circle r="10" cx="150"/>
+                        <circle r="10" cx="175"/>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </svg>
+    <div class="error-message-container">
+        <div id="error-message" style="visibility: hidden"></div>
+    </div>
+    <div class="controls">
+        <div class="controls-row">
+            <label>Controls:</label>
+            <span class="controls-row">
+                        <button id="step-button">Step</button>
+                        <button id="start-button">Start</button>
+                        <button id="pause-button">Pause</button>
+                        <button id="reset-button">Reset</button>
+                    </span>
+        </div>
+        <div class="controls-row">
+            <label for="clock-speed">Clock speed (Hz):</label>
+            <input type="number" id="clock-speed" value="10" min="0" max="5000">
+        </div>
+        <div class="controls-row">
+            <label for="load-program-select">Example programs: </label>
+            <span class="controls-row">
+                        <select id="load-program-select">
+                            <option value="fib" selected>Fibonacci</option>
+                            <option value="prime">Prime Numbers</option>
+                            <option value="sort">Selection Sort</option>
+                        </select>
+                        <button id="load-program-button">Load</button>
+                    </span>
+        </div>
+        <div>
+            <textarea id="program-text"></textarea>
+        </div>
+    </div>
+    <script type="text/javascript" src="emulator.js"></script>
+</div>
