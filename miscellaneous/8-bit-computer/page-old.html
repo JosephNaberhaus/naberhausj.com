@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>8-bit Computer</title>
+    <link rel="stylesheet" href="/styles.css">
+
+    <link rel="icon" href="/favicon.ico">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/manifest.webmanifest">
+
+    <meta name="description" content="An 8-bit computer I built using 7400 series integrated circuits.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <div class="header">
+        <a class="website_title" href="/">
+            <h1>Joseph Naberhaus</h1>
+        </a>
+        <div class="navigation">
+            <a class="navigation_link" href="/programming/articles.html">
+    <img class="navigation_link_icon" src="/components/header/navigation-link/programming.svg" alt="Programming">
+    <div class="navigation_link_text">Programming</div>
+</a>
+            <a class="navigation_link" href="/woodworking/articles.html">
+    <img class="navigation_link_icon" src="/components/header/navigation-link/woodworking.svg" alt="Woodworking">
+    <div class="navigation_link_text">Woodworking</div>
+</a>
+            <a class="navigation_link" href="/miscellaneous/articles.html">
+    <img class="navigation_link_icon" src="/components/header/navigation-link/miscellaneous.svg" alt="Miscellaneous">
+    <div class="navigation_link_text">Miscellaneous</div>
+</a>
+        </div>
+    </div>
+    <hr>
+</head>
+<body>
+<article>
+    <section>
+        <h2>8-bit Computer</h2>
+        <div class="created-on">
+  June 2024
+</div>
+        <a class="external_link" href="https://www.youtube.com/watch?v=CE4bZoiFI-s">
+    <img width="60" height="42" class="external_link_icon" src="/components/external-link/youtube-video/youtube.svg" alt="">
+    <div class="external_link_text">Watch on YouTube</div>
+</a>
+        <a class="external_link" href="https://github.com/JosephNaberhaus/8-bit-computer-programmer">
+    <img width="60" height="60" class="external_link_icon" src="/components/external-link/github-repository/github.svg" alt="">
+    <div class="external_link_text">View project on GitHub</div>
+</a>
+        <p>Earlier this year, I came back from a camping trip with an inspiration to learn electronics. I started reading a text book, <i>Practical Electronics for Inventors</i>, and began accruing equipment. After building some basic frequency filters, I had the desire to tackle a substantial project. For many years, I've dreamed about building a working computer from just logic gates. I ordered some breadboards, jumper cables, and integrated circuits and set to work.</p>
+        <p>The integrated circuits I used come from the <a href="https://en.wikipedia.org/wiki/List_of_7400-series_integrated_circuits">7400 series</a> (a family of integrated circuits that perform basic boolean logic functions). Specifically, I used only the AND, OR, NOT, NAND, and XOR versions of these circuits. These logic gates are the basic building blocks of digital logic. With enough logic gates you can replicate any computer in the world. The computer I built, on the other hand, used only about 800.</p>
+        <p>I cheated in two places. For both the program memory and the RAM I used flash memory chips. This means I can't say I wired the entire computer by hand. While this pains me to admit, I wasn't willing to invest the time or money to remedy it.</p>
+    </section>
+    <section>
+        <h3>Architecture</h3>
+        <p>I built the computer without any formal plans. The reason this is possible is because of modularity. I built a ten modules that each perform a simple task, and then integrated them into the final computer.</p>
+        <img class="image_right" width="7000" height="3937" srcset="modules-100.webp 100w,modules-250.webp 250w,modules-500.webp 500w,modules-750.webp 750w,modules-1000.webp 1000w,modules-1500.webp 1500w,modules-1920.webp 1920w" sizes="7000px" alt="A top-down view of the computer">
+        <p>You can watch <a href="https://www.youtube.com/watch?v=CE4bZoiFI-s">the linked YouTube video</a> for more details about the functionality of each module.</p>
+        <p>Of course, integrating the modules was the truly hard part. Especially since I didn't bother documenting the inputs and outputs of each module, leading me to reverse engineer my own work. Besides that, I also spent many hours diagnosing mis-wired and faulty connections.</p>
+        <p>Noise was a big problem. The clock design I came up with was very sensative. This meant that a transient voltage spike/drop would often cause an unintentional clock step. A couple of times I had problems that were solved by simply adding capacitors to make my power supply more stable. I also discovered very late into the build that my clock only works with my oscilloscope plugged into the wall. It doesn't need to be connected to anything, or even turned on. Just plugged into the wall. The moment I unplug it my computer goes haywire.</p>
+    </section>
+    <section>
+        <h3>Machine Language</h3>
+        <p>The assembly language I designed compiles into 24-bit machine language. While the rest of the computer uses 8-bit busses, I decided to splurge on the machine language for two reasons. First, it allowed me to implement a richer set of instructions. Second, it made implementing the instructions simpler. Many of the bits in each instruction have just a single purpose. For example, there are 8 bits that are devoted entirely to selecting the inputs and outputs of an operation, even though some instructions only use 2 bits. Single-purpose bits meant I needed less decoding logic in the computer. I could just run a wire from the bit to the one operation it performed.</p>
+        <p>If you want to learn more about the assembly language, you can view the README on <a href="https://github.com/JosephNaberhaus/8-bit-computer-programmer">my Github repository for the computer</a>. In that repository, there are also <a href="https://github.com/JosephNaberhaus/8-bit-computer-programmer/tree/master/programs">some example programs</a> that I've run on the computer.</p>
+    </section>
+    <section>
+        <h3>Capabilities</h3>
+        <p>It's reasonable to wonder what this computer is capable of. Of course, the answer isn't terribly impressive. With only 256 lines of program memory, and 256 bytes of RAM it's not possible to perform sophisticated algorithms. That said, with a clock speed of 0.5 MHz it can perform these relatively simple tasks much faster than by hand. The absurd power of modern computers is the only reason this one seems useless. A pre-transistor mathematician would have found plenty of uses for this machine.</p>
+        <p>Regardless, performance wasn't one of the goals of this project. The actual point was to enrich my understanding of computers, and it did so tremendously.</p>
+    </section>
+</article>
+<div class="footer">
+    <div class="social-links">
+        <a class="social_link" href="mailto:contact@naberhausj.com">
+    <img class='social_link_icon' src='/components/footer/social-link/email.svg' alt='E-mail'/>
+    <div class='social_link_name'>
+        E-mail
+    </div>
+</a>
+        <a class="social_link" href="http://github.com/josephNaberhaus">
+    <img class='social_link_icon' src='/components/footer/social-link/github.svg' alt='Github'/>
+    <div class='social_link_name'>
+        Github
+    </div>
+</a>
+        <a class="social_link" href="https://www.youtube.com/c/JosephNaberhaus">
+    <img class='social_link_icon' src='/components/footer/social-link/youtube.svg' alt='YouTube'/>
+    <div class='social_link_name'>
+        YouTube
+    </div>
+</a>
+        <a class="social_link" href="https://www.linkedin.com/in/naberhausj">
+    <img class='social_link_icon' src='/components/footer/social-link/linkedin.svg' alt='LinkedIn'/>
+    <div class='social_link_name'>
+        LinkedIn
+    </div>
+</a>
+    </div>
+    <div class="copyright">
+        &copy; Joseph Naberhaus 2020-24
+    </div>
+</div>
+</body>
+</html>

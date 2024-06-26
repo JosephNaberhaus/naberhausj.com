@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>8-bit Computer</title>
+    <title>Homemade 8-bit Computer</title>
     <link rel="stylesheet" href="/styles.css">
 
     <link rel="icon" href="/favicon.ico">
@@ -35,11 +35,12 @@
     <hr>
 </head>
 <body>
+<link rel="stylesheet" href="styles.css">
 <article>
     <section>
-        <h2>8-bit Computer</h2>
+        <h2>Homemade 8-bit Computer</h2>
         <div class="created-on">
-  Written in June 2024
+  June 2024
 </div>
         <a class="external_link" href="https://www.youtube.com/watch?v=CE4bZoiFI-s">
     <img width="60" height="42" class="external_link_icon" src="/components/external-link/youtube-video/youtube.svg" alt="">
@@ -47,29 +48,369 @@
 </a>
         <a class="external_link" href="https://github.com/JosephNaberhaus/8-bit-computer-programmer">
     <img width="60" height="60" class="external_link_icon" src="/components/external-link/github-repository/github.svg" alt="">
-    <div class="external_link_text">View project on Github</div>
+    <div class="external_link_text">View project on GitHub</div>
 </a>
-        <p>Earlier this year, I came back from a camping trip with an inspiration to learn electronics. I started reading a text book, <i>Practical Electronics for Inventors</i>, and began accruing equipment. After building some basic frequency filters, I had the desire to tackle a substantial project. For many years, I've dreamed about building a working computer from just logic gates. I ordered some breadboards, jumper cables, and integrated circuits and set to work.</p>
-        <p>The integrated circuits I used come from the <a href="https://en.wikipedia.org/wiki/List_of_7400-series_integrated_circuits">7400 series</a> (a family of integrated circuits that perform basic boolean logic functions). Specifically, I used only the AND, OR, NOT, NAND, and XOR versions of these circuits. These logic gates are the basic building blocks of digital logic. With enough logic gates you can replicate any computer in the world. The computer I built, on the other hand, used only about 800.</p>
-        <p>I cheated in two places. For both the program memory and the RAM I used flash memory chips. This means I can't say I wired the entire computer by hand. While this pains me to admit, I wasn't willing to invest the time or money to remedy it.</p>
-    </section>
-    <section>
-        <h3>Architecture</h3>
-        <p>I built the computer without any formal plans. The reason this is possible is because of modularity. I built a ten modules that each perform a simple task, and then integrated them into the final computer.</p>
-        <img class="image_right" width="7000" height="3937" srcset="modules-100.webp 100w,modules-250.webp 250w,modules-500.webp 500w,modules-750.webp 750w,modules-1000.webp 1000w,modules-1500.webp 1500w,modules-1920.webp 1920w" sizes="7000px" alt="A top-down view of the computer">
-        <p>You can watch <a href="https://www.youtube.com/watch?v=CE4bZoiFI-s">the linked YouTube video</a> for more details about the functionality of each module.</p>
-        <p>Of course, integrating the modules was the truly hard part. Especially since I didn't bother documenting the inputs and outputs of each module, leading me to reverse engineer my own work. Besides that, I also spent many hours diagnosing mis-wired and faulty connections.</p>
-        <p>Noise was a big problem. The clock design I came up with was very sensative. This meant that a transient voltage spike/drop would often cause an unintentional clock step. A couple of times I had problems that were solved by simply adding capacitors to make my power supply more stable. I also discovered very late into the build that my clock only works with my oscilloscope plugged into the wall. It doesn't need to be connected to anything, or even turned on. Just plugged into the wall. The moment I unplug it my computer goes haywire.</p>
-    </section>
-    <section>
-        <h3>Machine Language</h3>
-        <p>The assembly language I designed compiles into 24-bit machine language. While the rest of the computer uses 8-bit busses, I decided to splurge on the machine language for two reasons. First, it allowed me to implement a richer set of instructions. Second, it made implementing the instructions simpler. Many of the bits in each instruction have just a single purpose. For example, there are 8 bits that are devoted entirely to selecting the inputs and outputs of an operation, even though some instructions only use 2 bits. Single-purpose bits meant I needed less decoding logic in the computer. I could just run a wire from the bit to the one operation it performed.</p>
-        <p>If you want to learn more about the assembly language, you can view the README on <a href="https://github.com/JosephNaberhaus/8-bit-computer-programmer">my Github repository for the computer</a>. In that repository, there are also <a href="https://github.com/JosephNaberhaus/8-bit-computer-programmer/tree/master/programs">some example programs</a> that I've run on the computer.</p>
-    </section>
-    <section>
-        <h3>Capabilities</h3>
-        <p>It's reasonable to wonder what this computer is capable of. Of course, the answer isn't terribly impressive. With only 256 lines of program memory, and 256 bytes of RAM it's not possible to perform sophisticated algorithms. That said, with a clock speed of 0.5 MHz it can perform these relatively simple tasks much faster than by hand. The absurd power of modern computers is the only reason this one seems useless. A pre-transistor mathematician would have found plenty of uses for this machine.</p>
-        <p>Regardless, performance wasn't one of the goals of this project. The actual point was to enrich my understanding of computers, and it did so tremendously.</p>
+        <section>
+            <h3>Introduction</h3>
+            <p>This post is about a functional 8-bit computer I built using breadboards, jump cables, and logic gates. Specifically, I built this using AND, OR, NOT, NAND and XOR logic gates from <a href="https://en.wikipedia.org/wiki/List_of_7400-series_integrated_circuits">7400-series integrated circuits</a>. Building a computer from these low-level components has been a longstanding goal of mine, and I'm thrilled to have brought it to fruition.</p>
+            <p>Linked above is <a href="https://www.youtube.com/watch?v=CE4bZoiFI-s">a YouTube video</a> I made to showcase the basic design. In that video, I demonstrate how my computer is broken up into many modules. While that video just explains the basic functionality of each module, this article will be diving into excruciating details.</p>
+        </section>
+        <img class="" width="700" height="393" srcset="modules-100.webp 100w,modules-250.webp 250w,modules-500.webp 500w,modules-750.webp 750w,modules-1000.webp 1000w,modules-1500.webp 1500w,modules-1920.webp 1920w" sizes="700px" alt="The 8-bit computer with the different modules highlighted">
+        <section>
+            <h3>Emulator</h3>
+            <p>Before I begin, here's an accurate emulator of the computer.</p>
+            <p>Read the comment above the program to see what it does, and then hit "Start" to see the computer in action. You can load and run my programs, or write your own using assembly language. If you're interested, <a href="https://github.com/JosephNaberhaus/8-bit-computer-programmer">the GitHub page linked above</a> has more information about the assembly language itself.</p>
+        </section>
+        <div class="example">
+    <div class="example-title">8-bit Computer Emulator</div>
+    <svg viewBox="50 50 850 430" id="computer">
+        <style>
+            .group-border {
+                stroke: black;
+                fill-opacity: 20%;
+            }
+            .group-title {
+                font-family: monospace;
+                font-size: 1.5rem;
+
+                text-anchor: middle;
+            }
+            .group-label {
+                font-family: monospace;
+                font-size: 1.25rem;
+            }
+
+            .text-display {
+                fill: dimgray;
+
+                font-family: monospace;
+                font-size: 1.25rem;
+            }
+
+            .red-leds {
+                fill: #320000;
+            }
+            .red-leds > .on {
+                fill: #ff0000;
+            }
+
+            .green-leds {
+                fill: #003200;
+            }
+            .green-leds > .on {
+                fill: #00ff00;
+            }
+        </style>
+
+        <g id="bus" transform="translate(320, 50)">
+            <rect class="group-border" x="0" y="0" width="280" height="275" fill="#fffa03"/>
+            <text class="group-title" x="140" y="30">Bus</text>
+
+            <g transform="translate(25, 70)">
+                <g id="bus-input-1" class="eight-bit-display" transform="translate(0, 0)">
+                    <text class="group-label">Input 1:</text>
+                    <g class="red-leds" transform="translate(10, 25)">
+                        <circle r="10" cx="0"/>
+                        <circle r="10" cx="25"/>
+                        <circle r="10" cx="50"/>
+                        <circle r="10" cx="75"/>
+                        <circle r="10" cx="100"/>
+                        <circle r="10" cx="125"/>
+                        <circle r="10" cx="150"/>
+                        <circle r="10" cx="175"/>
+                    </g>
+                </g>
+                <g id="bus-input-2" class="eight-bit-display" transform="translate(0, 75)">
+                    <text class="group-label">Input 2:</text>
+                    <g class="red-leds" transform="translate(10, 25)">
+                        <circle r="10" cx="0"/>
+                        <circle r="10" cx="25"/>
+                        <circle r="10" cx="50"/>
+                        <circle r="10" cx="75"/>
+                        <circle r="10" cx="100"/>
+                        <circle r="10" cx="125"/>
+                        <circle r="10" cx="150"/>
+                        <circle r="10" cx="175"/>
+                    </g>
+                </g>
+                <g id="bus-output" class="eight-bit-display" transform="translate(0, 150)">
+                    <text class="group-label">Output:</text>
+                    <g class="green-leds" transform="translate(10, 25)">
+                        <circle r="10" cx="0"/>
+                        <circle r="10" cx="25"/>
+                        <circle r="10" cx="50"/>
+                        <circle r="10" cx="75"/>
+                        <circle r="10" cx="100"/>
+                        <circle r="10" cx="125"/>
+                        <circle r="10" cx="150"/>
+                        <circle r="10" cx="175"/>
+                    </g>
+                </g>
+            </g>
+        </g>
+
+        <g id="program-counter" transform="translate(620, 50)">
+            <rect class="group-border" x="0" y="0" width="280" height="275" fill="#00fdff"/>
+            <text class="group-title" x="140" y="30">Program Counter</text>
+
+            <g transform="translate(25, 70)">
+                <g id="program-counter-buffer" class="eight-bit-display" transform="translate(0, 0)">
+                    <text class="group-label">Next:</text>
+                    <g class="red-leds" transform="translate(10, 25)">
+                        <circle r="10" cx="0"/>
+                        <circle r="10" cx="25"/>
+                        <circle r="10" cx="50"/>
+                        <circle r="10" cx="75"/>
+                        <circle r="10" cx="100"/>
+                        <circle r="10" cx="125"/>
+                        <circle r="10" cx="150"/>
+                        <circle r="10" cx="175"/>
+                    </g>
+                </g>
+                <g id="program-counter" class="eight-bit-display" transform="translate(0, 75)">
+                    <text class="group-label">Current:</text>
+                    <g class="red-leds" transform="translate(10, 25)">
+                        <circle r="10" cx="0"/>
+                        <circle r="10" cx="25"/>
+                        <circle r="10" cx="50"/>
+                        <circle r="10" cx="75"/>
+                        <circle r="10" cx="100"/>
+                        <circle r="10" cx="125"/>
+                        <circle r="10" cx="150"/>
+                        <circle r="10" cx="175"/>
+                    </g>
+                </g>
+                <g transform="translate(0, 150)">
+                    <text class="group-label">Current Instruction:</text>
+                    <g transform="translate(0, 30)">
+                        <text id="current-instruction" class="text-display"></text>
+                    </g>
+                </g>
+            </g>
+        </g>
+
+        <g id="clock" transform="translate(620, 345)">
+            <rect class="group-border" x="0" y="0" width="280" height="125" fill="#8931ff"/>
+            <text class="group-title" x="125" y="30">Clock</text>
+
+            <g transform="translate(25, 70)">
+                <text class="group-label">Stage:</text>
+                <g class="red-leds" transform="translate(10, 25)">
+                    <circle r="10" cx="0"/>
+                    <circle r="10" cx="25"/>
+                    <circle r="10" cx="50"/>
+                    <circle r="10" cx="75"/>
+                </g>
+            </g>
+        </g>
+
+        <g id="register-file" transform="translate(50, 50)">
+            <rect class="group-border" x="0" y="0" width="250" height="430" fill="#05f802"/>
+            <text class="group-title" x="125" y="30">Register File</text>
+
+            <g transform="translate(25, 70)">
+                <g id="register-buffer" class="eight-bit-display" transform="translate(0, 0)">
+                    <text class="group-label">Register Buffer:</text>
+                    <g class="red-leds" transform="translate(10, 25)">
+                        <circle r="10" cx="0"/>
+                        <circle r="10" cx="25"/>
+                        <circle r="10" cx="50"/>
+                        <circle r="10" cx="75"/>
+                        <circle r="10" cx="100"/>
+                        <circle r="10" cx="125"/>
+                        <circle r="10" cx="150"/>
+                        <circle r="10" cx="175"/>
+                    </g>
+                </g>
+                <g id="register-1-display" class="eight-bit-display" transform="translate(0, 75)">
+                    <text class="group-label">Register 1:</text>
+                    <g class="red-leds" transform="translate(10, 25)">
+                        <circle r="10" cx="0"/>
+                        <circle r="10" cx="25"/>
+                        <circle r="10" cx="50"/>
+                        <circle r="10" cx="75"/>
+                        <circle r="10" cx="100"/>
+                        <circle r="10" cx="125"/>
+                        <circle r="10" cx="150"/>
+                        <circle r="10" cx="175"/>
+                    </g>
+                </g>
+                <g id="register-2-display" class="eight-bit-display" transform="translate(0, 150)">
+                    <text class="group-label">Register 2:</text>
+                    <g class="red-leds" transform="translate(10, 25)">
+                        <circle r="10" cx="0"/>
+                        <circle r="10" cx="25"/>
+                        <circle r="10" cx="50"/>
+                        <circle r="10" cx="75"/>
+                        <circle r="10" cx="100"/>
+                        <circle r="10" cx="125"/>
+                        <circle r="10" cx="150"/>
+                        <circle r="10" cx="175"/>
+                    </g>
+                </g>
+                <g id="register-3-display" class="eight-bit-display" transform="translate(0, 225)">
+                    <text class="group-label">Register 3:</text>
+                    <g class="red-leds" transform="translate(10, 25)">
+                        <circle r="10" cx="0"/>
+                        <circle r="10" cx="25"/>
+                        <circle r="10" cx="50"/>
+                        <circle r="10" cx="75"/>
+                        <circle r="10" cx="100"/>
+                        <circle r="10" cx="125"/>
+                        <circle r="10" cx="150"/>
+                        <circle r="10" cx="175"/>
+                    </g>
+                </g>
+                <g id="register-4-display" class="eight-bit-display" transform="translate(0, 300)">
+                    <text class="group-label">Register 4:</text>
+                    <g class="red-leds" transform="translate(10, 25)">
+                        <circle r="10" cx="0"/>
+                        <circle r="10" cx="25"/>
+                        <circle r="10" cx="50"/>
+                        <circle r="10" cx="75"/>
+                        <circle r="10" cx="100"/>
+                        <circle r="10" cx="125"/>
+                        <circle r="10" cx="150"/>
+                        <circle r="10" cx="175"/>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </svg>
+    <div class="error-message-container">
+        <div id="error-message" style="visibility: hidden"></div>
+    </div>
+    <div class="controls">
+        <div class="controls-row">
+            <label>Controls:</label>
+            <span class="controls-row">
+                        <button id="step-button">Step</button>
+                        <button id="start-button">Start</button>
+                        <button id="pause-button">Pause</button>
+                        <button id="reset-button">Reset</button>
+                    </span>
+        </div>
+        <div class="controls-row">
+            <label for="clock-speed">Clock speed (Hz):</label>
+            <input type="number" id="clock-speed" value="10" min="0" max="5000">
+        </div>
+        <div class="controls-row">
+            <label for="load-program-select">Example programs: </label>
+            <span class="controls-row">
+                        <select id="load-program-select">
+                            <option value="fib" selected>Fibonacci</option>
+                            <option value="prime">Prime Numbers</option>
+                            <option value="sort">Selection Sort</option>
+                        </select>
+                        <button id="load-program-button">Load</button>
+                    </span>
+        </div>
+        <div>
+            <textarea id="program-text"></textarea>
+        </div>
+    </div>
+    <script type="text/javascript" src="emulator.js"></script>
+</div>
+
+        <section>
+            <h3>Background</h3>
+            <p>Before diving in, it's worth noting my background. I'm a Software Engineer who decided to get into electronics about 5 months ago. While I have a grasp of basic computer architecture, I have very little depth in my electrical engineering abilities. Thus, this machine has many flaws, and is not a model example of how to do this kind of project. In this post, I will try to share both the good and the bad.</p>
+        </section>
+        <section>
+            <h3>Specs</h3>
+            <table class="specs">
+                <tr>
+                    <td>Max clock speed:</td>
+                    <td>0.5MHz</td>
+                </tr>
+                <tr>
+                    <td># of breadboards:</td>
+                    <td>36</td>
+                </tr>
+                <tr>
+                    <td># of jumper cables:</td>
+                    <td>~3500</td>
+                </tr>
+                <tr>
+                    <td>Number of logic gates:</td>
+                    <td>~800</td>
+                </tr>
+                <tr>
+                    <td>Hours spent:</td>
+                    <td>&gt100</td>
+                </tr>
+            </table>
+        </section>
+        <section>
+            <h3>The Clock</h3>
+            <img class="image_right" width="450" height="253" srcset="clock-100.webp 100w,clock-250.webp 250w,clock-500.webp 500w,clock-750.webp 750w,clock-1000.webp 1000w,clock-1500.webp 1500w,clock-2000.webp 2000w" sizes="450px" alt="A close-up picture of the clock module">
+            <p>The computer's clock dictates the behavior of the other modules. To facilitate this, a single clock cycle is broken into 4 stages. The table below shows which modules are activated during each stage. After these 4 stages occur, the computer will have performed a single instruction.</p>
+            <p>This module caused me a lot of headaches. Originally, I had built an asynchronous 2-bit binary counter and hooked it up to a decoder. The problem with this arrangement was that during the transition from stage 4 (11) to stage 0 (00) there would be an instantaneous moment where stage 3 (10) was registered (since the least significant bit changes first). The computer wasn't designed to go between stages in this order, and its registers would become corrupted.</p>
+            <img class="" width="700" height="150" srcset="clock-cycles-100.webp 100w,clock-cycles-250.webp 250w,clock-cycles-500.webp 500w,clock-cycles-750.webp 750w,clock-cycles-1000.webp 1000w,clock-cycles-1500.webp 1500w,clock-cycles-2000.webp 2000w" sizes="700px" alt="A table showing when modules are activated at different stages">
+            <p>I considered switching to a synchronous clock, but those are usually built with <a href="https://en.wikipedia.org/wiki/Flip-flop_(electronics)#JK_flip-flop">JK flip-flops</a>, which require many logic gates. Plus, I would have still needed a 2-to-4 decoder. Instead, I just built a shift register out of three <a href="https://en.wikipedia.org/wiki/Flip-flop_(electronics)#D_flip-flop">D flip-flops</a>. If every bit of the shift register was off, then the computer is in stage 1. Otherwise, each bit of the shift register represents one of the remaining 3 stages.</p>
+            <p>Even with this change, I still struggled with noise. Sticking random capacitors into the power rails helped smooth out noise from my power supply, but didn't completely solve the problem. For example, I discovered late into the project that my clock would go haywire if I unplugged my oscilloscope from the wall. It could be completely disconnected from everything else, but somehow it was cleaning enough noise (probably in my apartments AC power line) to make a difference.</p>
+        </section>
+        <section>
+            <h3>The Program</h3>
+            <img class="image_right" width="450" height="253" srcset="program-100.webp 100w,program-250.webp 250w,program-500.webp 500w,program-750.webp 750w,program-1000.webp 1000w,program-1500.webp 1500w,program-2000.webp 2000w" sizes="450px" alt="A close-up picture of the program module">
+            <p>Without the ability reprogram it, it would hardly be a computer. This machine has 256 reprogrammable lines of 24-bit instructions. In case you're wondering, the "8-bit" designation comes from the width of the data busses, so there's nothing contradictory about my program being 3x wider. I could have designed a 16-bit (or even 8-bit) instruction set, but I chose 24-bit because it vastly simplified the instruction decoding logic.</p>
+            <p>The programs are originally written in the same assembly language as the above emulator. Of course, my computer doesn't actually understand that assembly language. Instead, it gets compiled into a machine language (a binary encoding as specified in the table below) by <a href="https://github.com/JosephNaberhaus/8-bit-computer-programmer/blob/master/assembler/main.go">a simple assembler I wrote in Golang</a>. After that, the machine language gets bundled into a <a href="https://github.com/JosephNaberhaus/8-bit-computer-programmer/blob/master/main/main.c">C application</a> that I can flash onto an ESP32 microcontroller. Finally, I use GPIO pins on the ESP32 (all of them) to flash my computer. This process could certainly have been streamlined, but it only took around 30 seconds as-is.</p>
+            <img class="" width="700" height="243" srcset="instruction-set-100.webp 100w,instruction-set-250.webp 250w,instruction-set-500.webp 500w,instruction-set-750.webp 750w,instruction-set-1000.webp 1000w,instruction-set-1500.webp 1500w,instruction-set-2000.webp 2000w" sizes="700px" alt="A table I made showing the machine language of each instruction">
+            <p>Interestingly, I managed to avoid building a reset button into my computer. Normally, there would be some way of resetting the program counter back to the first instruction. However, that requires wiring up more logic gates. Instead, I just flash a reset program onto the computer. This program is comprised of 256 lines of "JMP $i 0" instructions. Thus, no matter what line the computer is currently on, it will always jump to and stay at the first line. Then I can just pause the clock and flash my intended program.</p>
+            <p>The program is stored on three <a href="https://www.digikey.com/en/products/detail/microchip-technology/SST39SF010A-70-4C-PHE/2297826">SST39SF010A-70-4C-PHE</a> flash memory chips. Each one holds 8 bits of the 24-bit instruction. I bought these without properly scrutinizing the datasheet and ended up being very frustrated by the sequence of commands required to store data on them. The chip designer considers this a feature, because it prevents unintentional writes. For me, that was the least of my worries. The main problem was that command sequence required setting 24 of its pins (the 8 data pins, 15 of the address pins, and a write enable pin) to specific values, whereas the ESP32 I used only has 21 digital output pins. Plus, I needed a few of those pins for my own purposes. Thankfully, I was able to exploit a pattern in the commands to reduce my total usage down to just 20 of the ESP32's pins. Still, it took many hours of frustratingly opaque debugging to finally write a full program.</p>
+        </section>
+        <section>
+            <h3>The Program Counter</h3>
+            <img class="image_right" width="450" height="253" srcset="program-counter-100.webp 100w,program-counter-250.webp 250w,program-counter-500.webp 500w,program-counter-750.webp 750w,program-counter-1000.webp 1000w,program-counter-1500.webp 1500w,program-counter-2000.webp 2000w" sizes="450px" alt="A close-up picture of the program counter module">
+            <p>Closely related to program module is the program counter. This is a register that dictates which line of code is currently being processed. Unlike the other registers, you can only write to this one with two special purpose instructions, "JMP" (jump to a specific line) and "JMPNZ" (conditionally jump to a specific line if a number is not zero). In all other cases, the program counter is simply incremented by one at the end of a clock cycle (i.e. it moves to the next line of code).</p>
+        </section>
+        <sections>
+            <h3>Binary Operations</h3>
+            <img class="image_left" width="450" height="253" srcset="binary-operations-100.webp 100w,binary-operations-250.webp 250w,binary-operations-500.webp 500w,binary-operations-750.webp 750w,binary-operations-1000.webp 1000w,binary-operations-1500.webp 1500w,binary-operations-2000.webp 2000w" sizes="450px" alt="A close-up picture of the binary operations module">
+            <p>The binary operations module is very simple. It has circuitry for performing either an 8-bit binary AND or an 8-bit binary OR computation on two numbers. In addition to this, I found this to be a convenient spot for some of the control circuitry for the full adder and the comparator modules. Basically, this module tells those two when they should be turned on.</p>
+        </sections>
+        <seciton>
+            <h3>Full Adder</h3>
+            <img class="image_right" width="450" height="253" srcset="full-adder-100.webp 100w,full-adder-250.webp 250w,full-adder-500.webp 500w,full-adder-750.webp 750w,full-adder-1000.webp 1000w,full-adder-1500.webp 1500w,full-adder-2000.webp 2000w" sizes="450px" alt="A close-up picture of the full adder module">
+            <p>As you might have guessed, this module contains an 8-bit full adder. I actually built this module first with the thought, "If I can get this to work then I can build the rest of the computer." It was true, but I also ended up scrapping that version and rebuilding it with the logic for doing subtractions.</p>
+            <p>If you're not familiar, it's not difficult to make an adder perform subtraction. We do this by using a special number representation called <a href="https://en.wikipedia.org/wiki/Two's_complement">two's complement</a>. If you have the two's complement of a number (which is easy to compute) then adding it to another number is the same as subtracting the original number.</p>
+        </seciton>
+        <section>
+            <h3>Comparator</h3>
+            <img class="image_left" width="450" height="253" srcset="comparator-100.webp 100w,comparator-250.webp 250w,comparator-500.webp 500w,comparator-750.webp 750w,comparator-1000.webp 1000w,comparator-1500.webp 1500w,comparator-2000.webp 2000w" sizes="450px" alt="A close-up picture of the comparator module">
+            <p>Moving along with another module that does exactly what the name implies. This module compares numbers. Specifically, it can perform less than (<), less than or equal (<=), equal (==), and not equal (!=). Also, it can do all of these operations for both signed (-128 to 127) and unsigned (0-255) numbers. It outputs a 1 for true comparisons and a 0 for false comparisons. By combining these instructions with "JMPNZ" you can perform control flow such as loops and conditionals.</p>
+            <p>Allow me to vent and say that this module was rather difficult to build. Unlike most of the other modules, there were very little patterns in the wiring. On top of that, there were several different modes of behavior it could be in. Debugging involved a lot of reverse engineering because I couldn't keep it all in my head.</p>
+        </section>
+        <section>
+            <h3>Unary Module</h3>
+            <img class="image_right" width="450" height="276" srcset="unary-operations-100.webp 100w,unary-operations-250.webp 250w,unary-operations-500.webp 500w,unary-operations-750.webp 750w,unary-operations-1000.webp 1000w,unary-operations-1500.webp 1500w,unary-operations-2000.webp 2000w" sizes="450px" alt="A close-up picture of the unary operations module">
+            <p>This module can perform four different operations on a single 8-bit number, not, shift left, shift right, and no-op. Both shift instructions only support shifting by one bit at a time, whereas a real computer would have a <a href="https://en.wikipedia.org/wiki/Barrel_shifter">barrel shifter</a> that can shift by any number of bits. Thankfully, I can replicate this behavior by building a loop and performing the shift multiple times. It's inefficient, but so is the rest of the computer.</p>
+            <p>By the way, you might not realize that the no-op instruction is among the most useful. The actual name for this instruction is "MV", because it allows you to move a value from one register to another without changing it. This is also the instruction I use to load constants into the computer. Hence, every program starts with at least a few of these to get the initial data loaded in.</p>
+        </section>
+        <section>
+            <h3>Memory</h3>
+            <img class="image_left" width="450" height="265" srcset="memory-100.webp 100w,memory-250.webp 250w,memory-500.webp 500w,memory-750.webp 750w,memory-1000.webp 1000w,memory-1500.webp 1500w,memory-2000.webp 2000w" sizes="450px" alt="A close-up picture of the memory module">
+            <p>This module is the only form of persistence the computer has. Like the program memory, this module uses an off the shelf chip (<a href="https://www.digikey.com/en/products/detail/renesas-electronics-corporation/71256SA12TPG/2011023">71256SA12TPG</a>) to do most of the heavy lifting. These are volatile RAM chips, so turning the computer off results in the data being lost, but that hardly matters.</p>
+            <p>By far, this was the easiest module to build. I wired it in an hour, and it worked on the first try. After having so much trouble with the program memory I initially thought I had just botched the testing. In retrospect, I should have just used the same chip for the program memory. Non-volatility wasn't a requirement for it either.</p>
+        </section>
+        <section>
+            <h3>Bus</h3>
+            <img class="image_right" width="450" height="253" srcset="bus-100.webp 100w,bus-250.webp 250w,bus-500.webp 500w,bus-750.webp 750w,bus-1000.webp 1000w,bus-1500.webp 1500w,bus-2000.webp 2000w" sizes="450px" alt="A close-up picture of the bus module">
+            <p>This isn't really a module. Actually, it's just the place where all the other modules connect together. There are three lanes in this bus. Two for inputs, and one for output. I put an LED display on all of these to make debugging easier.</p>
+        </section>
+        <section>
+            <h3>Register File</h3>
+            <img class="image_left" width="450" height="253" srcset="register-file-100.webp 100w,register-file-250.webp 250w,register-file-500.webp 500w,register-file-750.webp 750w,register-file-1000.webp 1000w,register-file-1500.webp 1500w,register-file-2000.webp 2000w" sizes="450px" alt="A close-up picture of the register file module">
+            <p>Now this was a large module. So large, in fact, that I had to break it up into 3 different submodules. As a whole, it makes a <a href="https://en.wikipedia.org/wiki/Register_file">register file</a> that is capable of holding four different 8-bit numbers at a time. Registers are used constantly in every program. Most computations use values from the registers, and all results must be stored in a register before you can perform further actions with them. Because of this, I decided to build four of them even though I could have gotten away with less.</p>
+            <img class="image_right" width="450" height="253" srcset="register-buffer-100.webp 100w,register-buffer-250.webp 250w,register-buffer-500.webp 500w,register-buffer-750.webp 750w,register-buffer-1000.webp 1000w,register-buffer-1500.webp 1500w,register-buffer-2000.webp 2000w" sizes="450px" alt="A close-up picture of the register buffer submodule">
+            <p>Each register is built with an 8-bit <a href="https://en.wikipedia.org/wiki/Flip-flop_(electronics)#Gated_D_latch">D latch</a>. You might realize that there's a problem with that design. Latches are level-triggered (i.e. when activated they take on new values instantly). If I was to perform "ADD $i $1 $1 10" (add 10 to register 1 and put the result in register 1) I would enter an infinite loop. Register 1 would take on a value that is 10 greater, and then immediately it would take on a value 10 greater than that, then a value 10 greater than that, etc. (the reality is more complicated than this, but either way there's a problem). The solution is to build an edge triggered flip-flop. Flip-flops remember the new value, but only switch to it at a different point in the clock cycle; thus, eliminating the infinite loop. You can build a <a href="https://en.wikipedia.org/wiki/Flip-flop_(electronics)#D_flip-flop">D flip-flop</a> by connecting two D latches together (in what's called a master-slave arrangement), but that requires a lot more logic gates. Instead, I built only one master D latch (called the register buffer) that all the registers shared. This is the second submodule.</p>
+            <p>The final submodule just handles some basic control logic. It uses the current clock stage to determine when the other two modules should be active. I also stuck a few ICs for loading immediate values onto this board. This made sense because if you are loading an immediate value then you consequently aren't loading a value from a register.</p>
+        </section>
+        <section>
+            <h3>Summary</h3>
+            <p>If you understood everything that I wrote above, then congratulations! You know how my entire computer works. Now, there's only about a hundred hours between you and one of your own.</p>
+            <p>In all sincerity, I recommend this type of project to anyone who is interested in computers. I don't say this thinking you'll gain much depth in understanding from it - I didn't - but simply because it allowed me to connect with what a computer truly is.</p>
+        </section>
     </section>
 </article>
 <div class="footer">

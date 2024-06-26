@@ -40,7 +40,7 @@
     <section>
         <h2>Building Faster by Building Less</h2>
         <div class="created-on">
-  Written in May 2022
+  May 2022
 </div>
         <p>For this website, I wrote my own static site generator (a program that compiles content into a website). At first, my generator was fast because it was simple. That changed recently after adding a couple of handy but slow features. Now it takes several minutes to create the entire website, and it's going to get worse as I add more content. This was an unacceptable delay to my iteration times and needed to be fixed.</p>
         <p>It isn't possible for me to significantly improve the speed of the generator. Instead, I need to build less content each time I run it. I accomplished this by recycling as much of the previous build as possible and only compiling the parts that have changed. Most programming languages use this same trick and call it incremental compilation. The rest of this article describes how it works.</p>
@@ -107,6 +107,7 @@
         <h3>Dependencies</h3>
         <p>Knowing if a file has changed isn't enough to determine if it needs to be recompiled. My website builder allows files to form dependencies on other files. If a dependency of a file changes, then we also need to rebuild that file. Click around below to see how dependencies affect other files.</p>
         <div class="example">
+            <div class="example-title"></div>
             <div class="example-title">Dependencies</div>
             <svg viewBox="50 50 850 560" id="dependencies-graph">
                 <style>
