@@ -68,18 +68,3 @@
     font-family: monospace;
 }
 
-.specs, .specs td {
-    font-family: monospace;
-
-    border: 1px solid rgba(0, 0, 0, 0.5);
-    border-radius: 0.5rem;
-    border-collapse: collapse;
-}
-
-.specs td {
-    padding: 0.5rem;
-}
-
-.specs tr td:first-child {
-    font-weight: bold;
-}
