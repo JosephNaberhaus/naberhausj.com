@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--@header{"title": "gauthordle", "description": "The daily commit author guessing game."}-->
+<body>
+<link rel="stylesheet" href="styles.css">
+<article>
+    <h2>gauthordle</h2>
+    <!--@created-on{}-->
+    <!--@github-repository{"link": "https://github.com/JosephNaberhaus/gauthordle"}-->
+    <section>
+        <p>Given a commit message, can you guess who wrote it?</p>
+        <video width="700" controls>
+            <source type="video/webm" src="gauthordle.webm">
+        </video>
+    </section>
+    <section>
+        <h3>Background</h3>
+        <p>My coworkers and I came up with this idea. We often collaboratively play trivia-style games during our lunch break. One day, we realized it would be fun to make a trivia game from our git history. I spent a Sunday afternoon hacking it out, and this is the result.</p>
+    </section>
+    <section>
+        <h3>Implementation</h3>
+        <p>One the most important design constraints I imposed was that the game had to be a daily challenge. This allows me to exploit artificial scarcity to make the game more enjoyable in the long run. Of course, we're all familiar with the phenomena from the Wordle craze, which is why I kept that game's namesake.</p>
+        <p>The problem with daily challenges is that you need some way to distribute them. Thankfully, I had a realization that this problem was already solved for me. Every potential user already has the entire git history checked out. Therefore, I could just use a deterministic random number generator to create the same game for everyone. The only remaining problem was that everyone's RNG needed to start with the same seed. For that, <a href="https://github.com/JosephNaberhaus/gauthordle/blob/77ab8be6d2cdc3cb41ef534c61715f35e962397a/main.go#L85-L86">I just use the unix timestamp of midnight the week before</a>.</p>
+    </section>
+    <section>
+        <h3>Making it fun</h3>
+        <p>It took very little tweaking from my original prototype to make the game reasonably fun. That said, it's still not without flaws. For example, sometimes you will get a bot as the author, which isn't very challenging. Also, in larger repositories it becomes increasingly likely that you won't know the author. Both of these problems can be somewhat alleviated <a href="https://github.com/JosephNaberhaus/gauthordle?tab=readme-ov-file#configuration"> by filters you can provide in the configuration file</a>.</p>
+        <p>In my opinion, the key feature of gauthordle is the author selection. Every author is not equally likely to appear as the answer. Otherwise, the game might be too difficult. Instead, I bias towards users with high commit counts. For example, in a repo with ten users the probability of each being picked is:</p>
+        <table>
+            <tr>
+                <td>Highest committer</td>
+                <td>30.8%</td>
+            </tr>
+            <tr>
+                <td>2nd highest committer</td>
+                <td>23.4%</td>
+            </tr>
+            <tr>
+                <td>3rd highest committer</td>
+                <td>17.1%</td>
+            </tr>
+            <tr>
+                <td>4th highest committer</td>
+                <td>12.0%</td>
+            </tr>
+            <tr>
+                <td>5th highest committer</td>
+                <td>7.9%</td>
+            </tr>
+            <tr>
+                <td>6th highest committer</td>
+                <td>4.8%</td>
+            </tr>
+            <tr>
+                <td>7th highest committer</td>
+                <td>2.6%</td>
+            </tr>
+            <tr>
+                <td>8th highest committer</td>
+                <td>1.1%</td>
+            </tr>
+            <tr>
+                <td>9th highest committer</td>
+                <td>0.4%</td>
+            </tr>
+            <tr>
+                <td>10th highest committer</td>
+                <td>0.0%</td>
+            </tr>
+        </table>
+        <p>In this case, it's probably a little too biased, but that's because I optimized it for repos with 50-100 contributors. If that's not what you want, there is a configuration option available for changing the amount of bias (or removing it completely).</p>
+    </section>
+    <section>
+        <h3>How to play</h3>
+        <p>Check out the instructions on <a href="https://github.com/JosephNaberhaus/gauthordle?tab=readme-ov-file#how-to-play">the Github README</a> for how to install and play gauthordle.</p>
+    </section>
+</article>
+<!--@footer{}-->
+</body>
+</html>

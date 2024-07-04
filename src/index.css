@@ -136,3 +136,19 @@ img {
     justify-content: center;
     flex-wrap: wrap;
 }
+
+table, td {
+    font-family: monospace;
+
+    border: 1px solid rgba(0, 0, 0, 0.25);
+    border-radius: 0.5rem;
+    border-collapse: collapse;
+}
+
+td {
+    padding: 0.5rem;
+}
+
+tr td:first-child {
+    font-weight: bold;
+}
