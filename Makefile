@@ -20,7 +20,7 @@ serve: internal-build-image
 
 # --------------------------------------
 # Targets intended for internal use only
-# -------------------------------------
+# --------------------------------------
 
 internal-build-image: Dockerfile
 	docker build -t naberhausj.com-builder .
