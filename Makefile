@@ -30,7 +30,7 @@ internal-cache-build:
 	cd builder; go run builder.go --src ../src --out ../out
 
 .PHONY: internal-prod-build
-internal-prod-build:m
+internal-prod-build:
 	cd builder; go run builder.go --src ../src --out ../out --nocache
 
 .PHONY: internal-run-in-build-image
