@@ -35,4 +35,4 @@ internal-prod-build:
 
 .PHONY: internal-run-in-build-image
 internal-run-in-build-image: internal-build-image
-	docker run -it -v .:/workdir naberhausj.com-builder sh -c $(CMD)
+	docker run --rm -it -v .:/workdir naberhausj.com-builder sh -c $(CMD)

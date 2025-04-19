@@ -24,7 +24,7 @@ jobs:
           go-version: ${{ steps.go_mod.outputs.version }}
 
       - name: Build website
-        run: make internal-prod-build
+        run: make build-prod
 
       - name: Upload built artifacts
         uses: actions/upload-artifact@v4
