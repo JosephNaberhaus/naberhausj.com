@@ -1,10 +1,10 @@
 package html
 
 import (
-	"bytes"
 	"fmt"
 	"github.com/JosephNaberhaus/naberhausj.com/builder/builder"
 	"github.com/JosephNaberhaus/naberhausj.com/builder/cache"
+	"github.com/JosephNaberhaus/naberhausj.com/builder/command"
 	"github.com/JosephNaberhaus/naberhausj.com/builder/file"
 	"github.com/JosephNaberhaus/naberhausj.com/builder/handlers/image"
 	"math"
@@ -30,14 +30,12 @@ func handleCreatedOnDirective(
 ) ([]ContentNode, error) {
 	absPath := orchestrator.AbsPath(node)
 	cmd := exec.Command("git", "log", "-1", "--diff-filter=A", "--format=%ad", "--date=iso-strict", absPath)
-	output := new(bytes.Buffer)
-	cmd.Stdout = output
-	err := cmd.Run()
+	output, err := command.RunWithErrorChecking(cmd)
 	if err != nil {
 		return nil, fmt.Errorf("error getting file creation date: %w", err)
 	}
 
-	outputStr := strings.TrimSpace(output.String())
+	outputStr := strings.TrimSpace(string(output))
 	if outputStr == "" {
 		// The file hasn't been committed yet. Ignore it.
 		return nil, nil
@@ -54,19 +52,17 @@ func handleCreatedOnDirective(
 
 func handleModifiedOnDirective(
 	node *file.Node,
-	parameters map[string]string,
+	_ map[string]string,
 	orchestrator builder.Orchestrator,
 ) ([]ContentNode, error) {
 	absPath := orchestrator.AbsPath(node)
 	cmd := exec.Command("git", "log", "-1", "--diff-filter=AM", "--format=%ad", "--date=iso-strict", absPath)
-	output := new(bytes.Buffer)
-	cmd.Stdout = output
-	err := cmd.Run()
+	output, err := command.RunWithErrorChecking(cmd)
 	if err != nil {
-		return nil, fmt.Errorf("error getting file creation date: %w", err)
+		return nil, fmt.Errorf("error getting file modified date: %w", err)
 	}
 
-	outputStr := strings.TrimSpace(output.String())
+	outputStr := strings.TrimSpace(string(output))
 	if outputStr == "" {
 		// The file hasn't been committed yet. Ignore it.
 		return nil, nil
