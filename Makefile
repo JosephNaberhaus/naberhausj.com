@@ -16,7 +16,7 @@ help: ## Print this help message
 
 .PHONY: serve
 serve: internal-build-image ## Serves the website to port 8080
-	docker run -it -p 8080:8080 -v ./out:/workdir naberhausj.com-builder sh -c "python -m http.server 8080"
+	docker run --rm -p 8080:8080 -v ./out:/workdir naberhausj.com-builder sh -c "python -m http.server 8080"
 
 # --------------------------------------
 # Targets intended for internal use only
@@ -30,9 +30,9 @@ internal-cache-build:
 	cd builder; go run builder.go --src ../src --out ../out
 
 .PHONY: internal-prod-build
-internal-prod-build:
+internal-prod-build:m
 	cd builder; go run builder.go --src ../src --out ../out --nocache
 
 .PHONY: internal-run-in-build-image
 internal-run-in-build-image: internal-build-image
-	docker run --rm -it -v .:/workdir naberhausj.com-builder sh -c $(CMD)
+	docker run --rm -v .:/workdir naberhausj.com-builder sh -c $(CMD)
