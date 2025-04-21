@@ -40,7 +40,10 @@
     <section>
         <h2>Building Faster by Building Less</h2>
         <div class="created-on">
-  May 2022
+  Created May 2022
+</div>
+<div class="created-on">
+  Last Modified June 2024
 </div>
         <p>For this website, I wrote my own static site generator (a program that compiles content into a website). At first, my generator was fast because it was simple. That changed recently after adding a couple of handy but slow features. Now it takes several minutes to create the entire website, and it's going to get worse as I add more content. This was an unacceptable delay to my iteration times and needed to be fixed.</p>
         <p>It isn't possible for me to significantly improve the speed of the generator. Instead, I need to build less content each time I run it. I accomplished this by recycling as much of the previous build as possible and only compiling the parts that have changed. Most programming languages use this same trick and call it incremental compilation. The rest of this article describes how it works.</p>
