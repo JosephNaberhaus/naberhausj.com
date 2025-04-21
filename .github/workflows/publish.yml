@@ -14,10 +14,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      # Hack to fix dubious ownership error: https://github.com/actions/checkout/issues/1048
-      - name: Mark repository as safe
-        run: git config --global --add safe.directory '*'
-
       - name: Build website
         run: make build-prod
 
