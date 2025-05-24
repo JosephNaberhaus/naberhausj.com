@@ -10,6 +10,7 @@ import (
 
 var supportedImageExtensions = []string{
 	".png",
+	".svg",
 	".jpg",
 	".jpeg",
 }
@@ -69,28 +70,37 @@ func (h handler) Build(node *file.Node) (interface{}, error) {
 	}
 
 	var results []File
-	for _, newWidth := range createTargetWidths(originalWidth) {
-		if newWidth > originalWidth {
-			continue
-		}
-
-		newHeight := (newWidth * originalHeight) / originalWidth
-		result, err := image.resize(newWidth, newHeight)
-		if err != nil {
-			return nil, fmt.Errorf("error resizing image: %w", err)
-		}
-
-		newFile := fileName(node.File, result.extension, newWidth)
-		err = h.orchestrator.Write(node, newFile, result.data)
-		if err != nil {
-			return nil, fmt.Errorf("error writing resized image: %w", err)
-		}
-
+	if filepath.Ext(node.File) == ".svg" {
+		// SVGs can scale infinitely, so we don't need to create a bunch of target images.
 		results = append(results, File{
-			File:   newFile,
-			Width:  newWidth,
-			Height: newHeight,
+			Width:  originalWidth,
+			Height: originalWidth,
+			File:   node.File,
 		})
+	} else {
+		for _, newWidth := range createTargetWidths(originalWidth) {
+			if newWidth > originalWidth {
+				continue
+			}
+
+			newHeight := (newWidth * originalHeight) / originalWidth
+			result, err := image.resize(newWidth, newHeight)
+			if err != nil {
+				return nil, fmt.Errorf("error resizing image: %w", err)
+			}
+
+			newFile := fileName(node.File, result.extension, newWidth)
+			err = h.orchestrator.Write(node, newFile, result.data)
+			if err != nil {
+				return nil, fmt.Errorf("error writing resized image: %w", err)
+			}
+
+			results = append(results, File{
+				File:   newFile,
+				Width:  newWidth,
+				Height: newHeight,
+			})
+		}
 	}
 
 	return Artifact{

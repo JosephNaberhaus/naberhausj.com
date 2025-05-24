@@ -2,7 +2,7 @@
 
 FROM alpine:latest
 
-RUN apk add git go imagemagick imagemagick-jpeg imagemagick-webp inotify-tools make python3
+RUN apk add git go imagemagick imagemagick-jpeg imagemagick-webp imagemagick-svg inotify-tools make python3
 
 # Hack to fix dubious ownership error: https://github.com/actions/checkout/issues/1048
 RUN git config --global --add safe.directory '*'

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--@header{"title": "AI Hype Analysis", "description": "A quick analysis on how AI hype has evolved over the years."}-->
+<body>
+<article>
+    <h1>AI Hype Analysis</h1>
+    <!--@created-on{}-->
+    <section>
+        <h3>Introduction</h3>
+        <p>I visit <a href="https://news.ycombinator.com/">Hacker News</a> frequently enough that I just type in the letter "n" and press enter to navigate to it. There's no other site that Google Chrome would even consider suggesting instead. It's mostly just a time suck, but I get a little bit out of it.</p>
+        <p>One benefit to being a regular on Hacker News is that I'm informed about the latest trends. I'm almost never caught unaware about something new. In fact, usually I see stuff on Hacker News a few days before it starts appearing more generally. That got me thinking: the HN front page is probably a decent indicator of the current impact of a technology.</p>
+        <p>The subject I want to evaluate is whether "AI" was increasing or decreasing in popularity. To me, it felt like the popularity was dying down.</p>
+    </section>
+    <section>
+        <h3>Data Collection</h3>
+        <p>My approach was to scrape the thirty front page stories for every day since January 1, 2020. I think there are datasets available for Hacker News, but I just scraped it myself. It's easy to pull the front page for a specific day by using the <code>?day=&ltyear&gt-&ltmonth&gt-&ltday&gt</code> query parameter. My scraper and dataset are now on GitHub, and I set it up with a Github Action to keep it up-to-date automatically.</p>
+        <!--@github-repository{"link": "https://github.com/JosephNaberhaus/hacker-news-font-page"}-->
+    </section>
+    <section>
+        <h3>Analysis</h3>
+        <p>To do the analysis, I did some finagling in Google Sheets. The approach is dead simple. I simply created a list of words that are related to "AI", and then counted how many articles contained them.</p>
+        <!--@google-drive{"link": "https://docs.google.com/spreadsheets/d/1naCCoZVn186-zQ8NRgr5Qkz2Ic_UXi-MiV_lKBd_lZ4/edit?usp=sharing"}-->
+        <!--#img{"width": "100%", "src": "programming/ai-hype/results.svg", "alt": "The graph showing the mentions of AI on Hacker News have increased over time"}-->
+        <p>The data speaks for itself. Not only is "AI" as popular of a subject as ever, it seems we're actually at a new peak. This result surprised me.</p>
+    </section>
+</article>
+<!--@footer{}-->
+</body>
+</html>
