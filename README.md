@@ -13,7 +13,7 @@ Some scripts I've used when writing articles.
 Encode a video to WebM. Make sure to adjust the dimensions to match the aspect ratio of the original video.
 
 ```shell
-ffmpeg -i <in> -s 720x1280 -vcodec libvpx -acodec libvorbis output.webm
+    ffmpeg -i <in> -s 720x1280 -vcodec libvpx -acodec libopus output.webm
 ```
 
 Use the `--b:v` flag to adjust the average bit rate (e.g. `--b:v 1000K`)
