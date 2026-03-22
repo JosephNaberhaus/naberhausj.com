@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--@header{"title": "Running the Garmin G430/G530 simulator in Ubuntu", "description": "How I got an old avionics simulator to run on my Linux computer"}-->
+<body>
+<article>
+    <section>
+        <h2>Running the Garmin G430/G530 simulator in Ubuntu</h2>
+        <!--@created-on{}-->
+        <!--#img{"class": "image_right", "width": "250", "src": "miscellaneous/garmin-simulator-in-linux/garmin-g430-and-g530.jpeg", "alt": "A picture of the G430 and G530"}-->
+        <p>The plane that I've been doing my flight training in is equipped with a Garmin G530. Despite being very outdated, this is a common all-in-one avionics computer found in many general aviation aircraft.</p>
+        <p>I wanted to practice with my unit for a few hours, but it wasn't realistic for me to do this at the flight school. Instead, I turned towards a simulation of the real thing. First, I tried using X-Plane, but the G530 unit it has is an incomplete facsimile. So I found myself switching to <a href="https://www8.garmin.com/include/SimulatorPopup.html">the simulator program that Garmin releases</a> instead.</p>
+        <p>These are ancient Windows programs, and I no longer have a Windows PC. Thankfully, I found a way to run it on my Linux machine. It required a little bit of finagling, though, so I wanted to document what I did here.</p>
+    </section>
+    <section>
+        <h2>Instructions</h2>
+        <h3>Install Wine</h3>
+        <!--#img{"class": "image_right", "width": "300", "src": "miscellaneous/garmin-simulator-in-linux/wine-configuration.png", "alt": "The Wine configuration page"}-->
+        <p>The first step is to install Wine on your computer. <a href="https://gitlab.winehq.org/wine/wine/-/wikis/Download">Follow these instructions.</a></p>
+        <p>Then run <code>winecfg</code> and change the default Windows version to Windows XP, and confirm with the "OK" button.</p>
+        <h3>Switch to X.Org</h3>
+        <p>If you're using Wayland (running <code>echo $XDG_SESSION_TYPE</code> will tell you) then you will need to switch to X.Org instead. Otherwise, I just couldn't find any way to make the app work.</p>
+        <p>You can change this permanently by editing <code>/etc/gdm3/custom.conf</code>, but you don't need to. Instead, just restart your computer, click your profile, but before logging in select the gear icon in the bottom-left corner and press "Ubuntu on Xorg".</p>
+        <p>After doing this, <code>echo $XDG_SESSION_TYPE</code> should print <code>x11</code> instead.</p>
+        <h3>Install the simulator</h3>
+        <!--#img{"class": "image_right", "width": "300", "src": "miscellaneous/garmin-simulator-in-linux/garmin-zip-extractor.png", "alt": "The zip extractor from step one"}-->
+        <p>First, <a href="https://www8.garmin.com/include/SimulatorPopup.html">download the simulator from garmin</a>. Installing it is a two-step process.</p>
+        <p>Step one: run <code>wine ~/Downloads/500SeriesSimulator_601.exe</code> (change the path, if necessary, to point to your download). This will open up a zip extractor. I recommend pointing it to <code>C:\users\&lt;your linux username&gt;\Downloads</code> to keep things tidy. Press "Unzip" and exit the program.</p>
+        <p>Step two: actually run the installer with <code>wine ~/Downloads/SETUP.exe</code>. Just press "Next" until it completes. Then exit all the windows.</p>
+        <h3>Run the simulator</h3>
+        <p>Getting the program to actually run required a little bit more configuration. We have to use <code>env -</code> to clear out the existing environment variables, and then plumb the two we actually need. This is what I ended up with:</p>
+        <code>env - DISPLAY=$DISPLAY HOME=$HOME wine ~/.wine/drive_c/Program\ Files\ \(x86\)/GARMIN/GARMIN\ 500\ Series\ Trainer/GNC500WT.EXE</code>
+        <p>With that, you should see the Garmin Simulator in all of its glory!</p>
+        <!--#img{"class": "image_center", "width": "100%", "src": "miscellaneous/garmin-simulator-in-linux/simulator.png", "alt": "The simulator running on my linux computer"}-->
+    </section>
+</article>
+<!--@footer{}-->
+</body>
+</html>
