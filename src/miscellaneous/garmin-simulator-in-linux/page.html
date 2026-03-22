@@ -28,7 +28,11 @@
         <p>Step two: actually run the installer with <code>wine ~/Downloads/SETUP.exe</code>. Just press "Next" until it completes. Then exit all the windows.</p>
         <h3>Run the simulator</h3>
         <p>Getting the program to actually run required a little bit more configuration. We have to use <code>env -</code> to clear out the existing environment variables, and then plumb the two we actually need. This is what I ended up with:</p>
-        <code>env - DISPLAY=$DISPLAY HOME=$HOME wine ~/.wine/drive_c/Program\ Files\ \(x86\)/GARMIN/GARMIN\ 500\ Series\ Trainer/GNC500WT.EXE</code>
+        <code>
+            cd ~/.wine/drive_c/Program\ Files\ \(x86\)/GARMIN/GARMIN\ 500\ Series\ Trainer
+            env - DISPLAY=$DISPLAY HOME=$HOME wine GNC500WT.EXE
+        </code>
+        <p>Note that we first <code>cd</code> into the directory. This is important for getting the test databases to load in correctly.</p>
         <p>With that, you should see the Garmin Simulator in all of its glory!</p>
         <!--#img{"class": "image_center", "width": "100%", "src": "miscellaneous/garmin-simulator-in-linux/simulator.png", "alt": "The simulator running on my linux computer"}-->
     </section>
