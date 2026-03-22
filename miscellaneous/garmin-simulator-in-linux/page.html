@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Running the Garmin G430/G530 simulator in Ubuntu</title>
+    <link rel="stylesheet" href="/styles.css">
+
+    <link rel="icon" href="/favicon.ico">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/manifest.webmanifest">
+
+    <meta name="description" content="How I got an old avionics simulator to run on my Linux computer">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <div class="header">
+        <a class="website_title" href="/">
+            <h1>Joseph Naberhaus</h1>
+        </a>
+        <div class="navigation">
+            <a class="navigation_link" href="/programming/articles.html">
+    <img class="navigation_link_icon" src="/components/header/navigation-link/programming.svg" alt="Programming">
+    <div class="navigation_link_text">Programming</div>
+</a>
+            <a class="navigation_link" href="/woodworking/articles.html">
+    <img class="navigation_link_icon" src="/components/header/navigation-link/woodworking.svg" alt="Woodworking">
+    <div class="navigation_link_text">Woodworking</div>
+</a>
+            <a class="navigation_link" href="/miscellaneous/articles.html">
+    <img class="navigation_link_icon" src="/components/header/navigation-link/miscellaneous.svg" alt="Miscellaneous">
+    <div class="navigation_link_text">Miscellaneous</div>
+</a>
+        </div>
+    </div>
+    <hr>
+</head>
+<body>
+<article>
+    <section>
+        <h2>Running the Garmin G430/G530 simulator in Ubuntu</h2>
+        <div class="created-on">
+  Created March 2026
+</div>
+<div class="created-on">
+  Last Modified March 2026
+</div>
+        <img class="image_right" width="250" height="250" srcset="garmin-g430-and-g530-100.webp 100w,garmin-g430-and-g530-250.webp 250w,garmin-g430-and-g530-500.webp 500w,garmin-g430-and-g530-554.webp 554w" sizes="250px" alt="A picture of the G430 and G530">
+        <p>The plane that I've been doing my flight training in is equipped with a Garmin G530. Despite being very outdated, this is a common all-in-one avionics computer found in many general aviation aircraft.</p>
+        <p>I wanted to practice with my unit for a few hours, but it wasn't realistic for me to do this at the flight school. Instead, I turned towards a simulation of the real thing. First, I tried using X-Plane, but the G530 unit it has is an incomplete facsimile. So I found myself switching to <a href="https://www8.garmin.com/include/SimulatorPopup.html">the simulator program that Garmin releases</a> instead.</p>
+        <p>These are ancient Windows programs, and I no longer have a Windows PC. Thankfully, I found a way to run it on my Linux machine. It required a little bit of finagling, though, so I wanted to document what I did here.</p>
+    </section>
+    <section>
+        <h2>Instructions</h2>
+        <h3>Install Wine</h3>
+        <img class="image_right" width="300" height="350" srcset="wine-configuration-100.webp 100w,wine-configuration-250.webp 250w,wine-configuration-438.webp 438w" sizes="300px" alt="The Wine configuration page">
+        <p>The first step is to install Wine on your computer. <a href="https://gitlab.winehq.org/wine/wine/-/wikis/Download">Follow these instructions.</a></p>
+        <p>Then run <code>winecfg</code> and change the default Windows version to Windows XP, and confirm with the "OK" button.</p>
+        <h3>Switch to X.Org</h3>
+        <p>If you're using Wayland (running <code>echo $XDG_SESSION_TYPE</code> will tell you) then you will need to switch to X.Org instead. Otherwise, I just couldn't find any way to make the app work.</p>
+        <p>You can change this permanently by editing <code>/etc/gdm3/custom.conf</code>, but you don't need to. Instead, just restart your computer, click your profile, but before logging in select the gear icon in the bottom-left corner and press "Ubuntu on Xorg".</p>
+        <p>After doing this, <code>echo $XDG_SESSION_TYPE</code> should print <code>x11</code> instead.</p>
+        <h3>Install the simulator</h3>
+        <img class="image_right" width="300" height="205" srcset="garmin-zip-extractor-100.webp 100w,garmin-zip-extractor-250.webp 250w,garmin-zip-extractor-373.webp 373w" sizes="300px" alt="The zip extractor from step one">
+        <p>First, <a href="https://www8.garmin.com/include/SimulatorPopup.html">download the simulator from garmin</a>. Installing it is a two-step process.</p>
+        <p>Step one: run <code>wine ~/Downloads/500SeriesSimulator_601.exe</code> (change the path, if necessary, to point to your download). This will open up a zip extractor. I recommend pointing it to <code>C:\users\&lt;your linux username&gt;\Downloads</code> to keep things tidy. Press "Unzip" and exit the program.</p>
+        <p>Step two: actually run the installer with <code>wine ~/Downloads/SETUP.exe</code>. Just press "Next" until it completes. Then exit all the windows.</p>
+        <h3>Run the simulator</h3>
+        <p>Getting the program to actually run required a little bit more configuration. We have to use <code>env -</code> to clear out the existing environment variables, and then plumb the two we actually need. This is what I ended up with:</p>
+        <code>env - DISPLAY=$DISPLAY HOME=$HOME wine ~/.wine/drive_c/Program\ Files\ \(x86\)/GARMIN/GARMIN\ 500\ Series\ Trainer/GNC500WT.EXE</code>
+        <p>With that, you should see the Garmin Simulator in all of its glory!</p>
+        <img class="image_center" width="70000" height="40937" srcset="simulator-100.webp 100w,simulator-250.webp 250w,simulator-500.webp 500w,simulator-750.webp 750w,simulator-1000.webp 1000w,simulator-1344.webp 1344w" sizes="70000px" alt="The simulator running on my linux computer">
+    </section>
+</article>
+<div class="footer">
+    <div class="social-links">
+        <a class="social_link" href="mailto:contact@naberhausj.com">
+    <img class='social_link_icon' src='/components/footer/social-link/email.svg' alt='E-mail'/>
+    <div class='social_link_name'>
+        E-mail
+    </div>
+</a>
+        <a class="social_link" href="http://github.com/josephNaberhaus">
+    <img class='social_link_icon' src='/components/footer/social-link/github.svg' alt='GitHub'/>
+    <div class='social_link_name'>
+        GitHub
+    </div>
+</a>
+        <a class="social_link" href="https://www.youtube.com/c/JosephNaberhaus">
+    <img class='social_link_icon' src='/components/footer/social-link/youtube.svg' alt='YouTube'/>
+    <div class='social_link_name'>
+        YouTube
+    </div>
+</a>
+        <a class="social_link" href="https://www.linkedin.com/in/naberhausj">
+    <img class='social_link_icon' src='/components/footer/social-link/linkedin.svg' alt='LinkedIn'/>
+    <div class='social_link_name'>
+        LinkedIn
+    </div>
+</a>
+    </div>
+    <div class="copyright">
+        &copy; Joseph Naberhaus 2020-25
+    </div>
+</div>
+</body>
+</html>
