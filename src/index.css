@@ -104,7 +104,7 @@ img, video {
 }
 
 img {
-    border-radius: 2px;
+    border-radius: 2.5px;
 }
 
 @media screen and (max-width: 600px) {
